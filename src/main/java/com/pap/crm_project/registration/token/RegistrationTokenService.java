@@ -1,5 +1,6 @@
 package com.pap.crm_project.registration.token;
 
+import com.pap.crm_project.entities.applicationuser.ApplicationUser;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +23,9 @@ public class RegistrationTokenService {
 
     public void setConfirmationTime(String token) {
         registrationTokenRepository.updateConfirmationTime(token, LocalDateTime.now());
+    }
+
+    public void deleteRegistrationToken(ApplicationUser applicationUser) {
+        registrationTokenRepository.deleteByApplicationUser(applicationUser);
     }
 }

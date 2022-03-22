@@ -8,12 +8,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@AllArgsConstructor
 @Service
+@Transactional
+@AllArgsConstructor
 public class ApplicationUserService implements UserDetailsService {
 
     private final ApplicationUserRepository applicationUserRepository;
@@ -33,9 +35,14 @@ public class ApplicationUserService implements UserDetailsService {
                 .isPresent();
 
         if (exists) {
-            // TODO jeśli link nie jest jeszcze aktywowany wysłać następnego maila
-            // TODO sprawdzić atrybuty
-            throw new IllegalStateException("Email has already been taken");
+            ApplicationUser existingUser = applicationUserRepository.findByEmail(applicationUser.getEmail()).get();
+            if (!existingUser.getEnabled()) {
+                registrationTokenService.deleteRegistrationToken(existingUser);
+                applicationUserRepository.deleteByEmail(existingUser.getEmail());
+            }
+            else {
+                return "emailTaken";
+            }
         }
 
         String encodedPassword = bCryptPasswordEncoder

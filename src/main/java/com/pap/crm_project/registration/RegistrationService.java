@@ -22,7 +22,7 @@ public class RegistrationService {
     private final RegistrationTokenService registrationTokenService;
     private final RegistrationEmailService registrationEmailService;
 
-    public void register(RegistrationRequest request) {
+    public boolean register(RegistrationRequest request) {
         boolean isValidEmail = registrationEmailValidator.
                 test(request.getEmail());
 
@@ -41,31 +41,39 @@ public class RegistrationService {
                 )
         );
 
-        String link = "http://localhost:8080/registration/confirm?token=" + token;
-        registrationEmailService.send(
-                request.getEmail(),
-                buildEmail(request.getFirstName(), link));
+        if (token != "emailTaken") {
+            String link = "http://localhost:8080/registration/confirm?token=" + token;
+            registrationEmailService.send(
+                    request.getEmail(),
+                    buildEmail(request.getFirstName(), link));
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     @Transactional
-    public void confirmToken(String token) {
-        RegistrationToken registrationToken = registrationTokenService
-                .getRegistrationToken(token)
-                .orElseThrow(() -> new IllegalStateException("Registration token not found"));
+    public boolean confirmToken(String token) {
+        boolean isRegistrationToken = registrationTokenService
+                .getRegistrationToken(token).isPresent();
 
-        if (registrationToken.getConfirmationTime() != null) {
-            throw new IllegalStateException("Email has already confirmed");
+        if (isRegistrationToken) {
+            RegistrationToken registrationToken = registrationTokenService.getRegistrationToken(token).get();
+            LocalDateTime expiringTime = registrationToken.getExpiringTime();
+
+            if (registrationToken.getConfirmationTime() != null || expiringTime.isBefore(LocalDateTime.now())) {
+                return false;
+
+            } else {
+                registrationTokenService.setConfirmationTime(token);
+                applicationUserService.enableApplicationUser(
+                        registrationToken.getApplicationUser().getEmail());
+                return true;
+            }
+        } else {
+            return false;
         }
-
-        LocalDateTime expiringTime = registrationToken.getExpiringTime();
-
-        if (expiringTime.isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("Email has already expired");
-        }
-
-        registrationTokenService.setConfirmationTime(token);
-        applicationUserService.enableApplicationUser(
-                registrationToken.getApplicationUser().getEmail());
     }
 
     private String buildEmail(String name, String link) {

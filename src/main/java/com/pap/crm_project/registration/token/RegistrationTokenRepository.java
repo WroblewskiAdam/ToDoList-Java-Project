@@ -1,5 +1,6 @@
 package com.pap.crm_project.registration.token;
 
+import com.pap.crm_project.entities.applicationuser.ApplicationUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +15,7 @@ import java.util.Optional;
 public interface RegistrationTokenRepository extends JpaRepository<RegistrationToken, Long> {
 
     Optional<RegistrationToken> findByToken(String token);
+    void deleteByApplicationUser(ApplicationUser user);
 
     @Transactional
     @Modifying

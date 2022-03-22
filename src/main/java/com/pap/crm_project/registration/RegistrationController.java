@@ -14,8 +14,12 @@ public class RegistrationController {
 
     @PostMapping()
     public String register(@ModelAttribute("request") RegistrationRequest request) {
-        registrationService.register(request);
-        return "confirmation";
+        boolean isNewUserRegistered = registrationService.register(request);
+        if (isNewUserRegistered) {
+            return "confirmation";
+        } else {
+            return "redirect:/registration/form?taken_email_error";
+        }
     }
 
     @GetMapping("/form")
@@ -32,7 +36,11 @@ public class RegistrationController {
 
     @GetMapping(path = "confirm")
     public String confirm(@RequestParam("token") String token) {
-        registrationService.confirmToken(token);
-        return "login";
+        boolean isConfirmed = registrationService.confirmToken(token);
+        if (isConfirmed) {
+            return "login";
+        } else {
+            return "redirect:/registration/form?confirmation_error";
+        }
     }
 }
