@@ -1,0 +1,41 @@
+.firstPage{
+    background-color: #fff;
+    height: 100vh;
+    &__wrapper{
+        margin: 0 100px
+    }
+    &__header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 50px;
+        &-item{
+            width: 50%;
+        }
+    }
+    &__title{
+        font-size: 50px;
+        font-weight: 500;
+    }
+    &__descr{
+        margin-top: 20px;
+        font-size: 20px;
+    }
+    &__image{
+        width: 400px;
+        border: radius 20px;
+        animation: moving 5s infinite ease ;
+    }
+}
+
+@keyframes moving {
+    0% {
+        transform: translateY(-5%);
+    }
+    50% {
+        transform: translateY(5%);
+    }
+    100% {
+        transform: translateY(-5%);
+    }
+}
