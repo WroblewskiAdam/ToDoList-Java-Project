@@ -1,0 +1,51 @@
+@import '../../style/variable';
+
+.basicGroupItem{
+    width: 100%;
+    height: 30px;
+    padding: 0 20px;
+    background-color: $aliceBlue;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    &:hover{
+        background-color: $mediumSlateBlue;
+        cursor: pointer;
+        .basicGroupItem{
+            &__image{
+                svg{
+                    fill: white;
+                }
+            }
+            &__title{
+                color: white;
+            }
+            &__count{
+                color: white;
+            }
+        }
+    }
+    &__image{
+        margin-right: 15px;
+        svg{
+            width: 20px;
+            height: 20px;
+            fill: $nickel
+        }
+    }
+    &__title{
+        color: $nickel;
+        font-weight: 300;
+        font-size: 18px;
+        font-family: 'Noto Sans Display', sans-serif;
+    }
+    &__count{
+        color: $nickel;
+        font-size: 15px;
+    }
+    &__block{
+        display: flex;
+    }
+}
