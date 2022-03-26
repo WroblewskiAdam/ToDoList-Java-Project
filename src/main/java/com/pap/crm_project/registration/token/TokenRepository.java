@@ -12,13 +12,13 @@ import java.util.Optional;
 
 @Repository
 @Transactional
-public interface RegistrationTokenRepository extends JpaRepository<RegistrationToken, Long> {
+public interface TokenRepository extends JpaRepository<Token, Long> {
 
-    Optional<RegistrationToken> findByToken(String token);
+    Optional<Token> findByToken(String token);
     void deleteByApplicationUser(ApplicationUser user);
 
     @Transactional
     @Modifying
-    @Query("UPDATE RegistrationToken rt " + "SET rt.confirmationTime = ?2 " + "WHERE rt.token = ?1")
+    @Query("UPDATE Token rt " + "SET rt.confirmationTime = ?2 " + "WHERE rt.token = ?1")
     int updateConfirmationTime(String token, LocalDateTime confirmationTime);
 }

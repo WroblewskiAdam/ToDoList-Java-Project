@@ -3,10 +3,10 @@ package com.pap.crm_project.registration;
 import com.pap.crm_project.entities.applicationuser.ApplicationUser;
 import com.pap.crm_project.entities.applicationuser.ApplicationUserRole;
 import com.pap.crm_project.entities.applicationuser.ApplicationUserService;
-import com.pap.crm_project.registration.email.RegistrationEmailService;
-import com.pap.crm_project.registration.email.RegistrationEmailValidator;
-import com.pap.crm_project.registration.token.RegistrationToken;
-import com.pap.crm_project.registration.token.RegistrationTokenService;
+import com.pap.crm_project.email.EmailService;
+import com.pap.crm_project.email.EmailValidator;
+import com.pap.crm_project.registration.token.Token;
+import com.pap.crm_project.registration.token.TokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +18,12 @@ import java.time.LocalDateTime;
 public class RegistrationService {
 
     private final ApplicationUserService applicationUserService;
-    private final RegistrationEmailValidator registrationEmailValidator;
-    private final RegistrationTokenService registrationTokenService;
-    private final RegistrationEmailService registrationEmailService;
+    private final EmailValidator emailValidator;
+    private final TokenService registrationTokenService;
+    private final EmailService emailService;
 
     public boolean register(RegistrationRequest request) {
-        boolean isValidEmail = registrationEmailValidator.
+        boolean isValidEmail = emailValidator.
                 test(request.getEmail());
 
         if (!isValidEmail) {
@@ -43,14 +43,15 @@ public class RegistrationService {
 
         if (token != "emailTaken") {
             String link = "http://localhost:8080/registration/confirm?token=" + token;
-            registrationEmailService.send(
+            String subject = "Confirm your email";
+            emailService.send(
                     request.getEmail(),
+                    subject,
                     buildEmail(request.getFirstName(), link));
             return true;
         } else {
             return false;
         }
-
     }
 
     @Transactional
@@ -59,7 +60,7 @@ public class RegistrationService {
                 .getRegistrationToken(token).isPresent();
 
         if (isRegistrationToken) {
-            RegistrationToken registrationToken = registrationTokenService.getRegistrationToken(token).get();
+            Token registrationToken = registrationTokenService.getRegistrationToken(token).get();
             LocalDateTime expiringTime = registrationToken.getExpiringTime();
 
             if (registrationToken.getConfirmationTime() != null || expiringTime.isBefore(LocalDateTime.now())) {

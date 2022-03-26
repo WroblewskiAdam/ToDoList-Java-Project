@@ -9,15 +9,15 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class RegistrationTokenService {
+public class TokenService {
 
-    private final RegistrationTokenRepository registrationTokenRepository;
+    private final TokenRepository registrationTokenRepository;
 
-    public void saveRegistrationToken(RegistrationToken token) {
+    public void saveRegistrationToken(Token token) {
         registrationTokenRepository.save(token);
     }
 
-    public Optional<RegistrationToken> getRegistrationToken(String token) {
+    public Optional<Token> getRegistrationToken(String token) {
         return registrationTokenRepository.findByToken(token);
     }
 

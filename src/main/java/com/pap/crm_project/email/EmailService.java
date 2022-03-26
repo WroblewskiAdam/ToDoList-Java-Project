@@ -1,4 +1,4 @@
-package com.pap.crm_project.registration.email;
+package com.pap.crm_project.email;
 
 import lombok.AllArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,18 +11,18 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 @AllArgsConstructor
-public class RegistrationEmailService {
+public class EmailService {
 
     private final JavaMailSender mailSender;
 
     @Async
-    public void send(String to, String email) {
+    public void send(String to, String subject, String email) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
             helper.setText(email, true);
             helper.setTo(to);
-            helper.setSubject("Confirm your email");
+            helper.setSubject(subject);
             helper.setFrom("crmpap111@gmail.com");
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
