@@ -1,4 +1,4 @@
-package com.pap.crm_project.entities.applicationuser;
+package com.pap.crm_project.applicationuser;
 
 import com.pap.crm_project.email.EmailService;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.pap.crm_project.entities.applicationuser;
+package com.pap.crm_project.applicationuser;
 
 public enum ApplicationUserRole {
     USER,

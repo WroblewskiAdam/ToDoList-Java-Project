@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html Lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>All Tasks</title>
+</head>
+
+
+<body>
+<div>
+    <div>
+        <h1>Tasks List</h1>
+    </div>
+
+    <table border="1">
+        <tr>
+            <td> Task Name</td>
+            <td> Task Description</td>
+            <td> Task CreationTime</td>
+            <td> Task Deadline</td>
+            <td> Task Priority</td>
+            <td> Task Giver</td>
+            <td> Task Receivers</td>
+        </tr>
+        <tr th:each = "task: ${tasks}">
+            <td th:text = "${task.getName()}"></td>
+            <td th:text = "${task.getDescription()}"></td>
+            <td th:text = "${task.getCreationtime()}"></td>
+            <td th:text = "${task.getDeadline()}"></td>
+            <td th:text = "${task.getPriority()}"></td>
+            <td th:text = "${task.getGiver()}"></td>
+            <td th:text = "${task.getReceivers()}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+
+</html>

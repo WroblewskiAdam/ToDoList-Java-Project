@@ -1,8 +1,8 @@
 package com.pap.crm_project.registration;
 
-import com.pap.crm_project.entities.applicationuser.ApplicationUser;
-import com.pap.crm_project.entities.applicationuser.ApplicationUserRole;
-import com.pap.crm_project.entities.applicationuser.ApplicationUserService;
+import com.pap.crm_project.applicationuser.ApplicationUser;
+import com.pap.crm_project.applicationuser.ApplicationUserRole;
+import com.pap.crm_project.applicationuser.ApplicationUserService;
 import com.pap.crm_project.email.EmailService;
 import com.pap.crm_project.email.EmailValidator;
 import com.pap.crm_project.registration.token.Token;

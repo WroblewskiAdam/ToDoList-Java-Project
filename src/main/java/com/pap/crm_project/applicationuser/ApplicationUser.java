@@ -1,4 +1,4 @@
-package com.pap.crm_project.entities.applicationuser;
+package com.pap.crm_project.applicationuser;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Getter
 @Setter

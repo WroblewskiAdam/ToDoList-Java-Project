@@ -1,4 +1,4 @@
-package com.pap.crm_project.entities.applicationuser;
+package com.pap.crm_project.applicationuser;
 
 import com.pap.crm_project.email.EmailService;
 import com.pap.crm_project.registration.token.Token;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,6 +25,10 @@ public class ApplicationUserService implements UserDetailsService {
     private final TokenService registrationTokenService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final EmailService emailService;
+
+    public List<ApplicationUser> getAllApplicationUsers(){
+        return applicationUserRepository.findAll();
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

@@ -5,12 +5,12 @@ server:
 
 spring:
   datasource:
-    password: Adamix123 # tutaj zmieńcie hasło
+    password: Adam2001 # tutaj zmieńcie hasło
     url: jdbc:mysql://localhost:3306/crm # stwórzcie nową scheme
     username: root
   jpa:
     hibernate:
-      ddl-auto: create-drop # jeśli nie chcecie automatycznego czyszczenia bazy danych to zmieńcie na update
+      ddl-auto: update # jeśli nie chcecie automatycznego czyszczenia bazy danych to zmieńcie na update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect

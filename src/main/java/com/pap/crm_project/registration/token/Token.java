@@ -1,6 +1,6 @@
 package com.pap.crm_project.registration.token;
 
-import com.pap.crm_project.entities.applicationuser.ApplicationUser;
+import com.pap.crm_project.applicationuser.ApplicationUser;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

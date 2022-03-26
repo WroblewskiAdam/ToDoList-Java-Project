@@ -1,6 +1,6 @@
 package com.pap.crm_project.security;
 
-import com.pap.crm_project.entities.applicationuser.ApplicationUserService;
+import com.pap.crm_project.applicationuser.ApplicationUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
