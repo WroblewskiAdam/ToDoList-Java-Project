@@ -1,7 +1,6 @@
 package com.pap.crm_project.team;
 
 import com.pap.crm_project.applicationuser.ApplicationUser;
-import com.pap.crm_project.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +11,7 @@ public class TeamService {
 
     private TeamRepository teamRepository;
 
+    @Autowired
     public TeamService(TeamRepository teamRepository) {
         this.teamRepository = teamRepository;
     }
@@ -20,7 +20,20 @@ public class TeamService {
         return teamRepository.findAll();
     }
 
-    public void saveTeam(Team team){
-        teamRepository.save(team);
+    public List<Team> getTeamsTeamLeader(ApplicationUser teamLeader){
+        return teamRepository.findTeamByTeamLeader(teamLeader);
+    }
+
+    public void deleteTeam(Long id) {
+        teamRepository.deleteById(id);
+    }
+
+    public boolean saveTeam(Team team){
+        if (teamRepository.findTeamByName(team.getName()).isPresent()) {
+            return true;
+        } else {
+            teamRepository.save(team);
+            return false;
+        }
     }
 }

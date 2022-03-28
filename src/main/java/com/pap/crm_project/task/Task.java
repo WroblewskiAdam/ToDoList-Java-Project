@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -19,7 +18,7 @@ import java.util.List;
 public class Task {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false)
@@ -32,7 +31,7 @@ public class Task {
     private LocalDateTime deadline;
 
     @Column(nullable = false)
-    private LocalDateTime creationtime = LocalDateTime.now();
+    private LocalDateTime creationTime = LocalDateTime.now();
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -45,38 +44,33 @@ public class Task {
     )
     private ApplicationUser giver;
 
-    @ManyToMany
-    @JoinColumn(
-            nullable = false,
-            name = "receiver_id"
+    @ManyToMany()
+    @JoinTable(
+            name = "tasks_receivers",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "application_user_id")
     )
     private List<ApplicationUser> receivers;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(
             name = "team_id"
     )
     private Team team;
 
-    public Task(String title, String description, LocalDateTime deadline, TaskPriority priority, ApplicationUser giver, List<ApplicationUser> receivers) {
+    public Task(String title, String description, LocalDateTime deadline, TaskPriority priority, ApplicationUser giver, List<ApplicationUser> receivers, Team team) {
         this.title = title;
         this.description = description;
         this.deadline = deadline;
         this.priority = priority;
         this.giver = giver;
         this.receivers = receivers;
+        this.team = team;
     }
-//    public Task(String title, String description, String deadlineString, TaskPriority priority, ApplicationUser giver, List<ApplicationUser> receivers) {
-//        this.title = title;
-//        this.description = description;
-//
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-//        this.deadline = LocalDateTime.parse(deadlineString, formatter);
-//
-//        this.priority = priority;
-//        this.giver = giver;
-//        this.receivers = receivers;
-//    }
 
+    @Override
+    public String toString() {
+        return  title;
+    }
 }
 

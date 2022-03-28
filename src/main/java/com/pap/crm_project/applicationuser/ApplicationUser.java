@@ -1,5 +1,7 @@
 package com.pap.crm_project.applicationuser;
 
+import com.pap.crm_project.task.Task;
+import com.pap.crm_project.team.Team;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,13 +21,26 @@ import java.util.List;
 public class ApplicationUser implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
     private String img; // TODO trzeba ewentualnie zmienić typ
+
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "teamMembers")
+    private List<Team> teams;
+
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "receivers")
+    private List<Task> tasks;
+
     @Enumerated(EnumType.STRING)
     private ApplicationUserRole applicationUserRole;
     private Boolean locked = false;
@@ -79,4 +94,9 @@ public class ApplicationUser implements UserDetails {
 
     @Override
     public boolean isEnabled() { return enabled; }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }

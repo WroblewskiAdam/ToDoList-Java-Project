@@ -2,14 +2,16 @@ package com.pap.crm_project.task;
 
 import com.pap.crm_project.applicationuser.ApplicationUser;
 import com.pap.crm_project.applicationuser.ApplicationUserService;
+import com.pap.crm_project.team.Team;
+import com.pap.crm_project.team.TeamService;
+import org.hibernate.annotations.OnDelete;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -17,15 +19,17 @@ public class TaskController {
 
     private final TaskService taskService;
     private final ApplicationUserService applicationUserService;
+    private final TeamService teamService;
 
-    public TaskController(TaskService taskService, ApplicationUserService applicationUserService) {
+    @Autowired
+    public TaskController(TaskService taskService, ApplicationUserService applicationUserService, TeamService teamService) {
         this.taskService = taskService;
         this.applicationUserService = applicationUserService;
+        this.teamService = teamService;
     }
 
-//    handler method to handle lis students request and return mode and view
-    @GetMapping("/tasks/showAll")
-    public String listTasks(Model model){
+    @GetMapping("/tasks/show_all")
+    public String getAllTasks(Model model){
         List<Task> tasksList = taskService.getAllTasks();
         model.addAttribute("tasks",tasksList);
         return "tasks";
@@ -35,8 +39,10 @@ public class TaskController {
     public String createTask(Model model){
         TaskRequest taskRequest = new TaskRequest();
         List<ApplicationUser> users = applicationUserService.getAllApplicationUsers();
+        List<Team> teams = teamService.getAllTeams();
         model.addAttribute("taskRequest", taskRequest);
         model.addAttribute("users", users);
+        model.addAttribute("teams", teams);
         return "create_task";
     }
 
@@ -47,33 +53,10 @@ public class TaskController {
         return "redirect:/tasks/showAll";
     }
 
-
-//
-//
-//    @GetMapping("/tasks")
-//        public String listTasks(Model model){
-//        List<Task> tasksList = taskService.getTaskById(2L);
-//        model.addAttribute("tasks",tasksList);
-//        return "tasks";
-//    }
-//
-//
-//    @GetMapping("/find")
-//    public List<Task> getTasksById(){
-//        return taskService.getTaskById(1L);
-//    }
-//
-//    @GetMapping("/tasks/addNew")
-//    public String createTask(Model model){
-//        Task task = new Task();
-//        model.addAttribute("task", task);
-//        return "create_task";
-//    }
-//
-//    @PostMapping("/tasks/addNew")
-//    public String addNewTask(@ModelAttribute("task") Task task){
-//        taskService.saveTask(task);
-//        return "redirect:/tasks";
-//    }
+    @GetMapping("/tasks/delete/{id}")
+    public String deleteTask(@PathVariable Long id) {
+        taskService.deleteTask(id);
+        return "redirect:/tasks/showAll";
+    }
 
 }

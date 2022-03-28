@@ -1,6 +1,6 @@
 package com.pap.crm_project.registration.token;
 
-import com.pap.crm_project.entities.applicationuser.ApplicationUser;
+import com.pap.crm_project.applicationuser.ApplicationUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

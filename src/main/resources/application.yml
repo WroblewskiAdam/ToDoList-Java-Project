@@ -5,7 +5,7 @@ server:
 
 spring:
   datasource:
-    password: Adam2001 # tutaj zmieńcie hasło
+    password: Adamix123 # tutaj zmieńcie hasło
     url: jdbc:mysql://localhost:3306/crm # stwórzcie nową scheme
     username: root
   jpa:

@@ -1,10 +1,6 @@
 package com.pap.crm_project.task;
 
-import com.pap.crm_project.applicationuser.ApplicationUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,9 +21,14 @@ public class TaskService {
                 return taskRepository.findAll();
         }
 
+        public void deleteTask(Long id) {
+                taskRepository.deleteById(id);
+        }
+
         public void saveTask(TaskRequest request){
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                LocalDateTime deadline = LocalDateTime.parse(request.getDeadline().toString(), formatter);
+                String date = request.getDeadline();
+                date = date + ":00.0";
+                LocalDateTime deadline = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME);
 
                 Task task = new Task(
                         request.getTitle(),
@@ -35,13 +36,10 @@ public class TaskService {
                         deadline,
                         request.getPriority(),
                         request.getGiver(),
-                        request.getReceivers()
+                        request.getReceivers(),
+                        request.getTeam()
                 );
 
                 taskRepository.save(task);
-        }
-
-        public List<Task> getTaskById(Long id){
-               return taskRepository.findTaskByGiverId(id);
         }
 }

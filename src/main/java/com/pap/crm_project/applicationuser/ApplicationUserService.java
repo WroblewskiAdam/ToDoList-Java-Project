@@ -30,6 +30,10 @@ public class ApplicationUserService implements UserDetailsService {
         return applicationUserRepository.findAll();
     }
 
+    public Optional<ApplicationUser> getApplicationUserById(Long id) {
+        return applicationUserRepository.findById(id);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return applicationUserRepository.findByEmail(email)

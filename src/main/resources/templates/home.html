@@ -12,14 +12,23 @@
   <div class="container-fluid">
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" th:href="@{/logout}"> Logout </a>
-        </li>
         <li>
-          <span sec:authentication="principal.firstName"></span>
+          <a class="nav-link active" aria-current="page" href="/edit/form" sec:authentication="principal.firstName"></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" th:href="@{/edit/form}"> Edit </a>
+          <a class="nav-link active" aria-current="page" href="/home"> Home </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/teams/show_all"> Teams </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/tasks/show_all"> Tasks </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/users/showAll"> Users </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/logout"> Logout </a>
         </li>
       </ul>
     </div>

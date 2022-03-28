@@ -1,11 +1,14 @@
 package com.pap.crm_project.applicationuser;
 
 import com.pap.crm_project.email.EmailService;
+import com.pap.crm_project.team.Team;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -13,6 +16,13 @@ public class ApplicationUserController {
 
     private ApplicationUserService applicationUserService;
 //    private EmailService emailService;
+
+    @GetMapping("/users/showAll")
+    public String getAllUsers(Model model){
+        List<ApplicationUser> users = applicationUserService.getAllApplicationUsers();
+        model.addAttribute("users", users);
+        return "users";
+    }
 
     @DeleteMapping(path = "{userId}")
     public void deleteUser(@PathVariable("userId") Integer userId) {
