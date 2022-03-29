@@ -73,7 +73,7 @@
       <td th:text = "${team.teamMembers}"></td>
       <td th:text = "${team.teamTasks}"></td>
       <td>
-        <a th:href="@{/teams/edit/{id}(id=${team.id})}" class="btn btn-primary"> Update </a>
+        <a th:href="@{/teams/edit/form/{id}(id=${team.id})}" class="btn btn-primary"> Update </a>
         <a th:href="@{/teams/delete/{id}(id=${team.id})}" class="btn btn-danger"> Delete </a>
       </td>
     </tr>
