@@ -1,25 +1,104 @@
 package com.pap.crm_project.task;
 
+import com.pap.crm_project.applicationuser.ApplicationUser;
+import com.pap.crm_project.applicationuser.ApplicationUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
 
         private TaskRepository taskRepository;
+        private ApplicationUserService applicationUserService;
 
         @Autowired
-        public TaskService(TaskRepository taskRepository) {
+        public TaskService(TaskRepository taskRepository, ApplicationUserService applicationUserService) {
                 this.taskRepository = taskRepository;
+                this.applicationUserService = applicationUserService;
         }
 
         public List<Task> getAllTasks(){
                 return taskRepository.findAll();
         }
+
+        public List<Task> getTodayTasks(ApplicationUser applicationUser) {
+                List<Task> tasks =  applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
+                        .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(1)))
+                        .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
+                        .collect(Collectors.toList());
+                return tasks;
+        }
+
+        public List<Task> getTodayTasksGiven(ApplicationUser applicationUser) {
+                List<Task> tasks =  taskRepository.findByGiver(applicationUser).stream()
+                        .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(1)))
+                        .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
+                        .collect(Collectors.toList());
+                return tasks;
+        }
+
+        public List<Task> getSevenDaysTasks(ApplicationUser applicationUser) {
+                List<Task> tasks =  applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
+                        .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(7)))
+                        .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
+                        .collect(Collectors.toList());
+                return tasks;
+        }
+
+        public List<Task> getSevenDaysTasksGiven(ApplicationUser applicationUser) {
+                List<Task> tasks =  taskRepository.findByGiver(applicationUser).stream()
+                        .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(7)))
+                        .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
+                        .collect(Collectors.toList());
+                return tasks;
+        }
+
+        public List<Task> getPrivateTasks(ApplicationUser applicationUser) {
+                List<Task> tasks =  applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
+                        .filter(task -> task.getTeam() == null)
+                        .collect(Collectors.toList());
+                return tasks;
+        }
+
+        public List<Task> getPrivateTasksGiven(ApplicationUser applicationUser) {
+                List<Task> tasks =  taskRepository.findByGiver(applicationUser).stream()
+                        .filter(task -> task.getTeam() == null)
+                        .collect(Collectors.toList());
+                return tasks;
+        }
+
+        public List<Task> getReceivedTasks(ApplicationUser applicationUser) {
+                return applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks();
+        }
+
+        public List<Task> getGivenTasks(ApplicationUser applicationUser){
+                List<Task> tasks =  taskRepository.findByGiver(applicationUser);
+                return tasks;
+        }
+
+        public List<Task> getExpiredTasks(ApplicationUser applicationUser){
+                List<Task> tasks = applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
+                        .filter(task -> task.getDeadline().isBefore(LocalDateTime.now()))
+                        .collect(Collectors.toList());
+                return tasks;
+        }
+
+        public List<Task> getExpiredTasksGiven(ApplicationUser applicationUser){
+                List<Task> tasks =  taskRepository.findByGiver(applicationUser).stream()
+                        .filter(task -> task.getDeadline().isBefore(LocalDateTime.now()))
+                        .collect(Collectors.toList());
+                return tasks;
+        }
+
+        // TODO Czy można nakładać różne filtry np. today, given, yellow ?
+        // TODO trzeba się zastanowić jak robimy wykonanie zadania
+        // TODO do zastanowienia także sposób sortowania dla teamu - czy identyczny ?
+        // TODO sortowanie względem priorytetów
 
         public void deleteTask(Long id) {
                 taskRepository.deleteById(id);
