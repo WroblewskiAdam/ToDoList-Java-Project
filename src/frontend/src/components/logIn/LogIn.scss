@@ -3,7 +3,7 @@
 .logIn{
     display: block;
     position: relative;
-    margin: 50px auto;
+    margin: 30px auto;
     &__header{
         display: flex;
         align-items: center;
@@ -32,8 +32,12 @@
         position: relative;
     }
     &__item{
-        min-height: 460px;
-        padding: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        min-height: 550px;
+        padding: 35px 50px;
         width: 100%;
         position: absolute;
         background: $mediumSlateBlue;
@@ -66,13 +70,14 @@
         &-item{
             display: flex;
             align-items: center;
-            justify-self: space-between;
+            justify-content: space-between;
             margin-top: 10px;
             background-color: $onyx;
             padding-left: 30px;
             border-radius: 8px;
             box-shadow: 0 4px 8px 0 rgba(21,21,21,.2);
             transition: all 200ms linear;
+            width: 300px;
         }
         &-icon{
             width: 24px;
@@ -93,9 +98,17 @@
             border: none;
             transition: all 200ms linear;
             transition: all 200ms linear;
+            &::-webkit-file-upload-button{
+                visibility: hidden;
+                display: none;
+            }
+            &[type='file']{
+                width: 220px;
+
+            }
         }
         &-submit{
-            margin-top: 30px;
+            margin-top: 20px;
             background-color: white;
             padding: 10px 30px;
             border-radius: 8px;

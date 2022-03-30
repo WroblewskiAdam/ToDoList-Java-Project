@@ -1,14 +1,11 @@
 @import '../../style/variable';
 
 .basicGroupList{
-    margin-top: 30px;
-    margin-left: 10px;
     width: 300px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     padding: 30px;
     border-radius: 30px;
     overflow-y:auto;
-    height: 200px;
     scrollbar-width: none;
     background-color: white;
     &::-webkit-scrollbar{
