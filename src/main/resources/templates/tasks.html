@@ -24,7 +24,7 @@
                     <a class="nav-link active" aria-current="page" href="/teams/show_all"> Teams </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/tasks/showAll"> Tasks </a>
+                    <a class="nav-link active" aria-current="page" href="/tasks/show_all"> Tasks </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/users/showAll"> Users </a>
@@ -46,24 +46,45 @@
             <a href="/tasks/addNew/form" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> Add Task </a>
         </div>
         <div class="col-lg-3">
-            <a href="/tasks/show_all" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> All </a>
+            <a href="/tasks/show_all" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> All (in database)</a>
         </div>
         <div class="col-lg-3">
-            <a href="/tasks/show_today" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> Today </a>
+            <a href="/tasks/show_private" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> Private Received</a>
         </div>
         <div class="col-lg-3">
-            <a href="/tasks/show_7_days" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> Next 7 Days </a>
-        </div>
-        <div class="col-lg-3">
-            <a href="/tasks/show_private" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> Private </a>
-        </div>
-        <div class="col-lg-3">
-            <a href="/tasks/show_received" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> Received </a>
-        </div>
-        <div class="col-lg-3">
-            <a href="/tasks/show_given" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> Given </a>
+            <a href="/tasks/show_private_given" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> Private Given</a>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <a href="/tasks/show_today" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> Today Received</a>
+        </div>
+        <div class="col-lg-3">
+            <a href="/tasks/show_today_given" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> Today Given</a>
+        </div>
+        <div class="col-lg-3">
+            <a href="/tasks/show_seven_days" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> Next 7 Days Received</a>
+        </div>
+        <div class="col-lg-3">
+            <a href="/tasks/show_seven_days_given" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> Next 7 Days Given</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <a href="/tasks/show_received" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> All Received </a>
+        </div>
+        <div class="col-lg-3">
+            <a href="/tasks/show_given" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> All Given </a>
+        </div>
+        <div class="col-lg-3">
+            <a href="/tasks/show_expired" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> Expired Received </a>
+        </div>
+        <div class="col-lg-3">
+            <a href="/tasks/show_expired_given" aria-current="page" class="nav-link active btn btn-primary btn-sm mb-3"> Expired Given </a>
+        </div>
+    </div>
+
+
     <table class="table table-striped table-bordered">
         <thead class="table-dark">
         <tr>

@@ -35,6 +35,106 @@ public class TaskController {
         return "tasks";
     }
 
+    @GetMapping("/tasks/show_today")
+    public String getTodayTasks(
+            @AuthenticationPrincipal ApplicationUser applicationUser,
+            Model model
+    ) {
+        List<Task> tasksList = taskService.getTodayTasks(applicationUser);
+        model.addAttribute("tasks",tasksList);
+        return "tasks";
+    }
+
+    @GetMapping("/tasks/show_today_given")
+    public String getTodayTasksGiven(
+            @AuthenticationPrincipal ApplicationUser applicationUser,
+            Model model
+    ) {
+        List<Task> tasksList = taskService.getTodayTasksGiven(applicationUser);
+        model.addAttribute("tasks",tasksList);
+        return "tasks";
+    }
+
+    @GetMapping("/tasks/show_seven_days")
+    public String getSevenDaysTasks(
+            @AuthenticationPrincipal ApplicationUser applicationUser,
+            Model model
+    ) {
+        List<Task> tasksList = taskService.getSevenDaysTasks(applicationUser);
+        model.addAttribute("tasks",tasksList);
+        return "tasks";
+    }
+
+    @GetMapping("/tasks/show_seven_days_given")
+    public String getSevenDaysTasksGiven(
+            @AuthenticationPrincipal ApplicationUser applicationUser,
+            Model model
+    ) {
+        List<Task> tasksList = taskService.getSevenDaysTasksGiven(applicationUser);
+        model.addAttribute("tasks",tasksList);
+        return "tasks";
+    }
+
+    @GetMapping("/tasks/show_private")
+    public String getPrivateTasks(
+            @AuthenticationPrincipal ApplicationUser applicationUser,
+            Model model
+    ) {
+        List<Task> tasksList = taskService.getPrivateTasks(applicationUser);
+        model.addAttribute("tasks",tasksList);
+        return "tasks";
+    }
+
+    @GetMapping("/tasks/show_private_given")
+    public String getPrivateTasksGiven(
+            @AuthenticationPrincipal ApplicationUser applicationUser,
+            Model model
+    ) {
+        List<Task> tasksList = taskService.getPrivateTasksGiven(applicationUser);
+        model.addAttribute("tasks",tasksList);
+        return "tasks";
+    }
+
+    @GetMapping("/tasks/show_received")
+    public String getReceivedTasks(
+            @AuthenticationPrincipal ApplicationUser applicationUser,
+            Model model
+    ) {
+        List<Task> tasksList = taskService.getReceivedTasks(applicationUser);
+        model.addAttribute("tasks",tasksList);
+        return "tasks";
+    }
+
+    @GetMapping("/tasks/show_given")
+    public String getGivenTasks(
+            @AuthenticationPrincipal ApplicationUser applicationUser,
+            Model model
+    ) {
+        List<Task> tasksList = taskService.getGivenTasks(applicationUser);
+        model.addAttribute("tasks",tasksList);
+        return "tasks";
+    }
+
+    @GetMapping("/tasks/show_expired")
+    public String getExpiredTasks(
+            @AuthenticationPrincipal ApplicationUser applicationUser,
+            Model model
+    ) {
+        List<Task> tasksList = taskService.getExpiredTasks(applicationUser);
+        model.addAttribute("tasks",tasksList);
+        return "tasks";
+    }
+
+    @GetMapping("/tasks/show_expired_given")
+    public String getExpiredTasksGiven(
+            @AuthenticationPrincipal ApplicationUser applicationUser,
+            Model model
+    ) {
+        List<Task> tasksList = taskService.getExpiredTasksGiven(applicationUser);
+        model.addAttribute("tasks",tasksList);
+        return "tasks";
+    }
+
     @GetMapping("/tasks/addNew/form")
     public String createTask(Model model){
         TaskRequest taskRequest = new TaskRequest();
@@ -50,13 +150,13 @@ public class TaskController {
     public String addNewTask(@AuthenticationPrincipal ApplicationUser applicationUser, @ModelAttribute("task") TaskRequest request) {
         request.setGiver(applicationUser);
         taskService.saveTask(request);
-        return "redirect:/tasks/showAll";
+        return "redirect:/tasks/show_all";
     }
 
     @GetMapping("/tasks/delete/{id}")
     public String deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
-        return "redirect:/tasks/showAll";
+        return "redirect:/tasks/show_all";
     }
 
 }

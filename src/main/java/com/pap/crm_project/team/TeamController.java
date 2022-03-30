@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -46,6 +47,10 @@ public class TeamController {
         return "teams";
     }
 
+    // TODO !!! UWAGA !!!
+    // TODO Trzeba odseparować nieaktywowanych mailowowo użytkowników
+    // TODO Czy robimy to wygodnie przed streamy czy jakos inaczej?
+
     @GetMapping("/addNew/form")
     public String createTeam(@AuthenticationPrincipal ApplicationUser applicationUser, Model model){
         Team team = new Team();
@@ -73,11 +78,14 @@ public class TeamController {
     public String editTeamForm(@PathVariable Long id, Model model) {
         Team team = teamService.getTeamById(id).get();
         List<ApplicationUser> users = applicationUserService.getAllApplicationUsers();
-        List<ApplicationUser> teamMembers = team.getTeamMembers();
-        teamMembers.forEach(applicationUser -> users.remove(applicationUser));
+        List<ApplicationUser> existingUsers = team.getTeamMembers();
+        existingUsers.forEach(applicationUser -> users.remove(applicationUser));
+        existingUsers.remove(team.getTeamLeader());
+        ArrayList<ApplicationUser> existingUsersArray = new ArrayList<ApplicationUser>(existingUsers);
 
         model.addAttribute("team", team);
         model.addAttribute("users", users);
+        model.addAttribute("existingUsers", existingUsersArray);
         return "edit_team";
     }
 
@@ -85,26 +93,23 @@ public class TeamController {
     public String editTeam(
             @AuthenticationPrincipal ApplicationUser applicationUser,
             @ModelAttribute("team") Team team,
+            @ModelAttribute("existingUsers") ArrayList<ApplicationUser> existingUsers,
             @PathVariable Long id
     ) {
         team.setTeamLeader(applicationUser);
+        existingUsers.forEach(user -> team.getTeamMembers().remove(user));
 
-        // TODO zrobić możliwość usuwania userów
         if (
             !teamService.getTeamByName(team.getName()).isPresent() ||
             teamService.getTeamById(id).get().getName().equals(team.getName())
         ) {
             team.setTeamTasks(teamService.getTeamById(id).get().getTeamTasks());
-            if (!teamService.getTeamById(id).get().getName().equals(team.getName())) {
-                teamService.deleteTeamById(team.getId());
-            }
             teamService.saveTeam(team, applicationUser);
             return "redirect:/teams/show_all";
-        } else {
-            String path = "redirect:/teams/edit/form/" + id + "?team_exists";
-            return path;
-        }
 
+        } else {
+            return "redirect:/teams/edit/form/" + id + "?team_exists";
+        }
     }
 
     @GetMapping("/delete/{id}")

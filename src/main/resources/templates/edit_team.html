@@ -212,9 +212,18 @@
             <label for="name">Team Name<span>*</span></label>
             <input id="name" type="text" name="name" th:value="${team.name}" th:placeholder="${team.name}"/>
         </div>
+        <br>
 
+        <h5> Add Member </h5>
         <select th:field="*{teamMembers}" multiple>
             <option th:each="user : ${users}" th:value="${user.id}" th:text="${user}">
+            </option>
+        </select>
+        <br>
+
+        <h5> Remove Member </h5>
+        <select th:field="${existingUsers}" multiple>
+            <option th:each="user : ${existingUsers}" th:value="${user.id}" th:text="${user}">
             </option>
         </select>
 

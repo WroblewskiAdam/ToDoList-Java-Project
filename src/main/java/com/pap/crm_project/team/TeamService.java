@@ -36,10 +36,6 @@ public class TeamService {
         teamRepository.deleteById(id);
     }
 
-    public void deleteTeamByName(String name) {
-        teamRepository.deleteByName(name);
-    }
-
     public void saveTeam(Team team, ApplicationUser teamLeader){
         List<ApplicationUser> users = team.getTeamMembers();
         users.add(applicationUserService.loadApplicationUserById(teamLeader.getId()).get());
