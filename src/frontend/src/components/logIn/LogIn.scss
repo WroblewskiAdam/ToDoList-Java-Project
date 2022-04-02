@@ -17,7 +17,7 @@
             &:hover{
                 cursor: pointer;
                 background-color: $mediumSlateBlue;
-                color: white;
+                color: $white-color;
                 transition: 0.2s ease-in;
             }
         }
@@ -55,7 +55,7 @@
         &-title{
             font-weight: 700;
             font-size: 25px;
-            color: white;
+            color: $white-color;
             text-align: center;
             transition: all 200ms linear;
         }
@@ -109,7 +109,7 @@
         }
         &-submit{
             margin-top: 20px;
-            background-color: white;
+            background-color: $white-color;
             padding: 10px 30px;
             border-radius: 8px;
             color: $onyx;

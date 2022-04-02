@@ -1,110 +1,119 @@
-import React from 'react';
-import Picker from 'emoji-picker-react';
-import { useState } from 'react';
+import React, { useRef } from 'react';
+import { useState} from 'react';
 import "./TeamModal.scss"
+import useOuterClick from '../../hooks/useClickOutside';
+import User from '../user/User';
 
 const people = [
-    "Tomek",
-    "Bartek",
-    "Barbara",
-    "Ann",
-    "Tomek",
-    "Bartek",
-    "Barbara",
-    "Ann",
-    "Tomek",
-    "Bartek",
-    "Barbara",
-    "Ann"
+    {
+        "id": 1,
+        "firstName": "Tom",
+        "lastName": "Fire",
+    },
+    {
+        "id": 2,
+        "firstName": "Bob",
+        "lastName": "Marley",
+    },
+    {
+        "id": 3,
+        "firstName": "Megan",
+        "lastName": "Williams",
+    },
+    {
+        "id": 4,
+        "firstName": "Stephanie",
+        "lastName": "Brooks",
+    },
+    {
+        "id": 5,
+        "firstName": "John",
+        "lastName": "Hickman",
+    },
+    {
+        "id": 6,
+        "firstName": "Amanda",
+        "lastName": "Gardner",
+    },
+    {
+        "id": 7,
+        "firstName": "Stephanie",
+        "lastName": "Brooks",
+    },
+    {
+        "id": 8,
+        "firstName": "John",
+        "lastName": "Hickman",
+    },
+    {
+        "id": 9,
+        "firstName": "Amanda",
+        "lastName": "Gardner",
+    },
 ]
 
-function TeamModal({ modalState, setModalState, addTeam}) {
+function TeamModal(props) {
     const [title, setTitle] = useState("");
-    const [emoji, setEmoji] = useState("😁");
     const [users, setUsers] = useState([]);
-    const [emojiPicker, setEmojiPicker] = useState(false);
     const [selectedUsers, setSelectedUsers] = useState([]);
+
+    let modalRef = useRef();
 
     const handleTitleChange = (e) =>{
         setTitle(e.target.value);
     }
 
-    const onEmojiClick = (event, emojiObject) => {
-        setEmoji(emojiObject.emoji);
-        pickEmoji();
-    }
-
-    const pickEmoji = () => {
-        setEmojiPicker((emojiPicker) => !emojiPicker);
-    }
-
     const handleSelectUser = (event) => {
-        const userId = event.target.value;
-        console.log(userId);
+        // const userId = event.target.value;
 
-        if (!selectedUsers.includes(userId)) {
-            setSelectedUsers([...selectedUsers, userId]);
-        } else {
-            setSelectedUsers(
-                selectedUsers.filter((selectedUserId) => {
-                    return selectedUserId !== userId;
-                })
-            );
-        }
+        // if (!selectedUsers.includes(userId)) {
+        //     setSelectedUsers([...selectedUsers, userId]);
+        // } else {
+        //     setSelectedUsers(
+        //         selectedUsers.filter((selectedUserId) => {
+        //             return selectedUserId !== userId;
+        //         })
+        //     );
+        // }
     }
 
     const closeModal = () =>{
         setTitle("");
-        setEmoji("😁");
-        setModalState((modalState) => !modalState);
+        props.setModalState(false);
     }
 
     const handleAddButton = () => {
         const data = {
-            "icon": emoji,
+            "id": 13,
             "title": title,
-            "count": selectedUsers.length
         }
 
-        addTeam(data);
+        props.addTeam(data);
 
         closeModal();
     }
+    
+    useOuterClick(modalRef, closeModal);
 
-    // let emojiIcon = emoji? emoji: "😁";
-    let modalClass = "teamModal" + (modalState? "" : " hide");
+    let modalClass = "teamModal" + (props.modalState? "" : " hide");
 
     return (
         <div className={modalClass}>
-            <div className="teamModal__container" onPressOut={closeModal}>
+            <div ref={modalRef} className="teamModal__container" onPressOut={closeModal}>
                 <div className="teamModal__title">
                     Add Team
                 </div>
                 <div className="teamModal__block">
                     <div className="teamModal__input">
-                        <div className="teamModal__emoji">
-                            <span onClick={pickEmoji}>{emoji}</span>
-                            <div className={"teamModal__emoji-picker" + (emojiPicker?"":" hide")}>
-                                <Picker pickerStyle={{ width: '320px' }} disableSearchBar={true} disableSkinTonePicker={true} disableAutoFocus={true} onEmojiClick={onEmojiClick} />
-                            </div>
-                        </div>
                         <input type="text" value={title} placeholder='Team name' onChange={handleTitleChange}/>
                     </div>
-                    <ul className="teamModal__users">
+                    <div className="teamModal__users">
                         {people.map((user, i) => {
                             return(
-                                <li key={i} className="teamModal__users-item">
-                                    <input type="checkbox" value={i} onChange={handleSelectUser}/>
-                                    <div className="teamModal__users-name">
-                                        {user}
-                                    </div>
-                                    <div className="teamModal__users-name">
-                                        {user}
-                                    </div>
-                                </li>
+                                <User key={user.id} value={user.id} firstName={user.firstName} lastName={user.lastName} handleSelectUser={handleSelectUser}/>
                             )
                         })}
-                    </ul>
+                    </div>
                     <div className="teamModal__buttons">
                         <div className="teamModal__btn add_btn" onClick={handleAddButton}>Add</div>
                         <div className="teamModal__btn" onClick={closeModal} >Cancel</div>
