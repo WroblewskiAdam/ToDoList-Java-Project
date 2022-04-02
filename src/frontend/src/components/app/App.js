@@ -8,6 +8,7 @@ import FirstPage from '../pages/firstPage/FirstPage';
 import LoginPage from '../pages/loginPage/LoginPage';
 import SideBar from '../sideBar/SideBar';
 import TeamModal from '../teamModal/TeamModal';
+import TeamSideBar from '../teamSideBar/TeamSideBar';
 import Test from '../test/test';
 import './App.css';
 
@@ -17,7 +18,8 @@ function App() {
       {/* <Header/>
       <List/> */}
       <SideBar/>
-      <Groups/>
+      <TeamSideBar/>
+      {/* <Groups/> */}
       {/* <TeamModal/> */}
       {/* <Test/> */}
       {/* <LogIn/> */}
