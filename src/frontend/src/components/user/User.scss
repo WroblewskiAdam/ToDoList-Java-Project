@@ -1,0 +1,29 @@
+@import '../../style/variable';
+
+.user{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &__state{
+        &:hover{
+            cursor: pointer;
+        }
+        &::before{
+            opacity: 1;
+            visibility: visible;
+            width: 10px;
+            height: 10px;
+            content: "❌";
+            font-size: 18px;
+        }
+    }
+    &__name{
+        font-size: 18px;
+        color: $nickel;
+        margin: 0 auto;
+    }
+}
+
+.check_mark::before{
+    content: "✔️";
+}
