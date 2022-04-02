@@ -1,7 +1,7 @@
 import React from 'react';
 import "./TeamList.scss";
 import { useState, useEffect } from 'react';
-import TeamListItem from '../TeamList-item/TeamListItem';
+import TeamListItem from '../teamList-item/TeamListItem';
 import TeamModal from '../teamModal/TeamModal';
 
 function TeamList(props) {
@@ -21,7 +21,7 @@ function TeamList(props) {
             [
                 {
                     "icon": "😁",
-                    "title": "Fanny",
+                    "title": "Funny",
                     "count": 12
                 },
                 {
