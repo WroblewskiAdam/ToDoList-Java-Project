@@ -121,4 +121,15 @@ public class TaskService {
 
                 taskRepository.save(task);
         }
+
+        public void tickTask(Long task_id, Long app_user_id) {
+                Task task = taskRepository.getById(task_id);
+                List<Task> user_tasks = applicationUserService.getApplicationUserById(app_user_id).get().getTasks();
+                if(user_tasks.contains(task)) {
+                        boolean isTicked = task.getTicked();
+                        task.setTicked(!isTicked);
+                        taskRepository.save(task);
+
+                }
+        }
 }

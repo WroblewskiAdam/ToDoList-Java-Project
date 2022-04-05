@@ -34,6 +34,9 @@ public class Task {
     private LocalDateTime creationTime = LocalDateTime.now();
 
     @Column(nullable = false)
+    private Boolean ticked = false;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TaskPriority priority;
 
