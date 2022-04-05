@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -159,4 +160,11 @@ public class TaskController {
         return "redirect:/tasks/show_all";
     }
 
+    @GetMapping("/tasks/tick/{id}")
+    public String tickTask(@PathVariable Long id, @AuthenticationPrincipal ApplicationUser applicationUser, HttpServletRequest request) {
+        Long app_user_id = applicationUser.getId();
+        taskService.tickTask(id, app_user_id);
+        String referer = request.getHeader("Referer");
+        return "redirect:" + referer;
+    }
 }

@@ -96,6 +96,7 @@
             <td> Task Giver</td>
             <td> Task Receivers</td>
             <td> Team </td>
+            <td> Ticked </td>
             <td> Actions </td>
         </tr>
         </thead>
@@ -110,6 +111,8 @@
             <td th:text = "${task.getGiver()}"></td>
             <td th:text = "${task.getReceivers()}"></td>
             <td th:text = "${task.getTeam()}"></td>
+<!--            <td th:text = "${task.getTicked()}"></td>-->
+            <td><a th:href="@{/tasks/tick/{id}(id=${task.id})}" class="btn btn-secondary" th:text = "${task.getTicked()}"></a></td>
             <td>
                 <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn btn-primary"> Update </a>
                 <a th:href="@{/tasks/delete/{id}(id=${task.id})}" class="btn btn-danger"> Delete </a>
