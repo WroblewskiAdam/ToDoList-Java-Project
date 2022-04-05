@@ -1,31 +1,34 @@
-import BasicGroupListItem from '../basicGroupList-item/BasicGroupListItem';
-import BasicGroupList from '../basicGroupList/BasicGroupList';
-import Groups from '../groups/Groups';
-import Header from '../header/Header';
-import List from '../list/List';
+import {lazy, Suspense} from 'react'
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import LogIn from '../logIn/LogIn';
-import FirstPage from '../pages/firstPage/FirstPage';
-import LoginPage from '../pages/loginPage/LoginPage';
+import Registration from '../logIn/Registration';
 import SideBar from '../sideBar/SideBar';
-import TeamModal from '../teamModal/TeamModal';
-import TeamSideBar from '../teamSideBar/TeamSideBar';
-import Test from '../test/test';
+import Spinner from '../spinner/Spinner';
 import './App.css';
 
-function App() {
+const MainPage = lazy(() => import("../pages/mainPage"));
+
+const App = () => {
   return (
-    <div className="App">
-      {/* <Header/>
-      <List/> */}
-      <SideBar/>
-      <TeamSideBar/>
-      {/* <Groups/> */}
-      {/* <TeamModal/> */}
-      {/* <Test/> */}
-      {/* <LogIn/> */}
-      {/* <LoginPage/> */}
-      {/* <FirstPage/> */}
-    </div>
+    <Router>
+      <div className="App">
+        <main>
+          <Suspense fallback={<Spinner/>}>
+            <Switch>
+              <Route exact path="/">
+                <MainPage/>
+              </Route>
+              <Route exact path="/login">
+                <LogIn/>
+              </Route>
+              <Route exact path="/registration">
+                <Registration/>
+              </Route>
+            </Switch>
+          </Suspense>
+        </main>
+      </div>
+    </Router>
   );
 }
 

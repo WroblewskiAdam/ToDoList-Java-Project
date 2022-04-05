@@ -2,63 +2,32 @@
 
 .logIn{
     display: block;
-    position: relative;
-    margin: 30px auto;
-    &__header{
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        &-item{
-            font-size: 25px;
-            font-weight: 600;
-            padding: 10px 30px;
-            border-radius: 10px;
-            transition: 0.2s ease-in;
-            &:hover{
-                cursor: pointer;
-                background-color: $mediumSlateBlue;
-                color: $white-color;
-                transition: 0.2s ease-in;
-            }
-        }
-    }
-    &__body{
-        width: 500px;
-        margin-top: 50px;
-    }
-    &__wrapper{
-        transition: transform 1s;
-        transform-style: preserve-3d;
-        position: relative;
-    }
-    &__item{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        min-height: 550px;
-        padding: 35px 50px;
-        width: 100%;
-        position: absolute;
-        background: $mediumSlateBlue;
-        background-image: url("../../images/backgrounds/logIn_bg.svg");
-        background-repeat: no-repeat;
-        background-size:cover;
-        border-radius: 30px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        backface-visibility: hidden;
-        overflow: hidden;
-        backface-visibility: hidden;
-        &-back{
-            transform: rotateY(180deg);
-        }
-        &-title{
-            font-weight: 700;
-            font-size: 25px;
-            color: $white-color;
-            text-align: center;
-            transition: all 200ms linear;
-        }
+    position: absolute;
+    width: 500px;
+    margin-top: 50px;
+    background: $mediumSlateBlue;
+    background-image: url("../../images/backgrounds/logIn_bg.svg");
+    background-repeat: no-repeat;
+    background-size:cover;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    backface-visibility: hidden;
+    overflow: hidden;
+    backface-visibility: hidden;
+    min-height: 550px;
+    padding: 35px 50px;
+    left: 50%;
+    transform: translate(-50%, 10%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    &__title{
+        font-weight: 700;
+        font-size: 25px;
+        color: $white-color;
+        text-align: center;
+        transition: all 200ms linear;
     }
     &__form{
         margin-top: 20px;
