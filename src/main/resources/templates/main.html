@@ -1,0 +1,68 @@
+<!DOCTYPE>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title> ToDoList </title>
+    <meta name ="viewport" content ="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src ="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src ="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <style>
+        html, body, .row {
+            height: 100%;
+        }
+        .nav {
+            height: auto;
+        }
+
+    </style>
+</head>
+<body>
+<div class="row">
+    <div class="col-1 nav">
+        <nav class ="navbar bg-dark">
+            <ul class ="nav navbar-nav">
+                <li>-->
+                    <a class="nav-link active" aria-current="page" href="/edit/form" sec:authentication="principal.firstName"></a>
+                </li>
+                <li class="nav-item">-->
+                    <a class="nav-link active" aria-current="page" href="/home"> Home </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/teams/show_all"> Teams </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/users/showAll"> Users </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/logout"> Logout </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="col-2">
+        <div class =”container”>
+            <div class="private" >
+                <div class="d-grid gap-2">
+                    <a href="/teams/show_team_leader" aria-current="page" class=" btn btn-secondary btn-lg mt-5"> Private </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-9">
+        <div class =”container”>
+            <p> The vertical menu can place the left or right side of the web pages. <br> But the default vertical menu placed on the left side. </p>
+            <p> The vertical menu can place the left or right side of the web pages. <br> But the default vertical menu placed on the left side. </p>
+            <p> The vertical menu can place the left or right side of the web pages. <br> But the default vertical menu placed on the left side. </p>
+            <p> The vertical menu can place the left or right side of the web pages. <br> But the default vertical menu placed on the left side. </p>
+            <p> The vertical menu can place the left or right side of the web pages. <br> But the default vertical menu placed on the left side. </p>
+            <p> The vertical menu can place the left or right side of the web pages. <br> But the default vertical menu placed on the left side. </p>
+            <p> The vertical menu can place the left or right side of the web pages. <br> But the default vertical menu placed on the left side. </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

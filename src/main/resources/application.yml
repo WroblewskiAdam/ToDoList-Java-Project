@@ -3,25 +3,11 @@ server:
     include-message: always
     include-binding-errors: always
 
-#spring:
-#  datasource:
-#    password: Adamix123 # tutaj zmieńcie hasło
-#    url: jdbc:mysql://localhost:3306/crm # stwórzcie nowy scheme
-#    username: root
-#  jpa:
-#    hibernate:
-#      ddl-auto: update # jeśli nie chcecie automatycznego czyszczenia bazy danych to zmieńcie na update
-#    properties:
-#      hibernate:
-#        dialect: org.hibernate.dialect.MySQL5Dialect
-#        format_sql: true
-#    show-sql: true
-
 spring:
   datasource:
-    password: fgd6keNaYSsEe8vkuNiY # tutaj zmieńcie hasło
-    url: jdbc:mysql://bg5jygm3ykmkajimjq3a-mysql.services.clever-cloud.com:3306/bg5jygm3ykmkajimjq3a # stwórzcie nowy scheme
-    username: uorqmnlydokqtent
+    password: Adamix123 # tutaj zmieńcie hasło
+    url: jdbc:mysql://localhost:3306/crm # stwórzcie nowy scheme
+    username: root
   jpa:
     hibernate:
       ddl-auto: update # jeśli nie chcecie automatycznego czyszczenia bazy danych to zmieńcie na update
@@ -30,6 +16,20 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
         format_sql: true
     show-sql: true
+
+#spring:
+#  datasource:
+#    password: fgd6keNaYSsEe8vkuNiY # tutaj zmieńcie hasło
+#    url: jdbc:mysql://bg5jygm3ykmkajimjq3a-mysql.services.clever-cloud.com:3306/bg5jygm3ykmkajimjq3a # stwórzcie nowy scheme
+#    username: uorqmnlydokqtent
+#  jpa:
+#    hibernate:
+#      ddl-auto: update # jeśli nie chcecie automatycznego czyszczenia bazy danych to zmieńcie na update
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQL5Dialect
+#        format_sql: true
+#    show-sql: true
 
   mail:
     host: smtp.gmail.com
