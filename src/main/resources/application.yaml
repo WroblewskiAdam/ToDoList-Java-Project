@@ -1,0 +1,50 @@
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  datasource:
+    password: Atomuran92 # tutaj zmie?cie has?o
+    url: jdbc:mysql://localhost:3306/jwttest # stwórzcie nowy scheme
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update # je?li nie chcecie automatycznego czyszczenia bazy danych to zmie?cie na update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        format_sql: true
+    show-sql: true
+
+  #spring:
+  #  datasource:
+  #    password: fgd6keNaYSsEe8vkuNiY # tutaj zmie?cie has?o
+  #    url: jdbc:mysql://bg5jygm3ykmkajimjq3a-mysql.services.clever-cloud.com:3306/bg5jygm3ykmkajimjq3a # stwórzcie nowy scheme
+  #    username: uorqmnlydokqtent
+  #  jpa:
+  #    hibernate:
+  #      ddl-auto: update # je?li nie chcecie automatycznego czyszczenia bazy danych to zmie?cie na update
+  #    properties:
+  #      hibernate:
+  #        dialect: org.hibernate.dialect.MySQL5Dialect
+  #        format_sql: true
+  #    show-sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: crmpap111@gmail.com
+    password: sfmfidcscqondtjt
+
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
