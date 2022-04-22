@@ -6,7 +6,7 @@ server:
 spring:
   datasource:
     password: Atomuran92 # tutaj zmie?cie has?o
-    url: jdbc:mysql://localhost:3306/jwttest # stwórzcie nowy scheme
+    url: jdbc:mysql://localhost:3306/jwttest?useSSL=false # stwï¿½rzcie nowy scheme
     username: root
   jpa:
     hibernate:
@@ -20,7 +20,7 @@ spring:
   #spring:
   #  datasource:
   #    password: fgd6keNaYSsEe8vkuNiY # tutaj zmie?cie has?o
-  #    url: jdbc:mysql://bg5jygm3ykmkajimjq3a-mysql.services.clever-cloud.com:3306/bg5jygm3ykmkajimjq3a # stwórzcie nowy scheme
+  #    url: jdbc:mysql://bg5jygm3ykmkajimjq3a-mysql.services.clever-cloud.com:3306/bg5jygm3ykmkajimjq3a # stwï¿½rzcie nowy scheme
   #    username: uorqmnlydokqtent
   #  jpa:
   #    hibernate:

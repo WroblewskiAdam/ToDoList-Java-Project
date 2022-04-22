@@ -1,71 +1,81 @@
 package com.example.myBackend.controllers;
 
+
+import java.util.List;
+import javax.validation.Valid;
+
 import com.example.myBackend.enums.ApplicationUserRole;
-import com.example.myBackend.models.ApplicationUser;
-import com.example.myBackend.payload.AuthResponse;
-import com.example.myBackend.payload.LoginRequest;
-import com.example.myBackend.payload.SignUpRequest;
-import com.example.myBackend.repository.ApplicationUserRepository;
-import com.example.myBackend.security.jwt.JwtUnit;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.myBackend.models.ApplicationUser;
+import com.example.myBackend.payload.LoginRequest;
+import com.example.myBackend.payload.SignUpRequest;
+import com.example.myBackend.payload.AuthResponse;
+import com.example.myBackend.repository.ApplicationUserRepository;
+import com.example.myBackend.security.jwt.JwtUnit;
+import com.example.myBackend.services.ApplicationUserDetailsImplementation;
 
 @RestController
-@RequestMapping("/auth")
-@RequiredArgsConstructor
 @Slf4j
+@AllArgsConstructor
 public class AuthController {
-    @Autowired
-    private final AuthenticationManager authenticationManager;
-    @Autowired
-    private final ApplicationUserRepository applicationUserRepository;
-    @Autowired
-    PasswordEncoder encoder;
-    @Autowired
-    private final JwtUnit jwtUnit;
+  private final AuthenticationManager authenticationManager;
+  private final ApplicationUserRepository userRepository;
+  private final PasswordEncoder encoder;
+  private final JwtUnit jwtUtils;
 
-    @PostMapping("/registration")
-    public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest){
-        if(applicationUserRepository.existsByEmail(signUpRequest.getEmail())){
-            log.error("User not registred");
-            return ResponseEntity.badRequest().body("Error: User with this email already exist!");
-        }
+  @PostMapping("/api/auth/signin")
+  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
-        ApplicationUser applicationUser = new ApplicationUser(
-                signUpRequest.getFirstName(),
-                signUpRequest.getLastName(),
-                signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()),
-                signUpRequest.getImg(), ApplicationUserRole.USER);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    String jwt = jwtUtils.generateJwtToken(authentication);
 
-        applicationUserRepository.save(applicationUser);
-        log.info("User registred");
-        return ResponseEntity.ok("User successfully registred!)");
+    ApplicationUserDetailsImplementation userDetails = (ApplicationUserDetailsImplementation) authentication.getPrincipal();
+    String role = userDetails.getAuthorities().toString();
+
+    log.info("user logged :)");
+
+    return ResponseEntity.ok(
+            new AuthResponse(
+                    jwt,
+                    userDetails.getId(),
+                    userDetails.getEmail(),
+                    role
+            )
+    );
+  }
+
+  @PostMapping("/api/auth/signup")
+  public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+      return ResponseEntity.badRequest().body("Ups! Email is already in use :)");
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+    ApplicationUser user = new ApplicationUser(
+            signUpRequest.getFirstName(),
+            signUpRequest.getLastName(),
+            signUpRequest.getEmail(),
+            encoder.encode(signUpRequest.getPassword()),
+            signUpRequest.getImg(),
+            ApplicationUserRole.USER
+    );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUnit.createToken(authentication);
+    userRepository.save(user);
 
-//        ApplicationUser applicationUser = (ApplicationUser) authentication.getPrincipal();
-        log.info("User logined");
-        return ResponseEntity.ok(new AuthResponse(jwt));
+    return ResponseEntity.ok("User registered successfully!");
+  }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<ApplicationUser>>getUsers() {
+      return ResponseEntity.ok().body(userRepository.findAll());
     }
 }
