@@ -1,18 +1,18 @@
 import { useState, useRef } from 'react';
 import './LogIn.scss';
-import AuthService from '../../services/auth.service';
+import AuthService from '../../services/authService';
 import { useHistory } from "react-router-dom";
+import Spinner from '../spinner/Spinner';
+import ErrorMessage from '../errorMessage/ErrorMessage';
 
 const LogIn = (props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
-
-    const [error, setError] = useState();
-    const [show, setShow] = useState(true);
+    const [error, setError] = useState(false);
 
     const checkBtn = useRef();
+
     let history = useHistory();
 
     const handlePasswordChange = (e) => {
@@ -25,7 +25,6 @@ const LogIn = (props) => {
 
     const handleSubmitClick = (e) => {
         e.preventDefault();
-        setMessage("");
         setLoading(true);
 
         AuthService.login(email, password).then(
@@ -33,34 +32,34 @@ const LogIn = (props) => {
             history.push("/");
         },
         (error) => {
-            const resMessage =
-            (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-            error.message ||
-            error.toString();
             setLoading(false);
-            setMessage(resMessage);
+            setError(error);
         });
 
         setLoading(false);
     }
-    // const dispatch = useDispatch();
-    
-    // const validateUser = () => {
-    //     dispatch(authenticateUser(email, password))
-    //     .then((res) => {
-    //         console.log(res.data);
-    //         return props.history.push("/");
-    //     })
-    //     .catch((error) => {
-    //         console.log(error.message);
-    //         setShow(true);
-    //         setError("Invalid email or password");
-    //     });
-    // }
+
+    const spinner = loading ? <Spinner/> : null;
+    const errorMessage = error ? <ErrorMessage/> : null;
+    const content = !(loading || error) ? <View 
+                                            email={email} 
+                                            handleEmailChange={handleEmailChange} 
+                                            password={password}
+                                            handlePasswordChange={handlePasswordChange}
+                                            checkBtn={checkBtn}
+                                            handleSubmitClick={handleSubmitClick}/> : null;
 
     return (
+        <>
+            {spinner}
+            {errorMessage}
+            {content}
+        </>
+    );
+}
+
+const View = ({email, handleEmailChange, password, handlePasswordChange, checkBtn, handleSubmitClick}) => {
+    return(
         <div className='logIn'>
             <div className="logIn__title">Log In</div>
             <div className="logIn__form">
@@ -81,8 +80,6 @@ const LogIn = (props) => {
                 <div className="logIn__form-reset">Forgot your password?</div>
             </div>
         </div>
-    );
+    )
 }
-
-
 export default LogIn;
