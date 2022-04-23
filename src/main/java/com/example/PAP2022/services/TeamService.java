@@ -1,5 +1,6 @@
 package com.example.PAP2022.services;
 
+import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,11 +15,13 @@ public class TeamService {
 
     private TeamRepository teamRepository;
     private ApplicationUserDetailsServiceImplementation applicationUserService;
+    private ApplicationUserRepository applicationUserRepository;
 
     @Autowired
-    public TeamService(TeamRepository teamRepository, ApplicationUserDetailsServiceImplementation applicationUserService) {
+    public TeamService(TeamRepository teamRepository, ApplicationUserDetailsServiceImplementation applicationUserService, ApplicationUserRepository applicationUserRepository) {
         this.teamRepository = teamRepository;
         this.applicationUserService = applicationUserService;
+        this.applicationUserRepository = applicationUserRepository;
     }
 
     public Optional<Team> getTeamByName(String name) {
@@ -51,5 +54,48 @@ public class TeamService {
 
     public Team saveTeam(Team team){
         return teamRepository.save(team);
+    }
+
+    // need more test, but it is working
+    public Team addMember(Long teamId, Long memberId){
+//        if(teamRepository.findById(teamId).isPresent() && applicationUserRepository.findById(memberId).isPresent()){
+////            Team team = teamRepository.getById(teamId);
+////            ApplicationUser member = applicationUserService.getApplicationUserById(memberId);
+////
+////            team.addMemberToTeam(member);
+////
+////            return teamRepository.save(team);
+////        }
+////        else{
+////            return null;
+////        }
+        Team team = teamRepository.getById(teamId);
+        ApplicationUser member = applicationUserService.getApplicationUserById(memberId);
+
+        team.addMemberToTeam(member);
+
+        return teamRepository.save(team);
+    }
+
+    // dont work!!! dont try to run it
+    public Team deleteMember(Long teamId, Long memberId){
+        Team team = teamRepository.getById(teamId);
+        List<ApplicationUser> members = team.getTeamMembers();
+
+        int deleteIndex = -1;
+        for(int i = 0; i < members.size(); i++){
+            ApplicationUser member = members.get(i);
+            if(member.getId().equals(memberId)){
+                deleteIndex = i;
+                break;
+            }
+        }
+
+        if(deleteIndex >= 0){
+            members.remove(deleteIndex);
+            team.setTeamMembers(members);
+        }
+        teamRepository.save(team);
+        return team;
     }
 }

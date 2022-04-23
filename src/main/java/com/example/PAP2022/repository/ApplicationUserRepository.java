@@ -10,4 +10,5 @@ public interface ApplicationUserRepository extends JpaRepository<ApplicationUser
   Optional<ApplicationUser> findByEmail(String email);
   Boolean existsByEmail(String email);
   void deleteByEmail(String email);
+
 }

@@ -1,6 +1,7 @@
 package com.example.PAP2022.models;
 
 import com.example.PAP2022.models.ApplicationUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,6 +30,7 @@ public class Team {
     )
     private ApplicationUser teamLeader;
 
+    @JsonIgnore
     @ManyToMany()
     @JoinTable(
             name = "teams_users",
@@ -52,5 +54,9 @@ public class Team {
     @Override
     public String toString() {
         return name;
+    }
+
+    public void addMemberToTeam(ApplicationUser member){
+        this.teamMembers.add(member);
     }
 }

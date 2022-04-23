@@ -26,8 +26,8 @@ public class ApplicationUserDetailsServiceImplementation implements UserDetailsS
     return ApplicationUserDetailsImplementation.build(user);
   }
 
-  public Optional<ApplicationUser> getApplicationUserById(Long id) {
-    return applicationUserRepository.findById(id);
+  public ApplicationUser getApplicationUserById(Long id) {
+    return applicationUserRepository.findById(id).get();
   }
   public Optional<ApplicationUser> loadApplicationUserById(Long id) {
     return applicationUserRepository.findById(id);

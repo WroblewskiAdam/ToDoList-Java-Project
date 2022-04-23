@@ -2,6 +2,8 @@ package com.example.PAP2022.controllers;
 
 import com.example.PAP2022.models.ApplicationUser;
 import com.example.PAP2022.models.Team;
+import com.example.PAP2022.payload.TeamMemberRequest;
+import com.example.PAP2022.payload.TeamRequest;
 import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.security.jwt.JwtUnit;
 import com.example.PAP2022.services.ApplicationUserDetailsServiceImplementation;
@@ -40,20 +42,37 @@ public class TeamController {
 
     @GetMapping("/showMembers")
     public ResponseEntity<List<Team>> getTeamsMember(@RequestBody ApplicationUser applicationUser){
-        return ResponseEntity.ok().body(applicationUserService.getApplicationUserById(applicationUser.getId()).get().getTeams());
+        return ResponseEntity.ok().body(applicationUserService.getApplicationUserById(applicationUser.getId()).getTeams());
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Team> saveTeam(@RequestBody Team team){
+    public ResponseEntity<Team> saveTeam(@RequestBody TeamRequest request){
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/teams/save").toUriString());
-        return ResponseEntity.created(uri).body(teamService.saveTeam(team));
+        ApplicationUser leader = applicationUserService.getApplicationUserById(request.getTeamLeaderId());
+        return ResponseEntity.created(uri).body(teamService.saveTeam(new Team(
+                request.getName(),
+                leader
+        )));
     }
 
+    @PutMapping("/addMember")
+    public ResponseEntity<Team> addMember(@RequestBody TeamMemberRequest teamMemberRequest){
+        return ResponseEntity.ok().body(teamService.addMember(teamMemberRequest.getTeamId(), teamMemberRequest.getMemberId()));
+    }
+
+    // dont work!!! dont try to run it
+    @DeleteMapping("/deleteMember")
+    public ResponseEntity<Team> deleteMember(@RequestBody TeamMemberRequest teamMemberRequest){
+        return ResponseEntity.ok().body(teamService.deleteMember(teamMemberRequest.getTeamId(), teamMemberRequest.getMemberId()));
+    }
+
+    //not tested
     @GetMapping("/get")
     public ResponseEntity<?> getTeamById(@RequestBody Long id){
         return ResponseEntity.ok().body(teamService.getTeamById(id));
     }
 
+    //not tested
     @DeleteMapping("/delete")
     public ResponseEntity deleteTeamById(@RequestBody Long id){
         try{

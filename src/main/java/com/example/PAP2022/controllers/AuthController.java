@@ -22,6 +22,8 @@ import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.security.jwt.JwtUnit;
 import com.example.PAP2022.services.ApplicationUserDetailsImplementation;
 
+import java.util.List;
+
 @RestController
 @Slf4j
 @AllArgsConstructor
@@ -75,8 +77,8 @@ public class AuthController {
     return ResponseEntity.ok("User registered successfully!");
   }
 
-//    @GetMapping("/users")
-//    public ResponseEntity<List<ApplicationUser>>getUsers() {
-//      return ResponseEntity.ok().body(userRepository.findAll());
-//    }
+    @GetMapping("/users")
+    public ResponseEntity<List<ApplicationUser>>getUsers() {
+      return ResponseEntity.ok().body(userRepository.findAll());
+    }
 }
