@@ -16,4 +16,7 @@ public class TemplateController {
 
     @GetMapping("/home")
     public String home() { return "home"; }
+
+    @GetMapping("/main")
+    public String main() { return "main"; }
 }
