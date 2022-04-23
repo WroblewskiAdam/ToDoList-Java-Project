@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.PAP2022.models.ApplicationUser;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ApplicationUserDetailsServiceImplementation implements UserDetailsService {
@@ -22,5 +24,12 @@ public class ApplicationUserDetailsServiceImplementation implements UserDetailsS
         .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + email));
 
     return ApplicationUserDetailsImplementation.build(user);
+  }
+
+  public Optional<ApplicationUser> getApplicationUserById(Long id) {
+    return applicationUserRepository.findById(id);
+  }
+  public Optional<ApplicationUser> loadApplicationUserById(Long id) {
+    return applicationUserRepository.findById(id);
   }
 }

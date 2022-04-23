@@ -1,6 +1,9 @@
+import "./spinner.scss"
+
 const Spinner = () => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" style={{margin: '0 auto', background: 'none', display: 'block'}} width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+        <div className="spinner">
+            <svg xmlns="http://www.w3.org/2000/svg" style={{margin: 'auto', background: 'none', display: 'flex', alignItems: "center"}} width="300px" height="300px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
             <g transform="translate(80,50)">
             <g transform="rotate(0)">
             <circle cx="0" cy="0" r="7" fill="#1c4595" fillOpacity="1">
@@ -59,6 +62,7 @@ const Spinner = () => {
             </g>
             </g>
         </svg>
+        </div>
     )
 }
 

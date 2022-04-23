@@ -1,0 +1,9 @@
+.errorMessage{
+    position: absolute;
+    transform: translate(-50%, 70%);
+    left: 50%;
+    svg{
+        display: block;
+        margin: auto;
+    }
+}

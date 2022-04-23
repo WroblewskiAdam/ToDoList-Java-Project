@@ -29,7 +29,7 @@ const LogIn = (props) => {
 
         AuthService.login(email, password).then(
         () => {
-            history.push("/");
+            history.push("/home");
         },
         (error) => {
             setLoading(false);

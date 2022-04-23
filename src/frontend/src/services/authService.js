@@ -10,8 +10,8 @@ const login = (email, password) => {
     }
     )
     .then((res) => {
-        if(res.data.accessToken) {
-            localStorage.setItem("user", JSON.stringify(res.data));
+        if(res.data.token) {
+            localStorage.setItem("accessToken", JSON.stringify(res.data));
         }
         return res.data;
     });
@@ -28,20 +28,24 @@ const register = (firstName, lastName, email, password, img) => {
 };
 
 const logout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem("accessToken");
 };
 
 
 const getCurrentUser = () => {
-    return JSON.parse(localStorage.getItem("user"));
+    return JSON.parse(localStorage.getItem("accessToken"));
 };
 
+const getUserToken = () => {
+    return localStorage.getItem("accessToken");
+}
 
 const AuthService = {
     register,
     login,
     logout,
-    getCurrentUser
+    getCurrentUser,
+    getUserToken
 };
 
 

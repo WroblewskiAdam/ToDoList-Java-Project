@@ -1,8 +1,11 @@
 import img from './error.gif'
+import "./errorMessage.scss"
 
 const ErrorMessage = () => {
     return (
-        <img alt="errorImg" style={{margin: '0 auto', background: 'none', display: 'block', width: "250px", height:"250px", objectFit:'contain'}} src={img} />
+        <div className="errorMessage">
+            <img alt="errorImg" style={{margin: '0 auto', background: 'none', display: 'block', width: "300px", height:"300px", objectFit:'contain'}} src={img} />
+        </div>
     )
 }
 
