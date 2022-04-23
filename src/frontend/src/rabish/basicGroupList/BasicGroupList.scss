@@ -1,0 +1,41 @@
+@import '../../style/variable';
+
+.basicGroupList{
+    width: 300px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 30px;
+    border-radius: 30px;
+    overflow-y:auto;
+    scrollbar-width: none;
+    background-color: $white-color;
+    &::-webkit-scrollbar{
+        display: none;
+    }
+    // &::-webkit-scrollbar{
+    //     width: 3px;
+    //     height: 10px;
+    // }
+    // &::-webkit-scrollbar-track {
+    //     background-color: rgba(0,0,0,.1);
+    //     border-radius: 30px;
+    // }
+    // &::-webkit-scrollbar-thumb {
+    //     background-color: rgba(0,0,0,.1);
+    //     outline: 1px solid slategrey;
+    //     border-radius: 30px;
+    // }
+    &__title{
+        font-family: 'Noto Sans Display', sans-serif;
+        font-weight: 500;
+        margin-bottom: 10px;
+        font-size: 18px;
+        color: $nickel;
+    }
+    &__block{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        
+    }
+}

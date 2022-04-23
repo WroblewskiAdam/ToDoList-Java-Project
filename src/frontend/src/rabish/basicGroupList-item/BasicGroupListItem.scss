@@ -1,0 +1,64 @@
+@import '../../style/variable';
+
+.basicGroupItem{
+    width: 100%;
+    height: 30px;
+    padding: 0 20px;
+    background-color: $aliceBlue;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    &:hover{
+        background-color: $mediumSlateBlue;
+        cursor: pointer;
+        .basicGroupItem{
+            &__image{
+                svg{
+                    fill: $white-color;
+                }
+                span{
+                    color: $mediumSlateBlue;
+                }
+            }
+            &__title{
+                color: $white-color;
+            }
+            &__count{
+                color: $white-color;
+            }
+        }
+    }
+    &__image{
+        position: relative;
+        svg{
+            position: relative;
+            width: 20px;
+            height: 20px;
+            fill: $nickel
+        }
+        span{
+            position: absolute;
+            top: 30%;
+            left: 45%;
+            transform: translate(-50%, 0);
+            font-size: 12px;
+            color: $white-color;
+        }
+    }
+    &__title{
+        margin-left: 15px;
+        color: $nickel;
+        font-weight: 300;
+        font-size: 18px;
+        font-family: 'Noto Sans Display', sans-serif;
+    }
+    &__count{
+        color: $nickel;
+        font-size: 15px;
+    }
+    &__block{
+        display: flex;
+    }
+}
