@@ -4,18 +4,12 @@ import com.example.PAP2022.models.ApplicationUser;
 import com.example.PAP2022.models.Team;
 import com.example.PAP2022.payload.TeamMemberRequest;
 import com.example.PAP2022.payload.TeamRequest;
-import com.example.PAP2022.repository.ApplicationUserRepository;
-import com.example.PAP2022.security.jwt.JwtUnit;
 import com.example.PAP2022.services.ApplicationUserDetailsServiceImplementation;
 import com.example.PAP2022.services.TeamService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -35,14 +29,14 @@ public class TeamController {
         return ResponseEntity.ok().body(teamService.getAllTeams());
     }
 
-    @GetMapping("/showTeamLeaders")
-    public ResponseEntity<List<Team>> getTeamsTeamLeader(@RequestBody ApplicationUser applicationUser){
-      return ResponseEntity.ok().body(teamService.getTeamsTeamLeader(applicationUser));
+    @GetMapping("/getMembers")
+    public ResponseEntity<List<ApplicationUser>> getTeamMembers(@RequestParam Long teamId){
+        return ResponseEntity.ok().body(teamService.getTeamById(teamId).get().getTeamMembers());
     }
 
-    @GetMapping("/showMembers")
-    public ResponseEntity<List<Team>> getTeamsMember(@RequestBody ApplicationUser applicationUser){
-        return ResponseEntity.ok().body(applicationUserService.getApplicationUserById(applicationUser.getId()).getTeams());
+    @GetMapping("/getTeamLeader")
+    public ResponseEntity<ApplicationUser> getTeamLeader(@RequestParam Long teamId){
+        return ResponseEntity.ok().body(teamService.getTeamById(teamId).get().getTeamLeader());
     }
 
     @PostMapping("/save")
@@ -60,23 +54,29 @@ public class TeamController {
         return ResponseEntity.ok().body(teamService.addMember(teamMemberRequest.getTeamId(), teamMemberRequest.getMemberId()));
     }
 
-    // dont work!!! dont try to run it
+    //TODO zaimlementować metodę jaka na wejściu otrzymuję listę użytkowników i dodaje ich do teamu
+
+    @PutMapping("/addMembers")
+    public ResponseEntity<Team> addMembers(@RequestBody TeamMemberRequest teamMemberRequest){
+        return ResponseEntity.ok().body(teamService.addMember(teamMemberRequest.getTeamId(), teamMemberRequest.getMemberId()));
+    }
+
     @DeleteMapping("/deleteMember")
     public ResponseEntity<Team> deleteMember(@RequestBody TeamMemberRequest teamMemberRequest){
         return ResponseEntity.ok().body(teamService.deleteMember(teamMemberRequest.getTeamId(), teamMemberRequest.getMemberId()));
     }
 
-    //not tested
     @GetMapping("/get")
-    public ResponseEntity<?> getTeamById(@RequestBody Long id){
-        return ResponseEntity.ok().body(teamService.getTeamById(id));
+    public ResponseEntity<?> getTeamById(@RequestParam Long teamId){
+        log.info("{}", teamId);
+        return ResponseEntity.ok().body(teamService.getTeamById(teamId));
     }
 
     //not tested
     @DeleteMapping("/delete")
-    public ResponseEntity deleteTeamById(@RequestBody Long id){
+    public ResponseEntity deleteTeamById(@RequestParam Long teamId){
         try{
-            return ResponseEntity.ok(teamService.deleteTeamById(id));
+            return ResponseEntity.ok(teamService.deleteTeamById(teamId));
         } catch(Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }

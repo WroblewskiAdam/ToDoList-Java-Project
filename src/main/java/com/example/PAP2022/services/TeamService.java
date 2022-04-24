@@ -41,12 +41,6 @@ public class TeamService {
         return id;
     }
 
-//    public void saveTeam(Team team, ApplicationUser teamLeader){
-//        List<ApplicationUser> users = team.getTeamMembers();
-//        users.add(applicationUserService.loadApplicationUserById(teamLeader.getId()).get());
-//        team.setTeamMembers(users);
-//        teamRepository.save(team);
-//    }
 
     public List<Team> getTeamsTeamLeader(ApplicationUser teamLeader){
         return teamRepository.findTeamByTeamLeader(teamLeader);
@@ -56,7 +50,6 @@ public class TeamService {
         return teamRepository.save(team);
     }
 
-    // need more test, but it is working
     public Team addMember(Long teamId, Long memberId){
 //        if(teamRepository.findById(teamId).isPresent() && applicationUserRepository.findById(memberId).isPresent()){
 ////            Team team = teamRepository.getById(teamId);
@@ -77,7 +70,6 @@ public class TeamService {
         return teamRepository.save(team);
     }
 
-    // dont work!!! dont try to run it
     public Team deleteMember(Long teamId, Long memberId){
         Team team = teamRepository.getById(teamId);
         List<ApplicationUser> members = team.getTeamMembers();
@@ -95,7 +87,6 @@ public class TeamService {
             members.remove(deleteIndex);
             team.setTeamMembers(members);
         }
-        teamRepository.save(team);
-        return team;
+        return teamRepository.save(team);
     }
 }
