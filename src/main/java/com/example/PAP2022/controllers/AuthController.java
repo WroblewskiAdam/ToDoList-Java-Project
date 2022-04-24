@@ -76,9 +76,4 @@ public class AuthController {
 
     return ResponseEntity.ok("User registered successfully!");
   }
-
-    @GetMapping("/users")
-    public ResponseEntity<List<ApplicationUser>>getUsers() {
-      return ResponseEntity.ok().body(userRepository.findAll());
-    }
 }

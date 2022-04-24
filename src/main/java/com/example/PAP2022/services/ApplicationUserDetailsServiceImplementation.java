@@ -1,5 +1,7 @@
 package com.example.PAP2022.services;
 
+import com.example.PAP2022.models.Task;
+import com.example.PAP2022.models.Team;
 import com.example.PAP2022.repository.ApplicationUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.PAP2022.models.ApplicationUser;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,7 +32,25 @@ public class ApplicationUserDetailsServiceImplementation implements UserDetailsS
   public ApplicationUser getApplicationUserById(Long id) {
     return applicationUserRepository.findById(id).get();
   }
+
   public Optional<ApplicationUser> loadApplicationUserById(Long id) {
     return applicationUserRepository.findById(id);
+  }
+
+  public List<ApplicationUser> getAllUsers(){
+    return applicationUserRepository.findAll();
+  }
+
+  public List<Team> getAllTeams(Long id){
+    return applicationUserRepository.getById(id).getTeams();
+  }
+
+  public List<Task> getAllTasks(Long id){
+    return applicationUserRepository.getById(id).getTasks();
+  }
+
+  public Long deleteUser(Long id){
+    applicationUserRepository.deleteById(id);
+    return id;
   }
 }

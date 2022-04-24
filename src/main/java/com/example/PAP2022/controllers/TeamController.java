@@ -39,6 +39,11 @@ public class TeamController {
         return ResponseEntity.ok().body(teamService.getTeamById(teamId).get().getTeamLeader());
     }
 
+    @GetMapping("/get")
+    public ResponseEntity<?> getTeamById(@RequestParam Long teamId){
+        return ResponseEntity.ok().body(teamService.getTeamById(teamId));
+    }
+
     @PostMapping("/save")
     public ResponseEntity<Team> saveTeam(@RequestBody TeamRequest request){
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/teams/save").toUriString());
@@ -66,13 +71,6 @@ public class TeamController {
         return ResponseEntity.ok().body(teamService.deleteMember(teamMemberRequest.getTeamId(), teamMemberRequest.getMemberId()));
     }
 
-    @GetMapping("/get")
-    public ResponseEntity<?> getTeamById(@RequestParam Long teamId){
-        log.info("{}", teamId);
-        return ResponseEntity.ok().body(teamService.getTeamById(teamId));
-    }
-
-    //not tested
     @DeleteMapping("/delete")
     public ResponseEntity deleteTeamById(@RequestParam Long teamId){
         try{
