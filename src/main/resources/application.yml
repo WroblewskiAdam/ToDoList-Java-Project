@@ -5,36 +5,17 @@ server:
 
 spring:
   datasource:
-<<<<<<< HEAD
-    password: Atomuran92 # tutaj zmieńcie hasło
-    url: jdbc:mysql://localhost:3306/jwttest # stwórzcie nowy scheme
-=======
-    password: Adamix123 # tutaj zmieńcie hasło
-    url: jdbc:mysql://localhost:3306/crm # stwórzcie nowy scheme
->>>>>>> 3eb0ab86709d9a583ce9517ba570422f3117c0b2
+    password: papcrm123
+    url: jdbc:mysql://34.118.36.189/PAPCRM
     username: root
   jpa:
     hibernate:
-      ddl-auto: update # jeśli nie chcecie automatycznego czyszczenia bazy danych to zmieńcie na update
+      ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         format_sql: true
     show-sql: true
-
-#spring:
-#  datasource:
-#    password: fgd6keNaYSsEe8vkuNiY # tutaj zmieńcie hasło
-#    url: jdbc:mysql://bg5jygm3ykmkajimjq3a-mysql.services.clever-cloud.com:3306/bg5jygm3ykmkajimjq3a # stwórzcie nowy scheme
-#    username: uorqmnlydokqtent
-#  jpa:
-#    hibernate:
-#      ddl-auto: update # jeśli nie chcecie automatycznego czyszczenia bazy danych to zmieńcie na update
-#    properties:
-#      hibernate:
-#        dialect: org.hibernate.dialect.MySQL5Dialect
-#        format_sql: true
-#    show-sql: true
 
   mail:
     host: smtp.gmail.com
