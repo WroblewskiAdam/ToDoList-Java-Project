@@ -1,9 +1,12 @@
 package com.example.PAP2022.payload;
 
+import com.example.PAP2022.models.ApplicationUser;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -12,4 +15,5 @@ import lombok.Setter;
 public class TeamRequest {
     private String name;
     private Long teamLeaderId;
+    private List<Long> membersIds;
 }

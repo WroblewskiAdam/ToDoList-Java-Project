@@ -47,9 +47,10 @@ public class Team {
     )
     private List<Task> teamTasks;
 
-    public Team(String name, ApplicationUser teamLeader) {
+    public Team(String name, ApplicationUser teamLeader, List<ApplicationUser> teamMembers) {
         this.name = name;
         this.teamLeader = teamLeader;
+        this.teamMembers = teamMembers;
     }
 
     @Override

@@ -21,8 +21,8 @@ function TeamSideBar() {
         setModalState(true);
     }
 
-    const addTeam = (newTeam) => {
-        setTeam((teams) => [...teams, newTeam]);
+    const updateTeam = () => {
+        window.location.reload();
     }
 
     return (
@@ -52,7 +52,7 @@ function TeamSideBar() {
                 <TeamModal 
                     modalState={modalState}
                     setModalState={setModalState}
-                    addTeam={addTeam}
+                    updateTeam={updateTeam}
                 />
             </div>
         </div>

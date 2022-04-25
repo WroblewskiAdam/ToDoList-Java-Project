@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.PAP2022.models.ApplicationUser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,5 +54,15 @@ public class ApplicationUserDetailsServiceImplementation implements UserDetailsS
   public Long deleteUser(Long id){
     applicationUserRepository.deleteById(id);
     return id;
+  }
+
+  public List<ApplicationUser> getListUsersByIds(List<Long> membersIds){
+    List<ApplicationUser> teamMembers = new ArrayList<>();
+
+    for(Long id : membersIds){
+      teamMembers.add(applicationUserRepository.getById(id));
+    }
+
+    return teamMembers;
   }
 }

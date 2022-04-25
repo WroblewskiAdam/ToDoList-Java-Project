@@ -3,8 +3,8 @@ import authHeader from "./authHeader";
 const API_URL = "http://localhost:8080/user";
 
 
-const getAllUsers = () => {
-    return axios.get(API_URL + "/all", {headers: authHeader() });
+const getAllUsers = async () => {
+    return await axios.get(API_URL + "/all", {headers: authHeader() }).then(res => res.data).catch(error => console.log(error));
 }
 
 const getUser = () => {

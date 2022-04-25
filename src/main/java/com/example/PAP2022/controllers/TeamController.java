@@ -49,9 +49,12 @@ public class TeamController {
     public ResponseEntity<Team> saveTeam(@RequestBody TeamRequest request){
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/teams/save").toUriString());
         ApplicationUser leader = applicationUserService.getApplicationUserById(request.getTeamLeaderId());
+        List<ApplicationUser> teamMembers = applicationUserService.getListUsersByIds(request.getMembersIds());
+
         return ResponseEntity.created(uri).body(teamService.saveTeam(new Team(
                 request.getName(),
-                leader
+                leader,
+                teamMembers
         )));
     }
 

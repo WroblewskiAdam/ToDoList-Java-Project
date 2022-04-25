@@ -8,7 +8,7 @@ function User(props) {
 
     const handleStateClick = () => {
         setUserState((userState) => !userState);
-        props.handleSelectUser();
+        props.handleSelectUser(props.value);
     }
 
     let userStateClass = "user__state" + (userState ? "" : " check_mark");
