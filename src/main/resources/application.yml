@@ -19,15 +19,15 @@ server:
 
 spring:
   datasource:
-    password: fgd6keNaYSsEe8vkuNiY # tutaj zmieńcie hasło
-    url: jdbc:mysql://bg5jygm3ykmkajimjq3a-mysql.services.clever-cloud.com:3306/bg5jygm3ykmkajimjq3a # stwórzcie nowy scheme
-    username: uorqmnlydokqtent
+    password: papcrm123
+    url: jdbc:mysql://34.118.36.189/PAPCRM
+    username: root
   jpa:
     hibernate:
       ddl-auto: update # jeśli nie chcecie automatycznego czyszczenia bazy danych to zmieńcie na update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         format_sql: true
     show-sql: true
 
