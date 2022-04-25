@@ -1,6 +1,7 @@
 package com.example.PAP2022.models;
 
 import com.example.PAP2022.enums.ApplicationUserRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,12 +23,14 @@ public class ApplicationUser {
   private String password;
   private String img; // TODO trzeba ewentualnie zmienić typ
 
+  @JsonIgnore
   @ManyToMany(
           fetch = FetchType.LAZY,
           cascade = CascadeType.ALL,
           mappedBy = "teamMembers")
   private List<Team> teams;
 
+  @JsonIgnore
   @ManyToMany(
           fetch = FetchType.LAZY,
           cascade = CascadeType.ALL,

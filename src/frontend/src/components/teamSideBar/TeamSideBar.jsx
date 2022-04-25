@@ -3,41 +3,18 @@ import TeamItem from '../teamItem/TeamItem';
 import "./TeamSideBar.scss"
 import { useState, useEffect } from 'react';
 import TeamModal from '../teamModal/TeamModal';
+import image from "../../images/picture/team.png";
+import AppUserService from "../../services/appUserService";
 
-const team = [
-    {
-        id: 1,
-        title: "APA",
-        image: '../../images/picture/team.png'
-    },
-    {
-        id: 2,
-        title: "ANRO",
-        image: '../../images/picture/team.png'
-    },
-    {
-        id: 3,
-        title: "WF",
-        image: '../../images/picture/team.png'
-    },
-    {
-        id: 4,
-        title: "POBO",
-        image: '../../images/picture/team.png'
-    },
-    {
-        id: 5,
-        title: "STP",
-        image: '../../images/picture/team.png'
-    }
-]
 
-function TeamSideBar(props) {
+function TeamSideBar() {
     const [teams, setTeam] = useState([]);
     const [modalState, setModalState] = useState(false);
 
     useEffect(() => {
-        setTeam(team);
+        AppUserService.getTeams().then(res => {
+            setTeam(res);
+        });
     }, [])
 
     const handleAddTeamButton = () => {
@@ -67,7 +44,7 @@ function TeamSideBar(props) {
                     {
                         teams.map((item) => {
                             return (
-                                <TeamItem key={item.id} id={item.id} title={item.title} image={item.image} />
+                                <TeamItem key={item.id} id={item.id} title={item.name} image={image} />
                             )
                         })
                     }

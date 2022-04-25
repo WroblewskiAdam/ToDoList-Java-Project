@@ -1,6 +1,7 @@
 package com.example.PAP2022.models;
 
 import com.example.PAP2022.enums.TaskPriority;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,6 +40,7 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskPriority priority;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(
             nullable = false,
@@ -46,6 +48,7 @@ public class Task {
     )
     private ApplicationUser giver;
 
+    @JsonIgnore
     @ManyToMany()
     @JoinTable(
             name = "tasks_receivers",
@@ -54,6 +57,7 @@ public class Task {
     )
     private List<ApplicationUser> receivers;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(
             name = "team_id"

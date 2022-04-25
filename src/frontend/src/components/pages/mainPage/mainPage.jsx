@@ -4,16 +4,18 @@ import TeamSideBar from "../../teamSideBar/TeamSideBar"
 import "./mainPage.scss"
 import AuthService from "../../../services/authService";
 import { useHistory } from "react-router-dom";
+import AppUserService from "../../../services/appUserService";
 
 const MainPage = () => {
-    const [user, setUser] = useState(null);
+    const [userData, setUserData] = useState(null);
 
     let history = useHistory();
     
     useEffect(() =>{
         const user = AuthService.getCurrentUser();
         if(user){
-            setUser(user);
+            const data = AppUserService.getUser();
+            setUserData(data);
         }
         else{
             history.push("/");

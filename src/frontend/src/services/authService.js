@@ -29,6 +29,7 @@ const register = (firstName, lastName, email, password, img) => {
 
 const logout = () => {
     localStorage.removeItem("accessToken");
+    window.location.reload();
 };
 
 
