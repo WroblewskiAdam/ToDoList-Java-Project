@@ -44,6 +44,7 @@ public class TeamController {
         return ResponseEntity.ok().body(teamService.getTeamById(teamId));
     }
 
+    // TODO zabezpieczyć przed dodaniem teamu o takiej samej nazwie - czy potrzebne?
     @PostMapping("/save")
     public ResponseEntity<Team> saveTeam(@RequestBody TeamRequest request){
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/teams/save").toUriString());

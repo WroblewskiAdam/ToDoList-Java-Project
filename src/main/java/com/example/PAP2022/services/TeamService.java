@@ -9,6 +9,7 @@ import com.example.PAP2022.models.Team;
 import com.example.PAP2022.models.ApplicationUser;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TeamService {
@@ -41,11 +42,11 @@ public class TeamService {
         return id;
     }
 
-
     public List<Team> getTeamsTeamLeader(ApplicationUser teamLeader){
         return teamRepository.findTeamByTeamLeader(teamLeader);
     }
 
+    // TODO dodać automatyczne dodawanie teamleadera do members
     public Team saveTeam(Team team){
         return teamRepository.save(team);
     }
@@ -72,21 +73,11 @@ public class TeamService {
 
     public Team deleteMember(Long teamId, Long memberId){
         Team team = teamRepository.getById(teamId);
-        List<ApplicationUser> members = team.getTeamMembers();
+        List<ApplicationUser> filteredMembers = team.getTeamMembers().stream()
+                .filter(applicationUser -> applicationUser.getId() != memberId)
+                .collect(Collectors.toList());
+        team.setTeamMembers(filteredMembers);
 
-        int deleteIndex = -1;
-        for(int i = 0; i < members.size(); i++){
-            ApplicationUser member = members.get(i);
-            if(member.getId().equals(memberId)){
-                deleteIndex = i;
-                break;
-            }
-        }
-
-        if(deleteIndex >= 0){
-            members.remove(deleteIndex);
-            team.setTeamMembers(members);
-        }
         return teamRepository.save(team);
     }
 }

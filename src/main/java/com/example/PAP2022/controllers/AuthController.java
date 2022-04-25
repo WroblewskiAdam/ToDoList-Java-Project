@@ -20,9 +20,7 @@ import com.example.PAP2022.payload.SignUpRequest;
 import com.example.PAP2022.payload.AuthResponse;
 import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.security.jwt.JwtUnit;
-import com.example.PAP2022.services.ApplicationUserDetailsImplementation;
-
-import java.util.List;
+import com.example.PAP2022.enums.ApplicationUserDetailsImplementation;
 
 @RestController
 @Slf4j

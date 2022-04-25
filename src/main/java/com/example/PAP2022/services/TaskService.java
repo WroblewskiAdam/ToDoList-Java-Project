@@ -103,11 +103,12 @@ public class TaskService {
         // TODO do zastanowienia także sposób sortowania dla teamu - czy identyczny ?
         // TODO sortowanie względem priorytetów
 
-        public void deleteTask(Long id) {
+        public Long deleteTask(Long id) {
                 taskRepository.deleteById(id);
+                return id;
         }
 
-        public void saveTask(TaskRequest request){
+        public Task saveTask(TaskRequest request){
                 String date = request.getDeadline();
                 date = date + ":00.0";
                 LocalDateTime deadline = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME);
@@ -122,7 +123,7 @@ public class TaskService {
                         request.getTeam()
                 );
 
-                taskRepository.save(task);
+                return taskRepository.save(task);
         }
 
         public void tickTask(Long task_id, Long app_user_id) {

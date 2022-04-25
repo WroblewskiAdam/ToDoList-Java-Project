@@ -2,7 +2,7 @@ package com.example.PAP2022.security.jwt;
 
 import java.util.Date;
 
-import com.example.PAP2022.services.ApplicationUserDetailsImplementation;
+import com.example.PAP2022.enums.ApplicationUserDetailsImplementation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;

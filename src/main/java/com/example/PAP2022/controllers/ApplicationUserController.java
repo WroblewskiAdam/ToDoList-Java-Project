@@ -47,4 +47,7 @@ public class ApplicationUserController {
     public ResponseEntity deleteUser(@RequestParam Long id){
         return ResponseEntity.ok(applicationUserService.deleteUser(id));
     }
+
+    // TODO editUser
+
 }

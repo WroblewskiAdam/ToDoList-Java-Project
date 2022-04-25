@@ -1,4 +1,4 @@
-package com.example.PAP2022.services;
+package com.example.PAP2022.enums;
 
 import java.util.Collection;
 import java.util.Collections;
