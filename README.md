@@ -95,7 +95,7 @@ Zadania możemy podzielić według dwóch kryteriów:
 
 # Główne encje/klasy projektu:
 <div align="center">
-    <img src="readme_img/encje.png" alt="Widok strony głównej" width="600">
+    <img src="readme_img/Encje.png" alt="Widok strony głównej" width="600">
 </div>
 <br>
 Klasy te są automatycznie konwertowane przez Spring Boot na odpowiadające im tabele w bazie danych. Aby lepiej zwizualizować powiązania pomiędzy powyższymi encjami, pola typu danej encji są oznaczone tym samym kolorem co pole reprezentujące klasę.
