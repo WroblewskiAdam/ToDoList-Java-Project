@@ -2,56 +2,10 @@ import React, { useRef } from 'react';
 import { useState, useEffect} from 'react';
 import "./TeamModal.scss"
 import useOuterClick from '../../hooks/useClickOutside';
-import User from '../user/User';
+import Member from '../member/Member';
 import AppUserService from '../../services/appUserService';
 import TeamService from '../../services/teamService';
-// const people = [
-//     {
-//         "id": 1,
-//         "firstName": "Tom",
-//         "lastName": "Fire",
-//     },
-//     {
-//         "id": 2,
-//         "firstName": "Bob",
-//         "lastName": "Marley",
-//     },
-//     {
-//         "id": 3,
-//         "firstName": "Megan",
-//         "lastName": "Williams",
-//     },
-//     {
-//         "id": 4,
-//         "firstName": "Stephanie",
-//         "lastName": "Brooks",
-//     },
-//     {
-//         "id": 5,
-//         "firstName": "John",
-//         "lastName": "Hickman",
-//     },
-//     {
-//         "id": 6,
-//         "firstName": "Amanda",
-//         "lastName": "Gardner",
-//     },
-//     {
-//         "id": 7,
-//         "firstName": "Stephanie",
-//         "lastName": "Brooks",
-//     },
-//     {
-//         "id": 8,
-//         "firstName": "John",
-//         "lastName": "Hickman",
-//     },
-//     {
-//         "id": 9,
-//         "firstName": "Amanda",
-//         "lastName": "Gardner",
-//     },
-// ]
+
 
 function TeamModal(props) {
     const [title, setTitle] = useState("");
@@ -112,7 +66,7 @@ function TeamModal(props) {
                     <div className="teamModal__users">
                         {users.map((user, i) => {
                             return(
-                                <User key={user.id} value={user.id} firstName={user.firstName} lastName={user.lastName} handleSelectUser={handleSelectUser}/>
+                                <Member key={user.id} value={user.id} firstName={user.firstName} lastName={user.lastName} handleSelectUser={handleSelectUser}/>
                             )
                         })}
                     </div>

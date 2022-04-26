@@ -2,6 +2,7 @@ import React from 'react';
 import './FirstPage.scss'
 import { useHistory } from "react-router-dom";
 import { NavLink} from 'react-router-dom';
+import homeImage from "../../../images/backgrounds/20944361.jpg";
 
 function FirstPage(props) {
     let history = useHistory();
@@ -20,7 +21,7 @@ function FirstPage(props) {
                     </div>
                 </div>
                 <div className="firstPage__item">
-                    <img src={require("../../../images/backgrounds/20944361.jpg")} className="firstPage__image" alt="" />
+                    <img src={homeImage} className="firstPage__image" alt="" />
                 </div>
             </div>
         </div>

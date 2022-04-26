@@ -1,9 +1,9 @@
 import React from 'react';
-import './User.scss'
-import { useState, useEffect } from 'react';
+import './Member.scss'
+import { useState } from 'react';
 
 
-function User(props) {
+function Member(props) {
     const [userState, setUserState] = useState(props.state);
 
     const handleStateClick = () => {
@@ -22,4 +22,4 @@ function User(props) {
     );
 }
 
-export default User;
+export default Member;
