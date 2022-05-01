@@ -1,8 +1,12 @@
 package com.example.PAP2022.services;
 
+import com.example.PAP2022.exceptions.TeamNotFoundException;
+import com.example.PAP2022.exceptions.UserNotFoundException;
+import com.example.PAP2022.payload.TeamMemberRequest;
 import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.PAP2022.models.Team;
@@ -25,11 +29,7 @@ public class TeamService {
         this.applicationUserRepository = applicationUserRepository;
     }
 
-    public Optional<Team> getTeamByName(String name) {
-        return teamRepository.findTeamByName(name);
-    }
-
-    public Optional<Team> getTeamById(Long id) {
+    public Optional<Team> loadTeamById(Long id) {
         return teamRepository.findById(id);
     }
 
@@ -42,31 +42,12 @@ public class TeamService {
         return id;
     }
 
-    public List<Team> getTeamsTeamLeader(ApplicationUser teamLeader){
-        return teamRepository.findTeamByTeamLeader(teamLeader);
-    }
-
-    // TODO dodać automatyczne dodawanie teamleadera do members
     public Team saveTeam(Team team){
         return teamRepository.save(team);
     }
 
-    public Team addMember(Long teamId, Long memberId){
-//        if(teamRepository.findById(teamId).isPresent() && applicationUserRepository.findById(memberId).isPresent()){
-////            Team team = teamRepository.getById(teamId);
-////            ApplicationUser member = applicationUserService.getApplicationUserById(memberId);
-////
-////            team.addMemberToTeam(member);
-////
-////            return teamRepository.save(team);
-////        }
-////        else{
-////            return null;
-////        }
-        Team team = teamRepository.getById(teamId);
-        ApplicationUser member = applicationUserService.loadApplicationUserById(memberId).get();
-
-        team.addMemberToTeam(member);
+    public Team addMember(ApplicationUser applicationUser, Team team) {
+        team.addMemberToTeam(applicationUser);
 
         return teamRepository.save(team);
     }
@@ -79,5 +60,15 @@ public class TeamService {
         team.setTeamMembers(filteredMembers);
 
         return teamRepository.save(team);
+    }
+
+    public void teamRequestValidation(TeamMemberRequest teamMemberRequest) throws TeamNotFoundException, UserNotFoundException {
+        if (!loadTeamById(teamMemberRequest.getTeamId()).isPresent()) {
+            throw new TeamNotFoundException("Could not find team with ID " + teamMemberRequest.getTeamId());
+        }
+
+        if (!applicationUserService.loadApplicationUserById(teamMemberRequest.getMemberId()).isPresent()) {
+            throw new UserNotFoundException("Could not find user with ID " + teamMemberRequest.getMemberId());
+        }
     }
 }

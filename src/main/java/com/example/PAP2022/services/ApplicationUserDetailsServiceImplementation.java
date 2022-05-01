@@ -56,7 +56,7 @@ public class ApplicationUserDetailsServiceImplementation implements UserDetailsS
     return id;
   }
 
-  public List<ApplicationUser> getListUsersByIds(List<Long> membersIds){
+  public List<ApplicationUser> getUsersByIds(List<Long> membersIds){
     List<ApplicationUser> teamMembers = new ArrayList<>();
 
     for(Long id : membersIds){

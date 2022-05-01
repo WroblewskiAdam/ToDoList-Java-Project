@@ -28,7 +28,7 @@ public class ApplicationUserController {
     private final PasswordEncoder encoder;
 
     @GetMapping("/get")
-    public ResponseEntity getApplicationUser(@RequestParam Long id) {
+    public ResponseEntity<?> getApplicationUser(@RequestParam Long id) {
         if (applicationUserService.loadApplicationUserById(id).isPresent()) {
             return ResponseEntity.ok().body(applicationUserService.loadApplicationUserById(id).get());
         } else {
@@ -37,39 +37,39 @@ public class ApplicationUserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity getUsers() {
+    public ResponseEntity<?> getUsers() {
         return ResponseEntity.ok().body(applicationUserService.getAllUsers());
     }
 
     @GetMapping("/teams")
-    public ResponseEntity getAllTeams(@RequestParam Long id) {
+    public ResponseEntity<?> getAllTeams(@RequestParam Long id) {
         if (applicationUserService.loadApplicationUserById(id).isPresent()) {
             return ResponseEntity.ok().body(applicationUserService.getAllTeams(id));
         } else {
-            return ResponseEntity.badRequest().body(new UserNotFoundException("Could not find student with ID " + id).getMessage());
+            return ResponseEntity.badRequest().body(new UserNotFoundException("Could not find user with ID " + id).getMessage());
         }
     }
 
     @GetMapping("/tasks")
-    public ResponseEntity getAllTasks(@RequestParam Long id) {
+    public ResponseEntity<?> getAllTasks(@RequestParam Long id) {
         if (applicationUserService.loadApplicationUserById(id).isPresent()) {
             return ResponseEntity.ok().body(applicationUserService.getAllTasks(id));
         } else {
-            return ResponseEntity.badRequest().body(new UserNotFoundException("Could not find student with ID " + id).getMessage());
+            return ResponseEntity.badRequest().body(new UserNotFoundException("Could not find user with ID " + id).getMessage());
         }
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity deleteUser(@RequestParam Long id) {
+    public ResponseEntity<?> deleteUser(@RequestParam Long id) {
         if (applicationUserService.loadApplicationUserById(id).isPresent()) {
             return ResponseEntity.ok(applicationUserService.deleteUser(id));
         } else {
-            return ResponseEntity.badRequest().body(new UserNotFoundException("Could not find student with ID " + id).getMessage());
+            return ResponseEntity.badRequest().body(new UserNotFoundException("Could not find user with ID " + id).getMessage());
         }
     }
 
-    @PostMapping("/edit")
-    public ResponseEntity editUser(@RequestParam Long id, @RequestBody ApplicationUserRequest applicationUserRequest) {
+    @PutMapping("/edit")
+    public ResponseEntity<?> editUser(@RequestParam Long id, @RequestBody ApplicationUserRequest applicationUserRequest) {
         if (applicationUserService.loadApplicationUserById(id).isPresent()) {
             ApplicationUser applicationUser = applicationUserService
                     .loadApplicationUserById(id).get();
@@ -82,7 +82,7 @@ public class ApplicationUserController {
             return ResponseEntity.ok(applicationUserService.editApplicationUser(applicationUser));
         } else {
             return ResponseEntity.badRequest().body(
-                    new UserNotFoundException("Could not find student with email " + applicationUserRequest.getEmail())
+                    new UserNotFoundException("Could not find user with ID " + id)
                             .getMessage()
             );
         }
