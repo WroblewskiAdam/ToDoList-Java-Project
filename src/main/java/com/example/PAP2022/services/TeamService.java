@@ -64,7 +64,7 @@ public class TeamService {
 ////            return null;
 ////        }
         Team team = teamRepository.getById(teamId);
-        ApplicationUser member = applicationUserService.getApplicationUserById(memberId);
+        ApplicationUser member = applicationUserService.loadApplicationUserById(memberId).get();
 
         team.addMemberToTeam(member);
 

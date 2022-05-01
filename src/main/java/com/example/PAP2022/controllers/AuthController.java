@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.PAP2022.models.ApplicationUser;
 import com.example.PAP2022.payload.LoginRequest;
-import com.example.PAP2022.payload.SignUpRequest;
+import com.example.PAP2022.payload.ApplicationUserRequest;
 import com.example.PAP2022.payload.AuthResponse;
 import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.security.jwt.JwtUnit;
-import com.example.PAP2022.enums.ApplicationUserDetailsImplementation;
+import com.example.PAP2022.models.ApplicationUserDetailsImplementation;
 
 @RestController
 @Slf4j
@@ -56,7 +56,7 @@ public class AuthController {
   }
 
   @PostMapping("/registration")
-  public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+  public ResponseEntity<?> registerUser(@Valid @RequestBody ApplicationUserRequest signUpRequest) {
     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
       return ResponseEntity.badRequest().body("Ups! Email is already in use :)");
     }

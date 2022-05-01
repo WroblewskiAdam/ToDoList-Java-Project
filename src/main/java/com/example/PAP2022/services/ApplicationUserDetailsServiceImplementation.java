@@ -1,6 +1,6 @@
 package com.example.PAP2022.services;
 
-import com.example.PAP2022.enums.ApplicationUserDetailsImplementation;
+import com.example.PAP2022.models.ApplicationUserDetailsImplementation;
 import com.example.PAP2022.models.Task;
 import com.example.PAP2022.models.Team;
 import com.example.PAP2022.repository.ApplicationUserRepository;
@@ -31,10 +31,6 @@ public class ApplicationUserDetailsServiceImplementation implements UserDetailsS
     return ApplicationUserDetailsImplementation.build(user);
   }
 
-  public ApplicationUser getApplicationUserById(Long id) {
-    return applicationUserRepository.findById(id).get();
-  }
-
   public Optional<ApplicationUser> loadApplicationUserById(Long id) {
     return applicationUserRepository.findById(id);
   }
@@ -49,6 +45,10 @@ public class ApplicationUserDetailsServiceImplementation implements UserDetailsS
 
   public List<Task> getAllTasks(Long id){
     return applicationUserRepository.getById(id).getTasks();
+  }
+
+  public ApplicationUser editApplicationUser(ApplicationUser applicationUser) {
+      return applicationUserRepository.save(applicationUser);
   }
 
   public Long deleteUser(Long id){

@@ -48,8 +48,9 @@ public class TeamController {
     @PostMapping("/save")
     public ResponseEntity<Team> saveTeam(@RequestBody TeamRequest request){
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/teams/save").toUriString());
-        ApplicationUser leader = applicationUserService.getApplicationUserById(request.getTeamLeaderId());
+        ApplicationUser leader = applicationUserService.loadApplicationUserById(request.getTeamLeaderId()).get();
         List<ApplicationUser> teamMembers = applicationUserService.getListUsersByIds(request.getMembersIds());
+        teamMembers.add(leader);
 
         return ResponseEntity.created(uri).body(teamService.saveTeam(new Team(
                 request.getName(),
@@ -63,7 +64,7 @@ public class TeamController {
         return ResponseEntity.ok().body(teamService.addMember(teamMemberRequest.getTeamId(), teamMemberRequest.getMemberId()));
     }
 
-    //TODO zaimlementować metodę jaka na wejściu otrzymuję listę użytkowników i dodaje ich do teamu
+    //TODO zaimlementować metodę jaka na wejściu otrzymuje listę użytkowników i dodaje ich do teamu
 
     @PutMapping("/addMembers")
     public ResponseEntity<Team> addMembers(@RequestBody TeamMemberRequest teamMemberRequest){

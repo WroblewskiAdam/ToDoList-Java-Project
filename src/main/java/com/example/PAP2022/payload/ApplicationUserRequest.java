@@ -7,7 +7,7 @@ import javax.validation.constraints.*;
 
 @Getter
 @Setter
-public class SignUpRequest {
+public class ApplicationUserRequest {
   @NotBlank
   private String firstName;
 
