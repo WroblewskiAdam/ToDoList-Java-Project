@@ -1,5 +1,8 @@
 package com.example.PAP2022.controllers;
 
+import com.example.PAP2022.exceptions.TeamNotFoundException;
+import com.example.PAP2022.exceptions.UserExistsException;
+import com.example.PAP2022.exceptions.UserNotFoundException;
 import com.example.PAP2022.models.ApplicationUser;
 import com.example.PAP2022.models.Task;
 import com.example.PAP2022.models.Team;
@@ -25,37 +28,46 @@ public class TeamController {
     private final TeamService teamService;
     private final ApplicationUserDetailsServiceImplementation applicationUserService;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Team>> getAllTeams(){
-        return ResponseEntity.ok().body(teamService.getAllTeams());
+    @GetMapping("/get")
+    public ResponseEntity<?> getTeamById(@RequestParam Long teamId) {
+        if (teamService.loadTeamById(teamId).isPresent()) {
+            return ResponseEntity.ok().body(teamService.loadTeamById(teamId));
+        } else {
+            return ResponseEntity.badRequest().body(new TeamNotFoundException("Could not find team with ID " + teamId).getMessage());
+        }
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllTeams() { return ResponseEntity.ok().body(teamService.getAllTeams());}
+
     @GetMapping("/getMembers")
-    public ResponseEntity<List<ApplicationUser>> getTeamMembers(@RequestParam Long teamId){
-        return ResponseEntity.ok().body(teamService.getTeamById(teamId).get().getTeamMembers());
+    public ResponseEntity<?> getTeamMembers(@RequestParam Long teamId) {
+        if (teamService.loadTeamById(teamId).isPresent()) {
+            return ResponseEntity.ok().body(teamService.loadTeamById(teamId).get().getTeamMembers());
+        } else {
+            return ResponseEntity.badRequest().body(new TeamNotFoundException("Could not find team with ID " + teamId).getMessage());
+        }
     }
 
     @GetMapping("/getTeamLeader")
-    public ResponseEntity<ApplicationUser> getTeamLeader(@RequestParam Long teamId){
-        return ResponseEntity.ok().body(teamService.getTeamById(teamId).get().getTeamLeader());
+    public ResponseEntity<?> getTeamLeader(@RequestParam Long teamId) {
+        if (teamService.loadTeamById(teamId).isPresent()) {
+            return ResponseEntity.ok().body(teamService.loadTeamById(teamId).get().getTeamLeader());
+        } else {
+            return ResponseEntity.badRequest().body(new TeamNotFoundException("Could not find team with ID " + teamId).getMessage());
+        }
     }
 
-    @GetMapping("/get")
-    public ResponseEntity<?> getTeamById(@RequestParam Long teamId){
-        return ResponseEntity.ok().body(teamService.getTeamById(teamId));
-    }
-
-    @GetMapping("/getTasks")
-    public ResponseEntity<List<Task>> getTeamTasks(@RequestParam Long teamId){
-        return ResponseEntity.ok().body(teamService.getTeamTasks(teamId));
-    }
-
-    // TODO zabezpieczyć przed dodaniem teamu o takiej samej nazwie - czy potrzebne?
     @PostMapping("/save")
-    public ResponseEntity<Team> saveTeam(@RequestBody TeamRequest request){
+    public ResponseEntity<?> saveTeam(@RequestBody TeamRequest request) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/teams/save").toUriString());
-        ApplicationUser leader = applicationUserService.getApplicationUserById(request.getTeamLeaderId());
-        List<ApplicationUser> teamMembers = applicationUserService.getListUsersByIds(request.getMembersIds());
+        ApplicationUser leader = applicationUserService.loadApplicationUserById(request.getTeamLeaderId()).get();
+        List<ApplicationUser> teamMembers = applicationUserService.getUsersByIds(request.getMembersIds());
+//      TODO Jak ty widzisz zapisywanie zespołów, czy będziesz pokazywał userów bez teamleadera czy z teamleaderem?
+//          bo to co jest poniżej to tylko tak na chwilę jest zrobione
+        if (!teamMembers.contains(leader)) {
+            teamMembers.add(leader);
+        }
 
         return ResponseEntity.created(uri).body(teamService.saveTeam(new Team(
                 request.getName(),
@@ -65,33 +77,56 @@ public class TeamController {
     }
 
     @PutMapping("/addMember")
-    public ResponseEntity<Team> addMember(@RequestBody TeamMemberRequest teamMemberRequest){
-        return ResponseEntity.ok().body(teamService.addMember(teamMemberRequest.getTeamId(), teamMemberRequest.getMemberId()));
-    }
+    public ResponseEntity<?> addMember(@RequestBody TeamMemberRequest teamMemberRequest){
+        try {
+            teamService.teamRequestValidation(teamMemberRequest);
+            Team team = teamService.loadTeamById(teamMemberRequest.getTeamId()).get();
+            ApplicationUser applicationUser = applicationUserService.loadApplicationUserById(
+                    teamMemberRequest.getMemberId()).get();
 
-//    @PutMapping("/addTask")
-//    public ResponseEntity<Team> addTask(){
-//
-//    }
+            if (team.getTeamMembers().contains(applicationUser)) {
+                return ResponseEntity.badRequest().body(
+                        new UserExistsException(
+                                "User with ID " + teamMemberRequest.getMemberId() + " is already a member").getMessage());
+            }
 
-    //TODO zaimlementować metodę jaka na wejściu otrzymuję listę użytkowników i dodaje ich do teamu
+            return ResponseEntity.ok().body(teamService.addMember(applicationUser, team));
 
-    @PutMapping("/addMembers")
-    public ResponseEntity<Team> addMembers(@RequestBody TeamMemberRequest teamMemberRequest){
-        return ResponseEntity.ok().body(teamService.addMember(teamMemberRequest.getTeamId(), teamMemberRequest.getMemberId()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/deleteMember")
-    public ResponseEntity<Team> deleteMember(@RequestBody TeamMemberRequest teamMemberRequest){
-        return ResponseEntity.ok().body(teamService.deleteMember(teamMemberRequest.getTeamId(), teamMemberRequest.getMemberId()));
+    public ResponseEntity<?> deleteMember(@RequestBody TeamMemberRequest teamMemberRequest) {
+        try {
+            teamService.teamRequestValidation(teamMemberRequest);
+            Team team = teamService.loadTeamById(teamMemberRequest.getTeamId()).get();
+            ApplicationUser applicationUser = applicationUserService.loadApplicationUserById(
+                    teamMemberRequest.getMemberId()).get();
+
+            if (!team.getTeamMembers().contains(applicationUser)) {
+                return ResponseEntity.badRequest().body(
+                        new UserNotFoundException(
+                                "User with ID " + teamMemberRequest.getMemberId() + " is not a member").getMessage());
+            }
+
+            return ResponseEntity.ok().body(teamService.deleteMember(
+                            teamMemberRequest.getTeamId(), teamMemberRequest.getMemberId()));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity deleteTeamById(@RequestParam Long teamId){
-        try{
+    public ResponseEntity<?> deleteTeamById(@RequestParam Long teamId) {
+        if (teamService.loadTeamById(teamId).isPresent()) {
             return ResponseEntity.ok(teamService.deleteTeamById(teamId));
-        } catch(Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new TeamNotFoundException(
+                            "Could not find team with ID " + teamId).getMessage());
         }
     }
 }

@@ -33,52 +33,52 @@ public class TaskController {
 
     @GetMapping("/today")
     public ResponseEntity<List<Task>> getTodayTasks(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getTodayTasks(applicationUserService.getApplicationUserById(id)));
+        return ResponseEntity.ok().body(taskService.getTodayTasks(applicationUserService.loadApplicationUserById(id).get()));
     }
 
     @GetMapping("/today_given")
     public ResponseEntity<List<Task>> getTodayTasksGiven(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getTodayTasksGiven(applicationUserService.getApplicationUserById(id)));
+        return ResponseEntity.ok().body(taskService.getTodayTasksGiven(applicationUserService.loadApplicationUserById(id).get()));
     }
 
     @GetMapping("/seven_days")
     public ResponseEntity<List<Task>> getSevenDaysTasks(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getSevenDaysTasks(applicationUserService.getApplicationUserById(id)));
+        return ResponseEntity.ok().body(taskService.getSevenDaysTasks(applicationUserService.loadApplicationUserById(id).get()));
     }
 
     @GetMapping("/seven_days_given")
     public ResponseEntity<List<Task>> getSevenDaysTasksGiven(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getSevenDaysTasksGiven(applicationUserService.getApplicationUserById(id)));
+        return ResponseEntity.ok().body(taskService.getSevenDaysTasksGiven(applicationUserService.loadApplicationUserById(id).get()));
     }
 
     @GetMapping("/private")
     public ResponseEntity<List<Task>> getPrivateTasks(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getPrivateTasks(applicationUserService.getApplicationUserById(id)));
+        return ResponseEntity.ok().body(taskService.getPrivateTasks(applicationUserService.loadApplicationUserById(id).get()));
     }
 
     @GetMapping("/private_given")
     public ResponseEntity<List<Task>> getPrivateTasksGiven(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getPrivateTasksGiven(applicationUserService.getApplicationUserById(id)));
+        return ResponseEntity.ok().body(taskService.getPrivateTasksGiven(applicationUserService.loadApplicationUserById(id).get()));
     }
 
     @GetMapping("/received")
     public ResponseEntity<List<Task>> getReceivedTasks(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getReceivedTasks(applicationUserService.getApplicationUserById(id)));
+        return ResponseEntity.ok().body(taskService.getReceivedTasks(applicationUserService.loadApplicationUserById(id).get()));
     }
 
     @GetMapping("/given")
     public ResponseEntity<List<Task>> getGivenTasks(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getGivenTasks(applicationUserService.getApplicationUserById(id)));
+        return ResponseEntity.ok().body(taskService.getGivenTasks(applicationUserService.loadApplicationUserById(id).get()));
     }
 
     @GetMapping("/expired")
     public ResponseEntity<List<Task>> getExpiredTasks(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getExpiredTasks(applicationUserService.getApplicationUserById(id)));
+        return ResponseEntity.ok().body(taskService.getExpiredTasks(applicationUserService.loadApplicationUserById(id).get()));
     }
 
     @GetMapping("/expired_given")
     public ResponseEntity<List<Task>> getExpiredTasksGiven(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getExpiredTasksGiven(applicationUserService.getApplicationUserById(id)));
+        return ResponseEntity.ok().body(taskService.getExpiredTasksGiven(applicationUserService.loadApplicationUserById(id).get()));
     }
 
     // TODO Jak to widzicie?

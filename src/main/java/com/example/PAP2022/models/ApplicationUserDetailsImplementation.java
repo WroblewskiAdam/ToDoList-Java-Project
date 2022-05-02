@@ -1,4 +1,4 @@
-package com.example.PAP2022.enums;
+package com.example.PAP2022.models;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -6,7 +6,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.PAP2022.models.ApplicationUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ApplicationUserDetailsImplementation implements UserDetails {
