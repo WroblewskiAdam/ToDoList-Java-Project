@@ -30,35 +30,34 @@ const LogIn = (props) => {
         AuthService.login(email, password).then(
         () => {
             history.push("/home");
-        },
-        (error) => {
-            setLoading(false);
-            setError(error);
+        }).catch((error) => {
+            setError(true);
         });
 
         setLoading(false);
     }
 
     const spinner = loading ? <Spinner/> : null;
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const content = !(loading || error) ? <View 
+    const content = !(loading) ? <View 
                                             email={email} 
                                             handleEmailChange={handleEmailChange} 
                                             password={password}
                                             handlePasswordChange={handlePasswordChange}
                                             checkBtn={checkBtn}
-                                            handleSubmitClick={handleSubmitClick}/> : null;
+                                            handleSubmitClick={handleSubmitClick}
+                                            error={error}/> : null;
 
     return (
         <>
             {spinner}
-            {errorMessage}
             {content}
         </>
     );
 }
 
-const View = ({email, handleEmailChange, password, handlePasswordChange, checkBtn, handleSubmitClick}) => {
+const View = ({email, handleEmailChange, password, handlePasswordChange, checkBtn, handleSubmitClick, error}) => {
+    const errorMessage = error? <div className="logIn__error">Email or password is wrong :(</div> : null;
+    
     return(
         <div className='logIn'>
             <div className="logIn__title">Log In</div>
@@ -76,6 +75,7 @@ const View = ({email, handleEmailChange, password, handlePasswordChange, checkBt
                     </div>
                     <input type="password" name="password" value={password} className="logIn__form-input" placeholder="Your Password" onChange={handlePasswordChange}/>
                 </div>
+                {errorMessage}
                 <div className="logIn__form-submit" ref={checkBtn} onClick={handleSubmitClick}>Submit</div>
                 <div className="logIn__form-reset">Forgot your password?</div>
             </div>

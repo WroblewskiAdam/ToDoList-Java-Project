@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.PAP2022.models.Team;
 import com.example.PAP2022.models.ApplicationUser;
+import com.example.PAP2022.models.Task;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,17 +53,6 @@ public class TeamService {
     }
 
     public Team addMember(Long teamId, Long memberId){
-//        if(teamRepository.findById(teamId).isPresent() && applicationUserRepository.findById(memberId).isPresent()){
-////            Team team = teamRepository.getById(teamId);
-////            ApplicationUser member = applicationUserService.getApplicationUserById(memberId);
-////
-////            team.addMemberToTeam(member);
-////
-////            return teamRepository.save(team);
-////        }
-////        else{
-////            return null;
-////        }
         Team team = teamRepository.getById(teamId);
         ApplicationUser member = applicationUserService.getApplicationUserById(memberId);
 
@@ -77,6 +67,17 @@ public class TeamService {
                 .filter(applicationUser -> applicationUser.getId() != memberId)
                 .collect(Collectors.toList());
         team.setTeamMembers(filteredMembers);
+
+        return teamRepository.save(team);
+    }
+
+    public List<Task> getTeamTasks(Long teamId){
+        return teamRepository.findById(teamId).get().getTeamTasks();
+    }
+
+    public Team addTask(Long teamId, Task task){
+        Team team = teamRepository.getById(teamId);
+        team.addTaskToTeam(task);
 
         return teamRepository.save(team);
     }

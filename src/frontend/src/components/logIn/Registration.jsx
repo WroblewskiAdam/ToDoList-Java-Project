@@ -41,18 +41,16 @@ function Registration(props) {
         AuthService.register(firstName, lastName, email, password, image).then(
             () => {
                 history.push("/login");
-            },
-            (error) => {
-                setLoading(false);
-                setError(error);
-        });
+            }).catch((error) => {
+                // console.log(error.response.status);
+                setError(true);
+            });
     
         setLoading(false);
     }
 
     const spinner = loading ? <Spinner/> : null;
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const content = !(loading || error) ? <View
+    const content = !(loading) ? <View
                                         firstName={firstName}
                                         lastName={lastName}
                                         email={email}
@@ -63,12 +61,12 @@ function Registration(props) {
                                         handleEmailChange={handleEmailChange} 
                                         handlePasswordChange={handlePasswordChange}
                                         handleImageChange={handleImageChange}
-                                        handleSubmitClick={handleSubmitClick}/> : null;
+                                        handleSubmitClick={handleSubmitClick}
+                                        error={error}/> : null;
 
     return (
         <>
             {spinner}
-            {errorMessage}
             {content}
         </>
     );
@@ -86,8 +84,10 @@ const View = ({
     handlePasswordChange,
     handleEmailChange,
     handleImageChange,
-    handleSubmitClick
+    handleSubmitClick,
+    error
 }) => {
+    const errorMessage = error? <div className="logIn__error">Some input are empty, please fill them all!</div> : null;
     return(
         <div className='logIn'>
             <div className="logIn__title">Sign Up</div>
@@ -122,6 +122,7 @@ const View = ({
                     </div>
                     <input type="file" id="file" className="logIn__form-input" value={image} onChange={handleImageChange} accept='image/*'/>
                 </div>
+                {errorMessage}
                 <div className="logIn__form-submit" onClick={handleSubmitClick}>Submit</div>
                 <div className="logIn__form-reset">Forgot your password?</div>
             </div>

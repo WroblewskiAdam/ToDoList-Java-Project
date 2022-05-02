@@ -1,6 +1,7 @@
 package com.example.PAP2022.controllers;
 
 import com.example.PAP2022.models.ApplicationUser;
+import com.example.PAP2022.models.Task;
 import com.example.PAP2022.models.Team;
 import com.example.PAP2022.payload.TeamMemberRequest;
 import com.example.PAP2022.payload.TeamRequest;
@@ -44,6 +45,11 @@ public class TeamController {
         return ResponseEntity.ok().body(teamService.getTeamById(teamId));
     }
 
+    @GetMapping("/getTasks")
+    public ResponseEntity<List<Task>> getTeamTasks(@RequestParam Long teamId){
+        return ResponseEntity.ok().body(teamService.getTeamTasks(teamId));
+    }
+
     // TODO zabezpieczyć przed dodaniem teamu o takiej samej nazwie - czy potrzebne?
     @PostMapping("/save")
     public ResponseEntity<Team> saveTeam(@RequestBody TeamRequest request){
@@ -62,6 +68,11 @@ public class TeamController {
     public ResponseEntity<Team> addMember(@RequestBody TeamMemberRequest teamMemberRequest){
         return ResponseEntity.ok().body(teamService.addMember(teamMemberRequest.getTeamId(), teamMemberRequest.getMemberId()));
     }
+
+//    @PutMapping("/addTask")
+//    public ResponseEntity<Team> addTask(){
+//
+//    }
 
     //TODO zaimlementować metodę jaka na wejściu otrzymuję listę użytkowników i dodaje ich do teamu
 

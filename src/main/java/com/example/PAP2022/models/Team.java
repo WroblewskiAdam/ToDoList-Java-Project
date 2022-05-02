@@ -61,4 +61,7 @@ public class Team {
     public void addMemberToTeam(ApplicationUser member){
         this.teamMembers.add(member);
     }
+    public void addTaskToTeam(Task task){
+        this.teamTasks.add(task);
+    }
 }
