@@ -1,6 +1,10 @@
 package com.example.PAP2022.services;
 
+import com.example.PAP2022.exceptions.TaskNotFoundException;
+import com.example.PAP2022.exceptions.TeamNotFoundException;
+import com.example.PAP2022.exceptions.UserNotFoundException;
 import com.example.PAP2022.models.Task;
+import com.example.PAP2022.models.Team;
 import com.example.PAP2022.repository.TaskRepository;
 import com.example.PAP2022.models.ApplicationUser;
 import com.example.PAP2022.payload.TaskRequest;
@@ -10,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,11 +24,17 @@ public class TaskService {
 
         private TaskRepository taskRepository;
         private ApplicationUserDetailsServiceImplementation applicationUserService;
+        private TeamService teamService;
 
         @Autowired
-        public TaskService(TaskRepository taskRepository, ApplicationUserDetailsServiceImplementation applicationUserService) {
+        public TaskService(TaskRepository taskRepository, ApplicationUserDetailsServiceImplementation applicationUserService, TeamService teamService) {
                 this.taskRepository = taskRepository;
                 this.applicationUserService = applicationUserService;
+                this.teamService = teamService;
+        }
+
+        public Optional<Task> loadTaskById(Long taskId) {
+                return taskRepository.findById(taskId);
         }
 
         public List<Task> getAllTasks(){
@@ -30,49 +42,43 @@ public class TaskService {
         }
 
         public List<Task> getTodayTasks(ApplicationUser applicationUser) {
-                List<Task> tasks =  applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
+                return applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
                         .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(1)))
                         .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
                         .collect(Collectors.toList());
-                return tasks;
         }
 
         public List<Task> getTodayTasksGiven(ApplicationUser applicationUser) {
-                List<Task> tasks =  taskRepository.findByGiver(applicationUser).stream()
+                return taskRepository.findByGiver(applicationUser).stream()
                         .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(1)))
                         .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
                         .collect(Collectors.toList());
-                return tasks;
         }
 
         public List<Task> getSevenDaysTasks(ApplicationUser applicationUser) {
-                List<Task> tasks =  applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
+                return applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
                         .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(7)))
                         .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
                         .collect(Collectors.toList());
-                return tasks;
         }
 
         public List<Task> getSevenDaysTasksGiven(ApplicationUser applicationUser) {
-                List<Task> tasks =  taskRepository.findByGiver(applicationUser).stream()
+                return taskRepository.findByGiver(applicationUser).stream()
                         .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(7)))
                         .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
                         .collect(Collectors.toList());
-                return tasks;
         }
 
         public List<Task> getPrivateTasks(ApplicationUser applicationUser) {
-                List<Task> tasks =  applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
+                return applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
                         .filter(task -> task.getTeam() == null)
                         .collect(Collectors.toList());
-                return tasks;
         }
 
         public List<Task> getPrivateTasksGiven(ApplicationUser applicationUser) {
-                List<Task> tasks =  taskRepository.findByGiver(applicationUser).stream()
+                return taskRepository.findByGiver(applicationUser).stream()
                         .filter(task -> task.getTeam() == null)
                         .collect(Collectors.toList());
-                return tasks;
         }
 
         public List<Task> getReceivedTasks(ApplicationUser applicationUser) {
@@ -80,35 +86,58 @@ public class TaskService {
         }
 
         public List<Task> getGivenTasks(ApplicationUser applicationUser){
-                List<Task> tasks =  taskRepository.findByGiver(applicationUser);
-                return tasks;
+                return taskRepository.findByGiver(applicationUser);
         }
 
         public List<Task> getExpiredTasks(ApplicationUser applicationUser){
-                List<Task> tasks = applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
+                return applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
                         .filter(task -> task.getDeadline().isBefore(LocalDateTime.now()))
                         .collect(Collectors.toList());
-                return tasks;
         }
 
         public List<Task> getExpiredTasksGiven(ApplicationUser applicationUser){
-                List<Task> tasks =  taskRepository.findByGiver(applicationUser).stream()
+                return taskRepository.findByGiver(applicationUser).stream()
                         .filter(task -> task.getDeadline().isBefore(LocalDateTime.now()))
                         .collect(Collectors.toList());
-                return tasks;
         }
-
-        // TODO Czy można nakładać różne filtry np. today, given, yellow ?
-        // TODO trzeba się zastanowić jak robimy wykonanie zadania
-        // TODO do zastanowienia także sposób sortowania dla teamu - czy identyczny ?
-        // TODO sortowanie względem priorytetów
 
         public Long deleteTask(Long id) {
                 taskRepository.deleteById(id);
                 return id;
         }
 
-        public Task saveTask(TaskRequest request){
+        public Task saveTask(TaskRequest request) throws UserNotFoundException, TeamNotFoundException {
+                ApplicationUser giver;
+                List<ApplicationUser> receivers = new ArrayList<>();
+                Team team;
+
+                if (!applicationUserService.loadApplicationUserById(request.getGiverId()).isPresent()) {
+                        throw new UserNotFoundException("Could not find user with ID " + request.getGiverId());
+                } else {
+                        giver = applicationUserService.loadApplicationUserById(request.getGiverId()).get();
+                }
+
+                for (Long id: request.getReceiversIds()) {
+                        if (!applicationUserService.loadApplicationUserById(id).isPresent()) {
+                                throw new UserNotFoundException("Could not find user with ID " + request.getGiverId());
+                        } else {
+                                receivers.add(applicationUserService.loadApplicationUserById(id).get());
+                        }
+                }
+
+                if (!teamService.loadTeamById(request.getTeamId()).isPresent() && request.getTeamId() != 0) {
+                        throw new TeamNotFoundException("Could not find team with ID " + request.getTeamId());
+                } else {
+                        if (request.getTeamId() != 0) {
+                                team = teamService.loadTeamById(request.getTeamId()).get();
+                                if (receivers.isEmpty()) {
+                                        receivers.addAll(team.getTeamMembers());
+                                }
+                        } else {
+                                team = null;
+                        }
+                }
+
                 String date = request.getDeadline();
                 date = date + ":00.0";
                 LocalDateTime deadline = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME);
@@ -118,22 +147,32 @@ public class TaskService {
                         request.getDescription(),
                         deadline,
                         request.getPriority(),
-                        request.getGiver(),
-                        request.getReceivers(),
-                        request.getTeam()
+                        giver,
+                        receivers,
+                        team
                 );
 
                 return taskRepository.save(task);
         }
 
-        public void tickTask(Long task_id, Long app_user_id) {
-                Task task = taskRepository.getById(task_id);
-                List<Task> user_tasks = applicationUserService.loadApplicationUserById(app_user_id).get().getTasks();
-                if(user_tasks.contains(task)) {
-                        boolean isTicked = task.getTicked();
-                        task.setTicked(!isTicked);
-                        taskRepository.save(task);
-
+        public Task tickTask(Long taskId, Long userId) throws UserNotFoundException, TaskNotFoundException {
+                if (!applicationUserService.loadApplicationUserById(userId).isPresent()) {
+                        throw new UserNotFoundException("Could not find user with ID " + userId);
                 }
+
+                if (!loadTaskById(taskId).isPresent()) {
+                        throw new TaskNotFoundException("Could not find task with ID " + userId);
+                }
+
+                Task task = loadTaskById(taskId).get();
+                List<Task> userTasks = applicationUserService.loadApplicationUserById(userId).get().getTasks();
+
+                if(!userTasks.contains(task)) {
+                        throw new TaskNotFoundException("Could not find task with ID " + userId + " in your tasks");
+                }
+
+                boolean isTicked = task.getTicked();
+                task.setTicked(!isTicked);
+                return taskRepository.save(task);
         }
 }

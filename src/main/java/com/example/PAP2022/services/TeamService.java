@@ -53,6 +53,10 @@ public class TeamService {
         return teamRepository.save(team);
     }
 
+    public Team editTeam(Team team) {
+        return teamRepository.save(team);
+    }
+
     public Team deleteMember(Long teamId, Long memberId){
         Team team = teamRepository.getById(teamId);
         List<ApplicationUser> filteredMembers = team.getTeamMembers().stream()

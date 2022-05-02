@@ -10,8 +10,6 @@ import javax.persistence.Enumerated;
 import java.util.List;
 
 import com.example.PAP2022.enums.TaskPriority;
-import com.example.PAP2022.models.ApplicationUser;
-import com.example.PAP2022.models.Team;
 
 
 @Getter
@@ -24,8 +22,10 @@ public class TaskRequest {
     private String deadline;
     @Enumerated(EnumType.STRING)
     private TaskPriority priority;
-    private ApplicationUser giver;
-    private List<ApplicationUser> receivers;
-    private Team team;
+    private Long giverId;
+    private List<Long> receiversIds;
+//    jeśli team == 0 => zadanie nie jest przypisane do żadnego zespołu
+    private Long teamId;
 }
+
 

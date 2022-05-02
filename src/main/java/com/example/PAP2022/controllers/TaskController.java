@@ -1,6 +1,11 @@
 package com.example.PAP2022.controllers;
 
+import com.example.PAP2022.exceptions.TaskNotFoundException;
+import com.example.PAP2022.exceptions.TeamNotFoundException;
+import com.example.PAP2022.exceptions.UserNotFoundException;
+import com.example.PAP2022.models.ApplicationUser;
 import com.example.PAP2022.models.Task;
+import com.example.PAP2022.models.Team;
 import com.example.PAP2022.payload.TaskRequest;
 import com.example.PAP2022.services.ApplicationUserDetailsServiceImplementation;
 import com.example.PAP2022.services.TaskService;
@@ -24,98 +29,149 @@ public class TaskController {
 
     private final TaskService taskService;
     private final ApplicationUserDetailsServiceImplementation applicationUserService;
-    private final TeamService teamService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Task>> getAllTasks(){
+    public ResponseEntity<?> getAllTasks(){
         return ResponseEntity.ok().body(taskService.getAllTasks());
     }
 
     @GetMapping("/today")
-    public ResponseEntity<List<Task>> getTodayTasks(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getTodayTasks(applicationUserService.loadApplicationUserById(id).get()));
+    public ResponseEntity<?> getTodayTasks(@RequestParam Long id) {
+        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
+            return ResponseEntity.ok().body(
+                    taskService.getTodayTasks(applicationUserService.loadApplicationUserById(id).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
+        }
     }
 
     @GetMapping("/today_given")
-    public ResponseEntity<List<Task>> getTodayTasksGiven(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getTodayTasksGiven(applicationUserService.loadApplicationUserById(id).get()));
+    public ResponseEntity<?> getTodayTasksGiven(@RequestParam Long id) {
+        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
+            return ResponseEntity.ok().body(
+                    taskService.getTodayTasksGiven(applicationUserService.loadApplicationUserById(id).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
+        }
     }
 
     @GetMapping("/seven_days")
-    public ResponseEntity<List<Task>> getSevenDaysTasks(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getSevenDaysTasks(applicationUserService.loadApplicationUserById(id).get()));
+    public ResponseEntity<?> getSevenDaysTasks(@RequestParam Long id) {
+        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
+            return ResponseEntity.ok().body(
+                    taskService.getSevenDaysTasks(applicationUserService.loadApplicationUserById(id).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
+        }
     }
 
     @GetMapping("/seven_days_given")
-    public ResponseEntity<List<Task>> getSevenDaysTasksGiven(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getSevenDaysTasksGiven(applicationUserService.loadApplicationUserById(id).get()));
+    public ResponseEntity<?>getSevenDaysTasksGiven(@RequestParam Long id) {
+        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
+            return ResponseEntity.ok().body(
+                    taskService.getSevenDaysTasksGiven(applicationUserService.loadApplicationUserById(id).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
+        }
     }
 
     @GetMapping("/private")
-    public ResponseEntity<List<Task>> getPrivateTasks(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getPrivateTasks(applicationUserService.loadApplicationUserById(id).get()));
+    public ResponseEntity<?> getPrivateTasks(@RequestParam Long id) {
+        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
+            return ResponseEntity.ok().body(
+                    taskService.getPrivateTasks(applicationUserService.loadApplicationUserById(id).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
+        }
     }
 
     @GetMapping("/private_given")
-    public ResponseEntity<List<Task>> getPrivateTasksGiven(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getPrivateTasksGiven(applicationUserService.loadApplicationUserById(id).get()));
+    public ResponseEntity<?> getPrivateTasksGiven(@RequestParam Long id) {
+        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
+            return ResponseEntity.ok().body(
+                    taskService.getPrivateTasksGiven(applicationUserService.loadApplicationUserById(id).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
+        }
     }
 
     @GetMapping("/received")
-    public ResponseEntity<List<Task>> getReceivedTasks(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getReceivedTasks(applicationUserService.loadApplicationUserById(id).get()));
+    public ResponseEntity<?> getReceivedTasks(@RequestParam Long id) {
+        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
+            return ResponseEntity.ok().body(
+                    taskService.getReceivedTasks(applicationUserService.loadApplicationUserById(id).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
+        }
     }
 
     @GetMapping("/given")
-    public ResponseEntity<List<Task>> getGivenTasks(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getGivenTasks(applicationUserService.loadApplicationUserById(id).get()));
+    public ResponseEntity<?> getGivenTasks(@RequestParam Long id) {
+        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
+            return ResponseEntity.ok().body(
+                    taskService.getGivenTasks(applicationUserService.loadApplicationUserById(id).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
+        }
     }
 
     @GetMapping("/expired")
-    public ResponseEntity<List<Task>> getExpiredTasks(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getExpiredTasks(applicationUserService.loadApplicationUserById(id).get()));
+    public ResponseEntity<?> getExpiredTasks(@RequestParam Long id) {
+        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
+            return ResponseEntity.ok().body(
+                    taskService.getExpiredTasks(applicationUserService.loadApplicationUserById(id).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
+        }
     }
 
     @GetMapping("/expired_given")
-    public ResponseEntity<List<Task>> getExpiredTasksGiven(@RequestParam Long id) {
-        return ResponseEntity.ok().body(taskService.getExpiredTasksGiven(applicationUserService.loadApplicationUserById(id).get()));
+    public ResponseEntity<?> getExpiredTasksGiven(@RequestParam Long id) {
+        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
+            return ResponseEntity.ok().body(
+                    taskService.getExpiredTasksGiven(applicationUserService.loadApplicationUserById(id).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
+        }
     }
-
-    // TODO Jak to widzicie?
-
-//    @GetMapping("/addTasks")
-//    public String createTask(Model model){
-//        TaskRequest taskRequest = new TaskRequest();
-//        List<ApplicationUser> users = applicationUserService.getAllApplicationUsers();
-//        List<Team> teams = teamService.getAllTeams();
-//        model.addAttribute("taskRequest", taskRequest);
-//        model.addAttribute("users", users);
-//        model.addAttribute("teams", teams);
-//        return "create_task";
-//    }
 
     @PostMapping("/save")
-    public ResponseEntity saveTask(@RequestBody TaskRequest request) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/tasks/save").toUriString());
-        return ResponseEntity.created(uri).body(taskService.saveTask(request));
-    }
-
-    @GetMapping("/delete/{id}")
-    public ResponseEntity deleteTask(@RequestParam("id") Long id){
-        try{
-            return ResponseEntity.ok().body(taskService.deleteTask(id));
-        } catch(Exception e){
+    public ResponseEntity<?> saveTask(@RequestBody TaskRequest request) {
+        try {
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/tasks/save").toUriString());
+            return ResponseEntity.created(uri).body(taskService.saveTask(request));
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    // TODO Jak to przerobić
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteTask(@RequestParam Long taskId){
+        if (taskService.loadTaskById(taskId).isPresent()) {
+            return ResponseEntity.ok().body(taskService.deleteTask(taskId));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new TaskNotFoundException(
+                            "Could not find task with ID " + taskId).getMessage());
+        }
+    }
 
-//    @GetMapping("/tasks/tick/{id}")
-//    public String tickTask(@PathVariable Long id, @AuthenticationPrincipal ApplicationUser applicationUser, HttpServletRequest request) {
-//        Long app_user_id = applicationUser.getId();
-//        taskService.tickTask(id, app_user_id);
-//        String referer = request.getHeader("Referer");
-//        return "redirect:" + referer;
-//    }
+    @PutMapping("/tick")
+    public ResponseEntity<?> tickTask(@RequestParam Long taskId, @RequestParam Long userId) {
+        try {
+            return ResponseEntity.ok().body(taskService.tickTask(taskId, userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

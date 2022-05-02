@@ -6,6 +6,7 @@ import com.example.PAP2022.exceptions.UserNotFoundException;
 import com.example.PAP2022.models.ApplicationUser;
 import com.example.PAP2022.models.Task;
 import com.example.PAP2022.models.Team;
+import com.example.PAP2022.payload.ApplicationUserRequest;
 import com.example.PAP2022.payload.TeamMemberRequest;
 import com.example.PAP2022.payload.TeamRequest;
 import com.example.PAP2022.services.ApplicationUserDetailsServiceImplementation;
@@ -33,7 +34,8 @@ public class TeamController {
         if (teamService.loadTeamById(teamId).isPresent()) {
             return ResponseEntity.ok().body(teamService.loadTeamById(teamId));
         } else {
-            return ResponseEntity.badRequest().body(new TeamNotFoundException("Could not find team with ID " + teamId).getMessage());
+            return ResponseEntity.badRequest().body(
+                    new TeamNotFoundException("Could not find team with ID " + teamId).getMessage());
         }
     }
 
@@ -45,7 +47,8 @@ public class TeamController {
         if (teamService.loadTeamById(teamId).isPresent()) {
             return ResponseEntity.ok().body(teamService.loadTeamById(teamId).get().getTeamMembers());
         } else {
-            return ResponseEntity.badRequest().body(new TeamNotFoundException("Could not find team with ID " + teamId).getMessage());
+            return ResponseEntity.badRequest().body(
+                    new TeamNotFoundException("Could not find team with ID " + teamId).getMessage());
         }
     }
 
@@ -54,7 +57,8 @@ public class TeamController {
         if (teamService.loadTeamById(teamId).isPresent()) {
             return ResponseEntity.ok().body(teamService.loadTeamById(teamId).get().getTeamLeader());
         } else {
-            return ResponseEntity.badRequest().body(new TeamNotFoundException("Could not find team with ID " + teamId).getMessage());
+            return ResponseEntity.badRequest().body(
+                    new TeamNotFoundException("Could not find team with ID " + teamId).getMessage());
         }
     }
 
@@ -74,6 +78,30 @@ public class TeamController {
                 leader,
                 teamMembers
         )));
+    }
+
+    @PutMapping("/edit")
+    public ResponseEntity<?> editTeam(@RequestParam Long teamId, @RequestBody TeamRequest teamRequest) {
+        if (!applicationUserService.loadApplicationUserById(teamRequest.getTeamLeaderId()).isPresent()) {
+            return ResponseEntity.badRequest().body(
+                    new UserNotFoundException("Could not find user with ID " + teamRequest.getTeamLeaderId())
+                            .getMessage()
+            );
+        }
+
+        if (teamService.loadTeamById(teamId).isPresent()) {
+            Team team = teamService.loadTeamById(teamId).get();
+
+            team.setName(teamRequest.getName());
+            team.setTeamLeader(applicationUserService.loadApplicationUserById(teamRequest.getTeamLeaderId()).get());
+
+            return ResponseEntity.ok(teamService.editTeam(team));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new TeamNotFoundException("Could not find team with ID " + teamId)
+                            .getMessage()
+            );
+        }
     }
 
     @PutMapping("/addMember")
