@@ -1,10 +1,10 @@
 package com.example.PAP2022.services;
 
-import com.example.PAP2022.exceptions.TaskNotFoundException;
-import com.example.PAP2022.exceptions.TeamNotFoundException;
-import com.example.PAP2022.exceptions.UserNotFoundException;
+import com.example.PAP2022.enums.TaskPriority;
+import com.example.PAP2022.exceptions.*;
 import com.example.PAP2022.models.Task;
 import com.example.PAP2022.models.Team;
+import com.example.PAP2022.payload.TeamRequest;
 import com.example.PAP2022.repository.TaskRepository;
 import com.example.PAP2022.models.ApplicationUser;
 import com.example.PAP2022.payload.TaskRequest;
@@ -106,9 +106,63 @@ public class TaskService {
                 return id;
         }
 
-        public Task saveTask(TaskRequest request) throws UserNotFoundException, TeamNotFoundException {
-                ApplicationUser giver;
+        public LocalDateTime convertDeadline(String deadlineString) throws InvalidDeadlineFormatException, InvalidDeadlineDateException {
+                LocalDateTime deadline;
+
+                // TODO zastanowić się jak ogarnąć rzucanie wyjątku gdy format jest zły
+                deadlineString = deadlineString + ":00.0";
+                deadline = LocalDateTime.parse(deadlineString, DateTimeFormatter.ISO_DATE_TIME);
+
+                if (deadline.isBefore(LocalDateTime.now())){
+                        throw new InvalidDeadlineDateException("Cannot determine the deadline in the past ");
+                }
+
+                return deadline;
+        }
+
+        public List<ApplicationUser> getReceivers(List<Long> receiversIds) throws UserNotFoundException {
                 List<ApplicationUser> receivers = new ArrayList<>();
+                for (Long id: receiversIds) {
+                        if (!applicationUserService.loadApplicationUserById(id).isPresent()) {
+                                throw new UserNotFoundException("Could not find user with ID " + id);
+                        } else {
+                                receivers.add(applicationUserService.loadApplicationUserById(id).get());
+                        }
+                }
+
+                return receivers;
+        }
+
+        public Task editTask(Long taskId, TaskRequest taskRequest) throws
+                UserNotFoundException,
+                TaskNotFoundException,
+                InvalidDeadlineFormatException,
+                InvalidDeadlineDateException,
+                InvalidTaskPriorityException {
+
+                if (loadTaskById(taskId).isPresent()) {
+                        Task task = loadTaskById(taskId).get();
+                        task.setTitle(taskRequest.getTitle());
+                        task.setDescription(taskRequest.getDescription());
+                        task.setDeadline(convertDeadline(taskRequest.getDeadline()));
+                        task.setPriority(TaskPriority.parse(taskRequest.getPriority()));
+                        task.setReceivers(getReceivers(taskRequest.getReceiversIds()));
+
+                        return taskRepository.save(task);
+
+                } else {
+                        throw new TaskNotFoundException("Could not find task with ID " + taskId);
+                }
+
+        }
+
+        public Task saveTask(TaskRequest request) throws
+                UserNotFoundException,
+                TeamNotFoundException,
+                InvalidDeadlineFormatException,
+                InvalidDeadlineDateException, InvalidTaskPriorityException {
+
+                ApplicationUser giver;
                 Team team;
 
                 if (!applicationUserService.loadApplicationUserById(request.getGiverId()).isPresent()) {
@@ -117,13 +171,9 @@ public class TaskService {
                         giver = applicationUserService.loadApplicationUserById(request.getGiverId()).get();
                 }
 
-                for (Long id: request.getReceiversIds()) {
-                        if (!applicationUserService.loadApplicationUserById(id).isPresent()) {
-                                throw new UserNotFoundException("Could not find user with ID " + request.getGiverId());
-                        } else {
-                                receivers.add(applicationUserService.loadApplicationUserById(id).get());
-                        }
-                }
+                LocalDateTime deadline = convertDeadline(request.getDeadline());
+
+                List<ApplicationUser> receivers = getReceivers(request.getReceiversIds());
 
                 if (!teamService.loadTeamById(request.getTeamId()).isPresent() && request.getTeamId() != 0) {
                         throw new TeamNotFoundException("Could not find team with ID " + request.getTeamId());
@@ -138,15 +188,11 @@ public class TaskService {
                         }
                 }
 
-                String date = request.getDeadline();
-                date = date + ":00.0";
-                LocalDateTime deadline = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME);
-
                 Task task = new Task(
                         request.getTitle(),
                         request.getDescription(),
                         deadline,
-                        request.getPriority(),
+                        TaskPriority.parse(request.getPriority()),
                         giver,
                         receivers,
                         team

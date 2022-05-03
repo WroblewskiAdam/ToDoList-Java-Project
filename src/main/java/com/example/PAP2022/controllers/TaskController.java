@@ -7,6 +7,7 @@ import com.example.PAP2022.models.ApplicationUser;
 import com.example.PAP2022.models.Task;
 import com.example.PAP2022.models.Team;
 import com.example.PAP2022.payload.TaskRequest;
+import com.example.PAP2022.payload.TeamRequest;
 import com.example.PAP2022.services.ApplicationUserDetailsServiceImplementation;
 import com.example.PAP2022.services.TaskService;
 import com.example.PAP2022.services.TeamService;
@@ -142,6 +143,15 @@ public class TaskController {
         } else {
             return ResponseEntity.badRequest().body(
                     new UserNotFoundException("Could not find user with ID " + id).getMessage());
+        }
+    }
+
+    @PutMapping("/edit")
+    public ResponseEntity<?> editTask(@RequestParam Long taskId, @RequestBody TaskRequest taskRequest) {
+        try {
+            return ResponseEntity.ok().body(taskService.editTask(taskId, taskRequest));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

@@ -21,7 +21,7 @@ public class TaskRequest {
     private String description;
     private String deadline;
     @Enumerated(EnumType.STRING)
-    private TaskPriority priority;
+    private String priority;
     private Long giverId;
     private List<Long> receiversIds;
 //    jeśli team == 0 => zadanie nie jest przypisane do żadnego zespołu

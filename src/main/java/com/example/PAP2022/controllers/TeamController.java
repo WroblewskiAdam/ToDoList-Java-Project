@@ -1,5 +1,6 @@
 package com.example.PAP2022.controllers;
 
+import com.example.PAP2022.exceptions.TeamLeaderDeletionException;
 import com.example.PAP2022.exceptions.TeamNotFoundException;
 import com.example.PAP2022.exceptions.UserExistsException;
 import com.example.PAP2022.exceptions.UserNotFoundException;
@@ -82,25 +83,10 @@ public class TeamController {
 
     @PutMapping("/edit")
     public ResponseEntity<?> editTeam(@RequestParam Long teamId, @RequestBody TeamRequest teamRequest) {
-        if (!applicationUserService.loadApplicationUserById(teamRequest.getTeamLeaderId()).isPresent()) {
-            return ResponseEntity.badRequest().body(
-                    new UserNotFoundException("Could not find user with ID " + teamRequest.getTeamLeaderId())
-                            .getMessage()
-            );
-        }
-
-        if (teamService.loadTeamById(teamId).isPresent()) {
-            Team team = teamService.loadTeamById(teamId).get();
-
-            team.setName(teamRequest.getName());
-            team.setTeamLeader(applicationUserService.loadApplicationUserById(teamRequest.getTeamLeaderId()).get());
-
-            return ResponseEntity.ok(teamService.editTeam(team));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new TeamNotFoundException("Could not find team with ID " + teamId)
-                            .getMessage()
-            );
+        try {
+            return ResponseEntity.ok().body(teamService.editTeam(teamId, teamRequest));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -137,6 +123,12 @@ public class TeamController {
                 return ResponseEntity.badRequest().body(
                         new UserNotFoundException(
                                 "User with ID " + teamMemberRequest.getMemberId() + " is not a member").getMessage());
+            }
+
+            if (team.getTeamLeader().getId() == applicationUser.getId()) {
+                return ResponseEntity.badRequest().body(
+                        new TeamLeaderDeletionException(
+                                "The leader cannot be removed from the team").getMessage());
             }
 
             return ResponseEntity.ok().body(teamService.deleteMember(

@@ -3,6 +3,7 @@ package com.example.PAP2022.services;
 import com.example.PAP2022.exceptions.TeamNotFoundException;
 import com.example.PAP2022.exceptions.UserNotFoundException;
 import com.example.PAP2022.payload.TeamMemberRequest;
+import com.example.PAP2022.payload.TeamRequest;
 import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,12 +50,25 @@ public class TeamService {
 
     public Team addMember(ApplicationUser applicationUser, Team team) {
         team.addMemberToTeam(applicationUser);
-
         return teamRepository.save(team);
     }
 
-    public Team editTeam(Team team) {
-        return teamRepository.save(team);
+    public Team editTeam(Long teamId, TeamRequest teamRequest) throws UserNotFoundException, TeamNotFoundException {
+        if (!applicationUserService.loadApplicationUserById(teamRequest.getTeamLeaderId()).isPresent()) {
+            throw new UserNotFoundException("Could not find user with ID " + teamRequest.getTeamLeaderId());
+        }
+
+        if (loadTeamById(teamId).isPresent()) {
+            Team team = loadTeamById(teamId).get();
+
+            team.setName(teamRequest.getName());
+            team.setTeamLeader(applicationUserService.loadApplicationUserById(teamRequest.getTeamLeaderId()).get());
+
+            return saveTeam(team);
+
+        } else {
+            throw new TeamNotFoundException("Could not find team with ID " + teamId);
+        }
     }
 
     public Team deleteMember(Long teamId, Long memberId){
