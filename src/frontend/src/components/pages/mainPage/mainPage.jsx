@@ -5,6 +5,7 @@ import "./mainPage.scss"
 import AuthService from "../../../services/authService";
 import { useHistory } from "react-router-dom";
 import AppUserService from "../../../services/appUserService";
+import TaskSection from "../../taskSection/TaskSection";
 
 const MainPage = () => {
     const [userData, setUserData] = useState(null);
@@ -26,6 +27,7 @@ const MainPage = () => {
         <div className="mainPage">
             <SideBar/>
             <TeamSideBar/>
+            <TaskSection/>
         </div>
     )
 }

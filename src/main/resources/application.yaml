@@ -4,14 +4,14 @@ server:
     include-binding-errors: always
 
 spring:
-  datasource:
-    password: papcrm123 # tutaj zmie?cie has?o
-    url: jdbc:mysql://34.118.36.189/PAPCRM_TEST # stw�rzcie nowy scheme
-    username: root
 #  datasource:
-#    password: Adamix123 # tutaj zmie?cie has?o
-#    url: jdbc:mysql://localhost:3306/jwttest?useSSL=false # stw�rzcie nowy scheme
+#    password: papcrm123 # tutaj zmie?cie has?o
+#    url: jdbc:mysql://34.118.36.189/PAPCRM_TEST # stw�rzcie nowy scheme
 #    username: root
+  datasource:
+    password: Atomuran92 # tutaj zmie?cie has?o
+    url: jdbc:mysql://localhost:3306/jwttest?useSSL=false # stw�rzcie nowy scheme
+    username: root
   jpa:
     hibernate:
       ddl-auto: update # je?li nie chcecie automatycznego czyszczenia bazy danych to zmie?cie na update

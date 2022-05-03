@@ -1,0 +1,62 @@
+@import "../../style/variable";
+
+.taskItem{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $white-color;
+    margin-top: 10px;
+    border-radius: 10px;
+    transition: 0.3s all;
+    div{
+        width: 25%;
+        text-align: center;
+    }
+    &__title{
+        font-size: 18px;
+        line-height: 3;
+        color: #6a707e;
+        font-weight: 500;
+    }
+    &__description{
+
+    }
+    &__priority{
+        img{
+            width: 30px;
+            height: 30px;
+        }
+    }
+    &__deadline{
+        font-family: CircularStd;
+        font-size: 16px;
+        letter-spacing: 0.32px;
+        color: #abafb3;
+        font-weight: 500;
+    }
+    &__creationTime{
+        font-family: CircularStd;
+        font-size: 16px;
+        letter-spacing: 0.32px;
+        color: #abafb3;
+        font-weight: 500;
+    }
+    &:hover{
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+        cursor: pointer;
+        transition: 0.3s all;
+    }
+}
+
+.green{
+    color: #6BCB77;
+}
+
+.yellow{
+    color: yellow
+}
+
+.red{
+    color: red;
+}

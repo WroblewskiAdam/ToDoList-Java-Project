@@ -1,0 +1,14 @@
+@import "../../style/variable.scss";
+
+.taskSection{
+    margin-left: 10px;
+    width: 50%;
+    background-color: $aliceBlue;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    padding: 20px 30px;
+    &__title{
+        font-size: 30px;
+        font-weight: 500;
+        margin-bottom: 20px;
+    }
+}
