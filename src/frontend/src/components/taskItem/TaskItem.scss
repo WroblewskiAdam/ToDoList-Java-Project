@@ -1,14 +1,14 @@
 @import "../../style/variable";
 
 .taskItem{
-    width: 100%;
+    width: 95%;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     background-color: $white-color;
     margin-top: 10px;
     border-radius: 10px;
-    transition: 0.3s all;
     div{
         width: 25%;
         text-align: center;
@@ -20,7 +20,15 @@
         font-weight: 500;
     }
     &__description{
-
+        display: none;
+        width: 95%;
+        margin: 0 auto;
+        border-radius: 10px;
+        background-color: $white-color;
+        margin-top: 5px;
+        text-align: left;
+        padding: 10px;
+        min-height: 100px;
     }
     &__priority{
         img{

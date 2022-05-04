@@ -10,6 +10,7 @@ import com.example.PAP2022.models.Team;
 import com.example.PAP2022.payload.ApplicationUserRequest;
 import com.example.PAP2022.payload.TeamMemberRequest;
 import com.example.PAP2022.payload.TeamRequest;
+import com.example.PAP2022.payload.TeamTaskRequest;
 import com.example.PAP2022.services.ApplicationUserDetailsServiceImplementation;
 import com.example.PAP2022.services.TeamService;
 import lombok.AllArgsConstructor;
@@ -63,6 +64,16 @@ public class TeamController {
         }
     }
 
+    @GetMapping("/getTeamTasks")
+    public ResponseEntity<?> getTeamTasks(@RequestParam Long teamId){
+        if (teamService.loadTeamById(teamId).isPresent()) {
+            return ResponseEntity.ok().body(teamService.getTeamTasks(teamId));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new TeamNotFoundException("Could not find team with ID " + teamId).getMessage());
+        }
+    }
+
     @PostMapping("/save")
     public ResponseEntity<?> saveTeam(@RequestBody TeamRequest request) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/teams/save").toUriString());
@@ -110,7 +121,6 @@ public class TeamController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
     @DeleteMapping("/deleteMember")
     public ResponseEntity<?> deleteMember(@RequestBody TeamMemberRequest teamMemberRequest) {
         try {

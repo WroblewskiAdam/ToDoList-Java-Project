@@ -6,8 +6,7 @@ import TeamModal from '../teamModal/TeamModal';
 import image from "../../images/picture/team.png";
 import AppUserService from "../../services/appUserService";
 
-
-function TeamSideBar() {
+function TeamSideBar(props) {
     const [teams, setTeam] = useState([]);
     const [modalState, setModalState] = useState(false);
 
@@ -44,7 +43,7 @@ function TeamSideBar() {
                     {
                         teams.map((item) => {
                             return (
-                                <TeamItem key={item.id} id={item.id} title={item.name} image={image} />
+                                <TeamItem key={item.id} id={item.id} title={item.name} image={image} setTasks={props.setTasks}/>
                             )
                         })
                     }
@@ -60,7 +59,6 @@ function TeamSideBar() {
 }
 
 const PrivateItem = (props) => {
-
     return(
         <div className="privateItem">
             <div className="privateItem__block">
@@ -77,6 +75,5 @@ const PrivateItem = (props) => {
             </div>
         </div>
     )
-
 }
 export default TeamSideBar;

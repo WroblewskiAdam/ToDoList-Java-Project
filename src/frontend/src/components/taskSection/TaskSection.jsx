@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import TaskItem from '../taskItem/TaskItem';
 import "./TaskSection.scss";
+import {Dropdown, DropdownButton} from "react-bootstrap";
 
 const Tasks = [
     {
@@ -36,9 +37,26 @@ function TaskSection(props) {
     const [tasks, setTasks] = useState(null);
 
     useEffect(() => {
-        setTasks(Tasks);
-    }, []);
+        setTasks(props.tasks);
+    }, [props]);
 
+    const taskBlock = tasks? <div className="taskSection__tasks-body">
+                                {
+                                    tasks.map((item) => {
+                                        return (
+                                            <TaskItem 
+                                                key={item.id}
+                                                id={item.id}
+                                                title={item.title}
+                                                description={item.description}
+                                                deadline={item.deadline}
+                                                creationTime={item.creationTime}
+                                                priority={item.priority}
+                                            />
+                                        );
+                                    })
+                                }
+                            </div> : null;
     return (
         <div className='taskSection'>
             <div className="taskSection__title">
@@ -49,21 +67,31 @@ function TaskSection(props) {
 
                 </div>
                 <div className="taskSection__body">
-                    {
-                        Tasks.map((item) => {
-                            return (
-                                <TaskItem 
-                                    key={item.id}
-                                    id={item.id}
-                                    title={item.title}
-                                    description={item.description}
-                                    deadline={item.deadline}
-                                    creationTime={item.creationTime}
-                                    priority={item.priority}
-                                />
-                            );
-                        })
-                    }
+                    <div className="taskSection__team">
+
+                    </div>
+                    <div className="taskSection__tasks">
+                        <div className="taskSection__tasks-fillters">
+                            {/* <div className="taskSection__tasks-fillters-item"></div>
+                            <div className="taskSection__tasks-fillters-item"></div> */}
+                            <DropdownButton 
+                                className="taskSection__tasks-fillters-item"
+                                title="Sorting"
+                            >
+                                <Dropdown.Item>By title</Dropdown.Item>
+                                <Dropdown.Item>By time</Dropdown.Item>
+                            </DropdownButton>
+                            <DropdownButton 
+                                className="taskSection__tasks-fillters-item"
+                                title="Fillters"
+                            >
+                                <Dropdown.Item>All</Dropdown.Item>
+                                <Dropdown.Item>Today</Dropdown.Item>
+                                <Dropdown.Item>Next 7 days</Dropdown.Item>
+                            </DropdownButton>
+                        </div>
+                        {taskBlock}
+                    </div>
                 </div>
             </div>
         </div>

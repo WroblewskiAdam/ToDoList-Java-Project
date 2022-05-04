@@ -39,6 +39,10 @@ public class TeamService {
         return teamRepository.findAll();
     }
 
+    public List<Task> getTeamTasks(Long id) {
+        return teamRepository.getById(id).getTeamTasks();
+    }
+
     public Long deleteTeamById(Long id) {
         teamRepository.deleteById(id);
         return id;
@@ -50,6 +54,11 @@ public class TeamService {
 
     public Team addMember(ApplicationUser applicationUser, Team team) {
         team.addMemberToTeam(applicationUser);
+        return teamRepository.save(team);
+    }
+
+    public Team addTask(Task task, Team team){
+        team.addTaskToTeam(task);
         return teamRepository.save(team);
     }
 
