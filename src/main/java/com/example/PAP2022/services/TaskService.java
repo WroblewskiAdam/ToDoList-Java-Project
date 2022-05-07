@@ -38,6 +38,10 @@ public class TaskService {
                 return taskRepository.findAll();
         }
 
+        public List<ApplicationUser> getTaskReceivers(Long taskId){
+                return taskRepository.findById(taskId).get().getReceivers();
+        }
+
         public List<Task> getTodayTasks(ApplicationUser applicationUser) {
                 return applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
                         .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(1)))

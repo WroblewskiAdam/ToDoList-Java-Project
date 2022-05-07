@@ -139,6 +139,17 @@ public class TaskController {
         }
     }
 
+    @GetMapping("/get_receivers")
+    public ResponseEntity<?> getReceivers(@RequestParam Long id){
+        if(taskService.loadTaskById(id).isPresent()){
+            return ResponseEntity.ok().body(taskService.getTaskReceivers(id));
+        }
+        else{
+            return ResponseEntity.badRequest().body(
+                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
+        }
+    }
+
     @PutMapping("/edit")
     public ResponseEntity<?> editTask(@RequestParam Long taskId, @RequestBody TaskRequest taskRequest) {
         try {
