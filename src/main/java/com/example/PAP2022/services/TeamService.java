@@ -2,6 +2,7 @@ package com.example.PAP2022.services;
 
 import com.example.PAP2022.exceptions.TeamNotFoundException;
 import com.example.PAP2022.exceptions.UserNotFoundException;
+import com.example.PAP2022.models.Task;
 import com.example.PAP2022.payload.TeamMemberRequest;
 import com.example.PAP2022.payload.TeamRequest;
 import com.example.PAP2022.repository.ApplicationUserRepository;
@@ -19,9 +20,9 @@ import java.util.stream.Collectors;
 @Service
 public class TeamService {
 
-    private TeamRepository teamRepository;
-    private ApplicationUserService applicationUserService;
-    private ApplicationUserRepository applicationUserRepository;
+    private final TeamRepository teamRepository;
+    private final ApplicationUserService applicationUserService;
+    private final ApplicationUserRepository applicationUserRepository;
 
     @Autowired
     public TeamService(TeamRepository teamRepository, ApplicationUserService applicationUserService, ApplicationUserRepository applicationUserRepository) {
@@ -38,8 +39,16 @@ public class TeamService {
         return teamRepository.findAll();
     }
 
-    public List<Task> getTeamTasks(Long id) {
-        return teamRepository.getById(id).getTeamTasks();
+    public List<Task> getTeamTasks(Long teamId) {
+        return teamRepository.getById(teamId).getTeamTasks();
+    }
+
+    public List<ApplicationUser> getTeamMembers(Long teamId) {
+        return teamRepository.getById(teamId).getTeamMembers();
+    }
+
+    public ApplicationUser getTeamLeader(Long teamId) {
+        return teamRepository.getById(teamId).getTeamLeader();
     }
 
     public Long deleteTeamById(Long id) {

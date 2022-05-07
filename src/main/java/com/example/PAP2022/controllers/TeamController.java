@@ -44,7 +44,7 @@ public class TeamController {
     @GetMapping("/getMembers")
     public ResponseEntity<?> getTeamMembers(@RequestParam Long teamId) {
         if (teamService.loadTeamById(teamId).isPresent()) {
-            return ResponseEntity.ok().body(teamService.loadTeamById(teamId).get().getTeamMembers());
+            return ResponseEntity.ok().body(teamService.getTeamMembers(teamId));
         } else {
             return ResponseEntity.badRequest().body(
                     new TeamNotFoundException("Could not find team with ID " + teamId).getMessage());
@@ -54,7 +54,7 @@ public class TeamController {
     @GetMapping("/getTeamLeader")
     public ResponseEntity<?> getTeamLeader(@RequestParam Long teamId) {
         if (teamService.loadTeamById(teamId).isPresent()) {
-            return ResponseEntity.ok().body(teamService.loadTeamById(teamId).get().getTeamLeader());
+            return ResponseEntity.ok().body(teamService.getTeamLeader(teamId));
         } else {
             return ResponseEntity.badRequest().body(
                     new TeamNotFoundException("Could not find team with ID " + teamId).getMessage());
@@ -64,7 +64,7 @@ public class TeamController {
     @GetMapping("/getTeamTasks")
     public ResponseEntity<?> getTeamTasks(@RequestParam Long teamId) {
         if (teamService.loadTeamById(teamId).isPresent()) {
-            return ResponseEntity.ok().body(teamService.loadTeamById(teamId).get().getTeamTasks());
+            return ResponseEntity.ok().body(teamService.getTeamTasks(teamId));
         } else {
             return ResponseEntity.badRequest().body(
                     new TeamNotFoundException("Could not find team with ID " + teamId).getMessage());
