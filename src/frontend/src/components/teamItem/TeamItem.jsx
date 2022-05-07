@@ -19,6 +19,7 @@ function TeamItem(props) {
         if(!optionRef.current.contains(e.target) && !moreButtonRef.current.contains(e.target)){
             TeamService.getTeamTasks(props.id).then(res => {
                 props.setTasks(res);
+                props.setTitle(props.title);
             });
         }
     }

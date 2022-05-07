@@ -21,17 +21,20 @@ function TaskItem(props) {
         colorImg = greenFlag;
     }
 
+    const deadlineItems = props.deadline.split("T");
+    const creationTimeItem = props.creationTime.split("T");
+
     return (
         <>
             <div className='taskItem' onClick={handleTaskItemClick}>
                 <div className="taskItem__title">
                     {props.title}
                 </div>
-                <div className="taskItem__deadline">
-                    {props.deadline}
+                <div className="taskItem__time">
+                    from <span>{deadlineItems[0]}</span> {deadlineItems[1]}
                 </div>
-                <div className="taskItem__creationTime">
-                    {props.creationTime}
+                <div className="taskItem__time">
+                    to <span>{creationTimeItem[0]}</span> {creationTimeItem[1]}
                 </div>
                 <div className={"taskItem__priority"}>
                     <img src={colorImg} alt="flag" />

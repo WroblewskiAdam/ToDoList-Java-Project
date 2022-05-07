@@ -10,6 +10,7 @@ import TaskSection from "../../components/taskSection/TaskSection";
 const MainPage = () => {
     const [userData, setUserData] = useState(null);
     const [tasks, setTasks] = useState(null);
+    const [title, setTitle] = useState("Choose Team");
 
     let history = useHistory();
     
@@ -27,8 +28,8 @@ const MainPage = () => {
     return (
         <div className="mainPage">
             <SideBar/>
-            <TeamSideBar setTasks={setTasks}/>
-            <TaskSection tasks={tasks}/>
+            <TeamSideBar setTitle={setTitle} setTasks={setTasks}/>
+            <TaskSection title={title} tasks={tasks}/>
         </div>
     )
 }

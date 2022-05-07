@@ -43,7 +43,7 @@ function TeamSideBar(props) {
                     {
                         teams.map((item) => {
                             return (
-                                <TeamItem key={item.id} id={item.id} title={item.name} image={image} setTasks={props.setTasks}/>
+                                <TeamItem key={item.id} id={item.id} title={item.name} image={image} setTasks={props.setTasks} setTitle={props.setTitle} />
                             )
                         })
                     }

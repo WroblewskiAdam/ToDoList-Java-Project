@@ -2,36 +2,7 @@ import React, { useState, useEffect } from 'react';
 import TaskItem from '../taskItem/TaskItem';
 import "./TaskSection.scss";
 import {Dropdown, DropdownButton} from "react-bootstrap";
-
-const Tasks = [
-    {
-        "id": 19,
-        "title": "zadanie1",
-        "description": "easy",
-        "deadline": "2022-05-02T10:55:00",
-        "creationTime": "2022-05-02T22:48:39",
-        "ticked": false,
-        "priority": "GREEN"
-    },
-    {
-        "id": 20,
-        "title": "zadanie2",
-        "description": "medium",
-        "deadline": "2022-06-02T10:55:00",
-        "creationTime": "2022-07-02T22:48:39",
-        "ticked": false,
-        "priority": "RED"
-    },
-    {
-        "id": 21,
-        "title": "zadanie3",
-        "description": "difficult",
-        "deadline": "2022-06-02T10:55:00",
-        "creationTime": "2022-002T22:48:39",
-        "ticked": false,
-        "priority": "YELLOW"
-    }
-]
+import noTasksImage from "../../images/picture/no-task.png";
 
 function TaskSection(props) {
     const [tasks, setTasks] = useState(null);
@@ -40,7 +11,8 @@ function TaskSection(props) {
         setTasks(props.tasks);
     }, [props]);
 
-    const taskBlock = tasks? <div className="taskSection__tasks-body">
+
+    const taskBlock = tasks && tasks.length > 0? <div className="taskSection__tasks-body">
                                 {
                                     tasks.map((item) => {
                                         return (
@@ -56,11 +28,11 @@ function TaskSection(props) {
                                         );
                                     })
                                 }
-                            </div> : null;
+                            </div> : <NoTasksView/>;
     return (
         <div className='taskSection'>
             <div className="taskSection__title">
-                Title
+                {props.title}
             </div>
             <div className="taskSection__wrapper">
                 <div className="taskSection__filters">
@@ -98,4 +70,12 @@ function TaskSection(props) {
     );
 }
 
+const NoTasksView = () => {
+    return (
+        <div className="taskSection__noTasks">
+            <div className="taskSection__noTasks-title">No tasks :) </div>
+            <img src={noTasksImage} alt='https://www.flaticon.com/free-icons/no-task' />
+        </div>
+    )
+}
 export default TaskSection;
