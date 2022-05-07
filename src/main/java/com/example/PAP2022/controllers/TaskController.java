@@ -1,16 +1,10 @@
 package com.example.PAP2022.controllers;
 
 import com.example.PAP2022.exceptions.TaskNotFoundException;
-import com.example.PAP2022.exceptions.TeamNotFoundException;
 import com.example.PAP2022.exceptions.UserNotFoundException;
-import com.example.PAP2022.models.ApplicationUser;
-import com.example.PAP2022.models.Task;
-import com.example.PAP2022.models.Team;
 import com.example.PAP2022.payload.TaskRequest;
-import com.example.PAP2022.payload.TeamRequest;
-import com.example.PAP2022.services.ApplicationUserDetailsServiceImplementation;
+import com.example.PAP2022.services.ApplicationUserService;
 import com.example.PAP2022.services.TaskService;
-import com.example.PAP2022.services.TeamService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +13,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -29,7 +22,7 @@ import java.util.List;
 public class TaskController {
 
     private final TaskService taskService;
-    private final ApplicationUserDetailsServiceImplementation applicationUserService;
+    private final ApplicationUserService applicationUserService;
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllTasks(){

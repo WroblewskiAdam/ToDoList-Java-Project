@@ -4,7 +4,6 @@ import com.example.PAP2022.enums.TaskPriority;
 import com.example.PAP2022.exceptions.*;
 import com.example.PAP2022.models.Task;
 import com.example.PAP2022.models.Team;
-import com.example.PAP2022.payload.TeamRequest;
 import com.example.PAP2022.repository.TaskRepository;
 import com.example.PAP2022.models.ApplicationUser;
 import com.example.PAP2022.payload.TaskRequest;
@@ -14,20 +13,18 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
 
-        private TaskRepository taskRepository;
-        private ApplicationUserDetailsServiceImplementation applicationUserService;
-        private TeamService teamService;
+        private final TaskRepository taskRepository;
+        private final ApplicationUserService applicationUserService;
+        private final TeamService teamService;
 
         @Autowired
-        public TaskService(TaskRepository taskRepository, ApplicationUserDetailsServiceImplementation applicationUserService, TeamService teamService) {
+        public TaskService(TaskRepository taskRepository, ApplicationUserService applicationUserService, TeamService teamService) {
                 this.taskRepository = taskRepository;
                 this.applicationUserService = applicationUserService;
                 this.teamService = teamService;
@@ -120,19 +117,6 @@ public class TaskService {
                 return deadline;
         }
 
-        public List<ApplicationUser> getReceivers(List<Long> receiversIds) throws UserNotFoundException {
-                List<ApplicationUser> receivers = new ArrayList<>();
-                for (Long id: receiversIds) {
-                        if (!applicationUserService.loadApplicationUserById(id).isPresent()) {
-                                throw new UserNotFoundException("Could not find user with ID " + id);
-                        } else {
-                                receivers.add(applicationUserService.loadApplicationUserById(id).get());
-                        }
-                }
-
-                return receivers;
-        }
-
         public Task editTask(Long taskId, TaskRequest taskRequest) throws
                 UserNotFoundException,
                 TaskNotFoundException,
@@ -146,7 +130,7 @@ public class TaskService {
                         task.setDescription(taskRequest.getDescription());
                         task.setDeadline(convertDeadline(taskRequest.getDeadline()));
                         task.setPriority(TaskPriority.parse(taskRequest.getPriority()));
-                        task.setReceivers(getReceivers(taskRequest.getReceiversIds()));
+                        task.setReceivers(applicationUserService.getUsersByIds(taskRequest.getReceiversIds()));
 
                         return taskRepository.save(task);
 
@@ -173,20 +157,34 @@ public class TaskService {
 
                 LocalDateTime deadline = convertDeadline(request.getDeadline());
 
-                List<ApplicationUser> receivers = getReceivers(request.getReceiversIds());
+                Set<ApplicationUser> receivers = new HashSet<>();
 
                 if (!teamService.loadTeamById(request.getTeamId()).isPresent() && request.getTeamId() != 0) {
                         throw new TeamNotFoundException("Could not find team with ID " + request.getTeamId());
                 } else {
                         if (request.getTeamId() != 0) {
                                 team = teamService.loadTeamById(request.getTeamId()).get();
-                                if (receivers.isEmpty()) {
+                                if (request.getReceiversIds().isEmpty()) {
                                         receivers.addAll(team.getTeamMembers());
+                                } else {
+                                        for (Long id: request.getReceiversIds()) {
+                                                if (team.getTeamMembers().contains(applicationUserService.loadApplicationUserById(id).get())) {
+                                                        receivers.add(applicationUserService.loadApplicationUserById(id).get());
+                                                }
+                                        }
                                 }
+
                         } else {
-                                team = null;
+                                if (!request.getReceiversIds().isEmpty()) {
+                                        receivers.addAll(applicationUserService.getUsersByIds(request.getReceiversIds()));
+                                        team = null;
+                                } else {
+                                        throw new UserNotFoundException("Task must have receivers");
+                                }
                         }
                 }
+
+
 
                 Task task = new Task(
                         request.getTitle(),
@@ -194,7 +192,7 @@ public class TaskService {
                         deadline,
                         TaskPriority.parse(request.getPriority()),
                         giver,
-                        receivers,
+                        receivers.stream().toList(),
                         team
                 );
 

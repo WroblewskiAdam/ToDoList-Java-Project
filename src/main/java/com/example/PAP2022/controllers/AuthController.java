@@ -20,7 +20,6 @@ import com.example.PAP2022.payload.ApplicationUserRequest;
 import com.example.PAP2022.payload.AuthResponse;
 import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.security.jwt.JwtUnit;
-import com.example.PAP2022.models.ApplicationUserDetailsImplementation;
 
 @RestController
 @Slf4j
@@ -40,16 +39,16 @@ public class AuthController {
     SecurityContextHolder.getContext().setAuthentication(authentication);
     String jwt = jwtUtils.generateJwtToken(authentication);
 
-    ApplicationUserDetailsImplementation userDetails = (ApplicationUserDetailsImplementation) authentication.getPrincipal();
-    String role = userDetails.getAuthorities().toString();
+    ApplicationUser user = (ApplicationUser) authentication.getPrincipal();
+    String role = user.getAuthorities().toString();
 
     log.info("user logged :)");
 
     return ResponseEntity.ok(
             new AuthResponse(
                     jwt,
-                    userDetails.getId(),
-                    userDetails.getEmail(),
+                    user.getId(),
+                    user.getEmail(),
                     role
             )
     );

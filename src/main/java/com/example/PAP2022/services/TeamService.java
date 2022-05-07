@@ -2,17 +2,17 @@ package com.example.PAP2022.services;
 
 import com.example.PAP2022.exceptions.TeamNotFoundException;
 import com.example.PAP2022.exceptions.UserNotFoundException;
+import com.example.PAP2022.models.Task;
 import com.example.PAP2022.payload.TeamMemberRequest;
 import com.example.PAP2022.payload.TeamRequest;
 import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.PAP2022.models.Team;
 import com.example.PAP2022.models.ApplicationUser;
-import com.example.PAP2022.models.Task;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,12 +20,12 @@ import java.util.stream.Collectors;
 @Service
 public class TeamService {
 
-    private TeamRepository teamRepository;
-    private ApplicationUserDetailsServiceImplementation applicationUserService;
-    private ApplicationUserRepository applicationUserRepository;
+    private final TeamRepository teamRepository;
+    private final ApplicationUserService applicationUserService;
+    private final ApplicationUserRepository applicationUserRepository;
 
     @Autowired
-    public TeamService(TeamRepository teamRepository, ApplicationUserDetailsServiceImplementation applicationUserService, ApplicationUserRepository applicationUserRepository) {
+    public TeamService(TeamRepository teamRepository, ApplicationUserService applicationUserService, ApplicationUserRepository applicationUserRepository) {
         this.teamRepository = teamRepository;
         this.applicationUserService = applicationUserService;
         this.applicationUserRepository = applicationUserRepository;
@@ -39,8 +39,16 @@ public class TeamService {
         return teamRepository.findAll();
     }
 
-    public List<Task> getTeamTasks(Long id) {
-        return teamRepository.getById(id).getTeamTasks();
+    public List<Task> getTeamTasks(Long teamId) {
+        return teamRepository.getById(teamId).getTeamTasks();
+    }
+
+    public List<ApplicationUser> getTeamMembers(Long teamId) {
+        return teamRepository.getById(teamId).getTeamMembers();
+    }
+
+    public ApplicationUser getTeamLeader(Long teamId) {
+        return teamRepository.getById(teamId).getTeamLeader();
     }
 
     public Long deleteTeamById(Long id) {
