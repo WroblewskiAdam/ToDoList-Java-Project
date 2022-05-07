@@ -7,12 +7,11 @@ import com.example.PAP2022.payload.TeamRequest;
 import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.PAP2022.models.Team;
 import com.example.PAP2022.models.ApplicationUser;
-import com.example.PAP2022.models.Task;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,11 +20,11 @@ import java.util.stream.Collectors;
 public class TeamService {
 
     private TeamRepository teamRepository;
-    private ApplicationUserDetailsServiceImplementation applicationUserService;
+    private ApplicationUserService applicationUserService;
     private ApplicationUserRepository applicationUserRepository;
 
     @Autowired
-    public TeamService(TeamRepository teamRepository, ApplicationUserDetailsServiceImplementation applicationUserService, ApplicationUserRepository applicationUserRepository) {
+    public TeamService(TeamRepository teamRepository, ApplicationUserService applicationUserService, ApplicationUserRepository applicationUserRepository) {
         this.teamRepository = teamRepository;
         this.applicationUserService = applicationUserService;
         this.applicationUserRepository = applicationUserRepository;
