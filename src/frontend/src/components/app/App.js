@@ -3,11 +3,11 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import AuthService from '../../services/authService';
 import LogIn from '../logIn/LogIn';
 import Registration from '../logIn/Registration';
-import FirstPage from '../pages/firstPage/FirstPage';
+import FirstPage from '../../pages/firstPage/FirstPage';
 import Spinner from '../spinner/Spinner';
 import './App.css';
 
-const MainPage = lazy(() => import("../pages/mainPage/mainPage"));
+const MainPage = lazy(() => import("../../pages/mainPage/mainPage"));
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);

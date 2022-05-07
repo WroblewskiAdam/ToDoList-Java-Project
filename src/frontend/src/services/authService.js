@@ -41,12 +41,17 @@ const getUserToken = () => {
     return localStorage.getItem("accessToken");
 }
 
+const getUserTeamId = () =>{
+    return localStorage.getItem("id");
+}
+
 const AuthService = {
     register,
     login,
     logout,
     getCurrentUser,
-    getUserToken
+    getUserToken,
+    getUserTeamId
 };
 
 

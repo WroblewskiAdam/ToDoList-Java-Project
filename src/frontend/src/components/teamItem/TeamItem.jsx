@@ -3,6 +3,8 @@ import { useState, useRef } from 'react';
 import "./TeamItem.scss"
 import logo from '../../images/picture/team.png'
 import useOuterClick from '../../hooks/useClickOutside';
+import TeamService from '../../services/teamService';
+
 
 function TeamItem(props) {
     const [option, setOption] = useState(false);
@@ -14,8 +16,11 @@ function TeamItem(props) {
     }
 
     const handleTeamItemClick = (e) => {
-        if(!optionRef.current.contains(e.target) && !moreButtonRef.current.contains(e.target))
-            console.log("Choose TeamItem: ", props.id);
+        if(!optionRef.current.contains(e.target) && !moreButtonRef.current.contains(e.target)){
+            TeamService.getTeamTasks(props.id).then(res => {
+                props.setTasks(res);
+            });
+        }
     }
 
     const handleDeleteClick = () => {

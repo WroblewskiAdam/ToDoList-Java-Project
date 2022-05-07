@@ -1,14 +1,106 @@
 @import "../../style/variable.scss";
 
 .taskSection{
-    margin-left: 10px;
-    width: 50%;
-    background-color: $aliceBlue;
+    margin-left: 5px;
+    width: 80%;
+    background-color: $white-color;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
     padding: 20px 30px;
+    height: 100vh;
     &__title{
+        margin: 0 auto;
         font-size: 30px;
-        font-weight: 500;
-        margin-bottom: 20px;
+        font-weight: 700;
+        margin-bottom: 25px;
+        height: 6%;
+        background-color: $aliceBlue;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50%;
+        border-radius: 10px;
+        color: $nickel;
+    }
+    &__wrapper{
+        height: 93%;
+    }
+    &__body{
+        display: flex;
+        align-items: center;
+        height: 90%;
+    }
+    &__team{
+        width: 35%;
+    }
+    &__tasks{
+        width: 65%;
+        height: 100%;
+        background-color: $aliceBlue;
+        border-radius: 10px;
+        padding: 20px;
+        &-fillters{
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            background-color: $white-color;
+            padding: 5px 10px;
+            border-radius: 5px;
+            width: 95%;
+            margin: 0 auto;
+            &-item{
+                margin-left: 20px;
+                button{
+                    background-color: $aliceBlue;
+                    border: none;
+                    color: $nickel;
+                    &:focus{
+                        box-shadow: none;
+                        background-color: $mediumSlateBlue;
+                        color: $white-color;
+                    }
+                    &:hover{
+                        color: $white-color;
+                        background-color: $mediumSlateBlue;
+                    }
+                }
+                div{
+                    padding: 8px 5px;
+                    a{
+                        color: $nickel;
+                        border-radius: 8px;
+                        &:hover{
+                            background-color: $nickel;
+                            color: $white-color;
+                        }
+                    }
+                    &:focus{
+                        box-shadow: none;
+                        background-color: $mediumSlateBlue;
+                        color: $white-color;
+                    }
+                }
+                .btn-primary{
+                    &:focus{
+                        box-shadow: none;
+                        background-color: $mediumSlateBlue;
+                        color: $white-color;
+                    }
+                }
+            }
+            margin-bottom: 10px;
+        }
+        &-body{
+            border-radius: 10px;
+            height: 90%;
+            overflow-y: auto;
+            scrollbar-width: none;
+            &::-webkit-scrollbar{
+                display: none;
+            }
+            &:last-child{
+                margin-bottom: 0;
+            }
+        }
     }
 }
+

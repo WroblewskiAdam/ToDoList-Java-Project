@@ -1,4 +1,4 @@
-import LogIn from "../../logIn/LogIn"
+import LogIn from "../../components/logIn/LogIn"
 import './LoginPage.scss'
 
 const LoginPage = () => {

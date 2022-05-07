@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,7 +20,7 @@ public class TeamTaskRequest {
     public String description;
     public LocalDateTime deadline;
     public TaskPriority priority;
-    public ApplicationUser giver;
-    public ApplicationUser receivers;
-    public Team team;
+    public Long giverId;
+    public List<ApplicationUser> receivers;
+    public Long teamId;
 }
