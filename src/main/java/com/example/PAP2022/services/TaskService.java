@@ -180,6 +180,14 @@ public class TaskService {
 
             } else {
                 if (!request.getReceiversIds().isEmpty()) {
+                    List<ApplicationUser> users = applicationUserService.getUsersByIds(request.getReceiversIds());
+
+                    for (ApplicationUser user : users) {
+                        if (!applicationUserService.loadApplicationUserById(user.getId()).get().getEnabled()) {
+                            throw new UserNotFoundException("User with ID " + user.getId() + " is not active");
+                        }
+                    }
+
                     receivers.addAll(applicationUserService.getUsersByIds(request.getReceiversIds()));
                     team = null;
                 } else {

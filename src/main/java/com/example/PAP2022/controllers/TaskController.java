@@ -146,7 +146,7 @@ public class TaskController {
         }
         else{
             return ResponseEntity.badRequest().body(
-                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
+                    new TaskNotFoundException("Could not find task with ID " + id).getMessage());
         }
     }
 

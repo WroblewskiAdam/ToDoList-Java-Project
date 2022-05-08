@@ -58,6 +58,7 @@ public class Team {
         return name;
     }
 
+    // TODO zrobić refaktoryzację
     public void addMemberToTeam(ApplicationUser member){
         this.teamMembers.add(member);
     }

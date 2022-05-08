@@ -39,6 +39,7 @@ public class ApplicationUser {
 
     @Enumerated(EnumType.STRING)
     private ApplicationUserRole applicationUserRole;
+    private Boolean enabled = false;
 
     public ApplicationUser(String firstName,
                            String lastName,

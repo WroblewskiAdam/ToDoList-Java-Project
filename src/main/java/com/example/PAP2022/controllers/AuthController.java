@@ -4,6 +4,7 @@ package com.example.PAP2022.controllers;
 import javax.validation.Valid;
 
 import com.example.PAP2022.enums.ApplicationUserRole;
+import com.example.PAP2022.services.RegistrationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +29,9 @@ import com.example.PAP2022.models.ApplicationUserDetailsImplementation;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/auth")
 public class AuthController {
+
     private final AuthenticationManager authenticationManager;
-    private final ApplicationUserRepository userRepository;
-    private final PasswordEncoder encoder;
+    private final RegistrationService registrationService;
     private final JwtUnit jwtUtils;
 
     @PostMapping("/login")
@@ -41,37 +42,41 @@ public class AuthController {
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         ApplicationUserDetailsImplementation userDetails = (ApplicationUserDetailsImplementation) authentication.getPrincipal();
-        String role = userDetails.getAuthorities().toString();
+        if (userDetails.isEnabled()) {
+            String role = userDetails.getAuthorities().toString();
 
-        log.info("user logged :)");
+            log.info("user logged :)");
 
-        return ResponseEntity.ok(
-                new AuthResponse(
-                        jwt,
-                        userDetails.getId(),
-                        userDetails.getEmail(),
-                        role
-                )
-        );
+            return ResponseEntity.ok(
+                    new AuthResponse(
+                            jwt,
+                            userDetails.getId(),
+                            userDetails.getEmail(),
+                            role
+                    )
+            );
+        } else {
+            return ResponseEntity.badRequest().body("Account is not confirmed");
+        }
     }
 
     @PostMapping("/registration")
     public ResponseEntity<?> registerUser(@Valid @RequestBody ApplicationUserRequest signUpRequest) {
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity.badRequest().body("Ups! Email is already in use :)");
+        try {
+            registrationService.register(signUpRequest);
+            return ResponseEntity.ok("User is registered");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
 
-        ApplicationUser user = new ApplicationUser(
-                signUpRequest.getFirstName(),
-                signUpRequest.getLastName(),
-                signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()),
-                signUpRequest.getImg(),
-                ApplicationUserRole.USER
-        );
-
-        userRepository.save(user);
-
-        return ResponseEntity.ok("User registered successfully!");
+    @GetMapping("/confirmation")
+    public ResponseEntity<?> confirmation(@RequestParam("token") String registrationToken) {
+        try {
+            registrationService.confirmToken(registrationToken);
+            return ResponseEntity.ok("Email has been confirmed");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

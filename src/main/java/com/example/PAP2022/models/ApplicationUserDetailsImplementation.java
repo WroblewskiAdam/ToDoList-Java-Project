@@ -9,8 +9,8 @@ package com.example.PAP2022.models;
         import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ApplicationUserDetailsImplementation implements UserDetails {
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 1L;
     private Long id;
     private String firstName;
     private String lastName;
@@ -18,11 +18,11 @@ public class ApplicationUserDetailsImplementation implements UserDetails {
     @JsonIgnore
     private String password;
     private String img; // TODO trzeba ewentualnie zmienić typ
-
     private Collection<? extends GrantedAuthority> authorities;
+    private final Boolean enabled;
 
     public ApplicationUserDetailsImplementation(Long id, String firstName, String lastName, String email, String password, String img,
-                                                Collection<? extends GrantedAuthority> authorities) {
+                                                Collection<? extends GrantedAuthority> authorities, Boolean enabled) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,6 +30,7 @@ public class ApplicationUserDetailsImplementation implements UserDetails {
         this.password = password;
         this.img = img;
         this.authorities = authorities;
+        this.enabled = enabled;
     }
 
     public static ApplicationUserDetailsImplementation build(ApplicationUser user) {
@@ -42,7 +43,9 @@ public class ApplicationUserDetailsImplementation implements UserDetails {
                 user.getEmail(),
                 user.getPassword(),
                 user.getImg(),
-                Collections.singleton(authority));
+                Collections.singleton(authority),
+                user.getEnabled()
+        );
     }
 
     @Override
@@ -85,6 +88,6 @@ public class ApplicationUserDetailsImplementation implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }
