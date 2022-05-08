@@ -20,6 +20,7 @@ import com.example.PAP2022.payload.ApplicationUserRequest;
 import com.example.PAP2022.payload.AuthResponse;
 import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.security.jwt.JwtUnit;
+import com.example.PAP2022.models.ApplicationUserDetailsImplementation;
 
 @RestController
 @Slf4j
@@ -27,50 +28,50 @@ import com.example.PAP2022.security.jwt.JwtUnit;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/auth")
 public class AuthController {
-  private final AuthenticationManager authenticationManager;
-  private final ApplicationUserRepository userRepository;
-  private final PasswordEncoder encoder;
-  private final JwtUnit jwtUtils;
+    private final AuthenticationManager authenticationManager;
+    private final ApplicationUserRepository userRepository;
+    private final PasswordEncoder encoder;
+    private final JwtUnit jwtUtils;
 
-  @PostMapping("/login")
-  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-    Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-    String jwt = jwtUtils.generateJwtToken(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
 
-    ApplicationUser user = (ApplicationUser) authentication.getPrincipal();
-    String role = user.getAuthorities().toString();
+        ApplicationUserDetailsImplementation userDetails = (ApplicationUserDetailsImplementation) authentication.getPrincipal();
+        String role = userDetails.getAuthorities().toString();
 
-    log.info("user logged :)");
+        log.info("user logged :)");
 
-    return ResponseEntity.ok(
-            new AuthResponse(
-                    jwt,
-                    user.getId(),
-                    user.getEmail(),
-                    role
-            )
-    );
-  }
-
-  @PostMapping("/registration")
-  public ResponseEntity<?> registerUser(@Valid @RequestBody ApplicationUserRequest signUpRequest) {
-    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-      return ResponseEntity.badRequest().body("Ups! Email is already in use :)");
+        return ResponseEntity.ok(
+                new AuthResponse(
+                        jwt,
+                        userDetails.getId(),
+                        userDetails.getEmail(),
+                        role
+                )
+        );
     }
 
-    ApplicationUser user = new ApplicationUser(
-            signUpRequest.getFirstName(),
-            signUpRequest.getLastName(),
-            signUpRequest.getEmail(),
-            encoder.encode(signUpRequest.getPassword()),
-            signUpRequest.getImg(),
-            ApplicationUserRole.USER
-    );
+    @PostMapping("/registration")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody ApplicationUserRequest signUpRequest) {
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            return ResponseEntity.badRequest().body("Ups! Email is already in use :)");
+        }
 
-    userRepository.save(user);
+        ApplicationUser user = new ApplicationUser(
+                signUpRequest.getFirstName(),
+                signUpRequest.getLastName(),
+                signUpRequest.getEmail(),
+                encoder.encode(signUpRequest.getPassword()),
+                signUpRequest.getImg(),
+                ApplicationUserRole.USER
+        );
 
-    return ResponseEntity.ok("User registered successfully!");
-  }
+        userRepository.save(user);
+
+        return ResponseEntity.ok("User registered successfully!");
+    }
 }

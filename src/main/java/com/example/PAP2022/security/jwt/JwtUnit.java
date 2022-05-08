@@ -2,7 +2,7 @@ package com.example.PAP2022.security.jwt;
 
 import java.util.Date;
 
-import com.example.PAP2022.models.ApplicationUser;
+import com.example.PAP2022.models.ApplicationUserDetailsImplementation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -18,14 +18,14 @@ public class JwtUnit {
 
   public String generateJwtToken(Authentication authentication) {
 
-    ApplicationUser userPrincipal = (ApplicationUser) authentication.getPrincipal();
+    ApplicationUserDetailsImplementation userPrincipal = (ApplicationUserDetailsImplementation) authentication.getPrincipal();
 
     return Jwts.builder()
-        .setSubject((userPrincipal.getUsername()))
-        .setIssuedAt(new Date())
-        .setExpiration(new Date((new Date()).getTime() + 24*60*60*1000))
-        .signWith(SignatureAlgorithm.HS512, jwtSecret)
-        .compact();
+            .setSubject((userPrincipal.getUsername()))
+            .setIssuedAt(new Date())
+            .setExpiration(new Date((new Date()).getTime() + 24*60*60*1000))
+            .signWith(SignatureAlgorithm.HS512, jwtSecret)
+            .compact();
   }
 
   public String getUserNameFromJwtToken(String token) {

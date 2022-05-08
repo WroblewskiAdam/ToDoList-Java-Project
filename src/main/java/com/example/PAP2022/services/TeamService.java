@@ -21,11 +21,13 @@ import java.util.stream.Collectors;
 public class TeamService {
 
     private final TeamRepository teamRepository;
-    private final ApplicationUserService applicationUserService;
+    private final ApplicationUserDetailsServiceImplementation applicationUserService;
     private final ApplicationUserRepository applicationUserRepository;
 
     @Autowired
-    public TeamService(TeamRepository teamRepository, ApplicationUserService applicationUserService, ApplicationUserRepository applicationUserRepository) {
+    public TeamService(TeamRepository teamRepository,
+                       ApplicationUserDetailsServiceImplementation applicationUserService,
+                       ApplicationUserRepository applicationUserRepository) {
         this.teamRepository = teamRepository;
         this.applicationUserService = applicationUserService;
         this.applicationUserRepository = applicationUserRepository;

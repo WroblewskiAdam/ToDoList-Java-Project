@@ -3,7 +3,7 @@ package com.example.PAP2022.controllers;
 import com.example.PAP2022.exceptions.UserNotFoundException;
 import com.example.PAP2022.models.ApplicationUser;
 import com.example.PAP2022.payload.ApplicationUserRequest;
-import com.example.PAP2022.services.ApplicationUserService;
+import com.example.PAP2022.services.ApplicationUserDetailsServiceImplementation;
 import com.example.PAP2022.services.TaskService;
 import com.example.PAP2022.services.TeamService;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class ApplicationUserController {
 
     private final TeamService teamService;
-    private final ApplicationUserService applicationUserService;
+    private final ApplicationUserDetailsServiceImplementation applicationUserService;
     private final TaskService taskService;
     private final PasswordEncoder encoder;
 
