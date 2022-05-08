@@ -12,11 +12,26 @@ const createTask = async (
         receiversIds,
         teamId
 ) => {
-    return axios.post(API_URL + "/save", {title, description, deadline, priority, giverId, receiversIds, teamId}, {headers: authHeader() });
+    // return axios.post(API_URL + "/save", {title, description, deadline, priority, giverId, receiversIds, teamId}, {headers: authHeader() });
+    return axios({
+        method: 'post',
+        url: API_URL + "/save",
+        data : {
+            "title": title,
+            "description": description,
+            "deadline": deadline,
+            "priority": priority,
+            "giverId": giverId,
+            "receiversIds": receiversIds,
+            "teamId": teamId
+        },
+        headers: authHeader()
+    })
+
 }
 
-const TaksService = {
+const TaskService = {
     createTask     
 };
 
-export default TaksService;
+export default TaskService;

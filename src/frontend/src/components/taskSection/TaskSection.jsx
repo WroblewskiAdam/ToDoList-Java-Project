@@ -3,14 +3,23 @@ import TaskItem from '../taskItem/TaskItem';
 import "./TaskSection.scss";
 import {Dropdown, DropdownButton} from "react-bootstrap";
 import noTasksImage from "../../images/picture/no-task.png";
+import TaskModal from '../taskModal/TaskModal';
 
 function TaskSection(props) {
     const [tasks, setTasks] = useState(null);
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpen = () => setOpen(true);
+
+    const handleClose = () => setOpen(false);
 
     useEffect(() => {
         setTasks(props.tasks);
     }, [props]);
 
+    const handleCreateTaskBtn = () => {
+        handleOpen();
+    }
 
     const taskBlock = tasks && tasks.length > 0? <div className="taskSection__tasks-body">
                                 {
@@ -43,29 +52,33 @@ function TaskSection(props) {
 
                     </div>
                     <div className="taskSection__tasks">
-                        <div className="taskSection__tasks-fillters">
-                            {/* <div className="taskSection__tasks-fillters-item"></div>
-                            <div className="taskSection__tasks-fillters-item"></div> */}
-                            <DropdownButton 
-                                className="taskSection__tasks-fillters-item"
-                                title="Sorting"
-                            >
-                                <Dropdown.Item>By title</Dropdown.Item>
-                                <Dropdown.Item>By time</Dropdown.Item>
-                            </DropdownButton>
-                            <DropdownButton 
-                                className="taskSection__tasks-fillters-item"
-                                title="Fillters"
-                            >
-                                <Dropdown.Item>All</Dropdown.Item>
-                                <Dropdown.Item>Today</Dropdown.Item>
-                                <Dropdown.Item>Next 7 days</Dropdown.Item>
-                            </DropdownButton>
+                        <div className="taskSection__header">
+                            <div className="taskSection__tasks-fillters">
+                                {/* <div className="taskSection__tasks-fillters-item"></div>
+                                <div className="taskSection__tasks-fillters-item"></div> */}
+                                <DropdownButton 
+                                    className="taskSection__tasks-fillters-item"
+                                    title="Sorting"
+                                >
+                                    <Dropdown.Item>By title</Dropdown.Item>
+                                    <Dropdown.Item>By time</Dropdown.Item>
+                                </DropdownButton>
+                                <DropdownButton 
+                                    className="taskSection__tasks-fillters-item"
+                                    title="Fillters"
+                                >
+                                    <Dropdown.Item>All</Dropdown.Item>
+                                    <Dropdown.Item>Today</Dropdown.Item>
+                                    <Dropdown.Item>Next 7 days</Dropdown.Item>
+                                </DropdownButton>
+                            </div>
+                            <div className="taskSection__createBtn" onClick={handleCreateTaskBtn}>Create Task</div>
                         </div>
                         {taskBlock}
                     </div>
                 </div>
             </div>
+            <TaskModal open={open} handleOpen={handleOpen} handleClose={handleClose} teamId={props.teamId}/>
         </div>
     );
 }

@@ -6,11 +6,13 @@ import AuthService from "../../services/authService";
 import { useHistory } from "react-router-dom";
 import AppUserService from "../../services/appUserService";
 import TaskSection from "../../components/taskSection/TaskSection";
+import TaskModal from "../../components/taskModal/TaskModal";
 
 const MainPage = () => {
     const [userData, setUserData] = useState(null);
     const [tasks, setTasks] = useState(null);
     const [title, setTitle] = useState("Choose Team");
+    const [teamId, setTeamId] = useState(null);
 
     let history = useHistory();
     
@@ -28,8 +30,9 @@ const MainPage = () => {
     return (
         <div className="mainPage">
             <SideBar/>
-            <TeamSideBar setTitle={setTitle} setTasks={setTasks}/>
-            <TaskSection title={title} tasks={tasks}/>
+            <TeamSideBar setTitle={setTitle} setTasks={setTasks} setTeamId={setTeamId} />
+            <TaskSection title={title} tasks={tasks} teamId={teamId}/>
+            {/* <TaskModal/> */}
         </div>
     )
 }

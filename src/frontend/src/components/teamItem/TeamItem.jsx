@@ -20,6 +20,7 @@ function TeamItem(props) {
             TeamService.getTeamTasks(props.id).then(res => {
                 props.setTasks(res);
                 props.setTitle(props.title);
+                props.setTeamId(props.id);
             });
         }
     }

@@ -11,9 +11,14 @@ const getTeamTasks = async (teamId) => {
     return axios.get(API_URL + "/getTeamTasks", {headers: authHeader(), params: {teamId: teamId}}).then(res => res.data).catch((error) => console.log(error));
 }
 
+const getTeamMembers = async (teamId) => {
+    return axios.get(API_URL + "/getMembers", {headers: authHeader(), params: {teamId: teamId}}).then(res => res.data).catch((error) => console.log(error));
+}
+
 const TeamService = {
     createTeam,
-    getTeamTasks   
+    getTeamTasks,
+    getTeamMembers
 };
 
 export default TeamService;

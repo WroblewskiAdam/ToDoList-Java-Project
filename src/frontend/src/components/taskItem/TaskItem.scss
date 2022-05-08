@@ -1,34 +1,78 @@
 @import "../../style/variable";
 
 .taskItem{
-    width: 95%;
-    margin: 0 auto;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: $white-color;
-    margin-top: 10px;
-    border-radius: 10px;
-    div{
-        width: 25%;
-        text-align: center;
+    flex-direction: column;
+    align-items: flex-start;
+    padding : 14px;
+    margin: 5px;
+    border: 2px solid $white-gray;
+    &__block{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        &:last-child{
+            margin-bottom: 0;
+        }
+        svg{
+            width: 20px;
+            height: 20px;
+            fill: $dark-gray;
+            margin-left: 20px;
+            &:first-child{
+                margin-left: 0;
+            }
+        }
     }
     &__title{
-        font-size: 18px;
-        line-height: 3;
-        color: #6a707e;
+        font-size: 20px;
+        color: $onyx;
         font-weight: 500;
+        margin-left: 10px;
+    }
+    &__priority{
+        width: 3px;
+        height: 30px;
+    }
+    &__line{
+        margin: 0 20px;
+        height: 1px;
+        width: 100%;
+        background-color: $white-gray;
+        margin: 0 auto;
     }
     &__description{
-        display: none;
-        width: 95%;
+        display: block;
+        transition: all 2s linear;
+        opacity: 1;
+        width: 100%;
         margin: 0 auto;
         border-radius: 10px;
         background-color: $white-color;
         margin-top: 5px;
         text-align: left;
-        padding: 10px;
+        padding: 10px 0;
         min-height: 100px;
+        animation: fade-in 1s;
+        &-active{
+            opacity: 0;
+            display: none;
+        }
+        &-time{
+            margin-bottom: 10px;
+            color: $dark-gray;
+        }
+        &-item{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            &:last-child{
+                padding: 10px;
+            }
+        }
     }
     &__priority{
         img{
@@ -37,18 +81,23 @@
         }
     }
     &__time{
+        display: flex;
         font-family: CircularStd;
         font-size: 16px;
         letter-spacing: 0.32px;
         color: #abafb3;
         font-weight: 500;
+        margin-left: 5px;
         span{
             color: #585c61;
             font-size: 18px;
         }
+        &-item{
+            margin-left: 5px;
+        }
     }
     &:hover{
-        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
         cursor: pointer;
         transition: 0.3s all;
     }
@@ -56,13 +105,22 @@
 }
 
 .green{
-    color: #6BCB77;
+    color: #2cc09c;
 }
 
 .yellow{
-    color: yellow
+    color: yellow;
 }
 
 .red{
     color: red;
+}
+
+@keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
 }
