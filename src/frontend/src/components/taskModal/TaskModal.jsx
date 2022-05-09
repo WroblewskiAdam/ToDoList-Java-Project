@@ -85,29 +85,32 @@ function TaskModal(props) {
             id,
             receiversIds,
             props.teamId
-        ).then(res => console.log(res)).catch(e => console.log(e));
+        ).then(res => {
+            TeamService.getTeamTasks(props.teamId).then(res => {
+                props.setTasks(res);
+            });
+        }).catch(e => console.log(e));
 
-        console.log(
-            {
-                "title": name,
-                "description": description,
-                "deadline": transformDateTime(dateTime),
-                "priority": priority,
-                "giverId": id,
-                "receiversIds": receiversIds,
-                "teamId": props.teamId
-            }
-        )
+        // console.log(
+        //     {
+        //         "title": name,
+        //         "description": description,
+        //         "deadline": transformDateTime(dateTime),
+        //         "priority": priority,
+        //         "giverId": id,
+        //         "receiversIds": receiversIds,
+        //         "teamId": props.teamId
+        //     }
+        // )
 
-        // setName("");
-        // setDescription("");
-        // setDateTime(null);
-        // setPriority("GREEN");
-        // setMembers(new Date());
-        // setSelectedMembers([]);
-
+        setName("");
+        setDescription("");
+        setDateTime(new Date());
+        setPriority("GREEN");
+        setMembers([]);
+        setSelectedMembers([]);
+        
         closeModal();
-        // window.location.reload(false);
     }
 
     let colorLine = "#f26950";
@@ -196,7 +199,9 @@ function TaskModal(props) {
                                     renderValue={(selected) => selected.join(', ')}
                                     MenuProps={MenuProps}
                                 >
-                                    {members.map((member) => {
+                                    {   
+                                        
+                                        members ? members.map((member) => {
                                         const name = member.firstName + " " + member.lastName;
                                         return(
                                             <MenuItem key={name} value={name}>
@@ -204,7 +209,8 @@ function TaskModal(props) {
                                             <ListItemText primary={name} />
                                             </MenuItem>
                                         );
-                                    })}
+                                    }) : null
+                                    }
                                 </Select>
                             </FormControl>
                         </div>

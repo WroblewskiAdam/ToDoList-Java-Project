@@ -16,12 +16,13 @@ function TeamItem(props) {
     }
 
     const handleTeamItemClick = (e) => {
-        if(!optionRef.current.contains(e.target) && !moreButtonRef.current.contains(e.target)){
+        if((!optionRef.current.contains(e.target) && !moreButtonRef.current.contains(e.target)) || props.reload){
             TeamService.getTeamTasks(props.id).then(res => {
                 props.setTasks(res);
                 props.setTitle(props.title);
                 props.setTeamId(props.id);
             });
+            console.log("getData");
         }
     }
 

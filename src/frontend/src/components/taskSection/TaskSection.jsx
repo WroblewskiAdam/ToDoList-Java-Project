@@ -78,7 +78,7 @@ function TaskSection(props) {
                     </div>
                 </div>
             </div>
-            <TaskModal open={open} handleOpen={handleOpen} handleClose={handleClose} teamId={props.teamId}/>
+            <TaskModal open={open} handleOpen={handleOpen} handleClose={handleClose} teamId={props.teamId} setTasks={props.setTasks} />
         </div>
     );
 }
