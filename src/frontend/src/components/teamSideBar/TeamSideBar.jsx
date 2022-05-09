@@ -41,17 +41,18 @@ function TeamSideBar(props) {
                 </div>
                 <div className="teamSideBar__wrapper">
                     {
-                        teams.map((item) => {
+                        teams ? teams.map((item) => {
                             return (
                                 <TeamItem key={item.id} id={item.id} title={item.name} image={image} setTasks={props.setTasks} setTitle={props.setTitle} setTeamId={props.setTeamId} reload={props.reload} setReload={props.setReload}/>
                             )
-                        })
+                        }) : null
                     }
                 </div>
                 <TeamModal 
                     modalState={modalState}
                     setModalState={setModalState}
                     updateTeam={updateTeam}
+                    setTeam={setTeam}
                 />
             </div>
         </div>

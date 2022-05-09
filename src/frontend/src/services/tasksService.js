@@ -30,8 +30,22 @@ const createTask = async (
 
 }
 
+// const todayTasks = () => {
+
+// }
+
+const getReceivers = async (id) => {
+    return axios.get(API_URL + "/get_receivers", {headers: authHeader(), params: {taskId: id}}).then(res => res.data).catch((error) => console.log(error));
+}
+
+const getReceiversWhoDone = async (id) => {
+    return axios.get(API_URL + "/get_receivers_who_done", {headers: authHeader(), params: {taskId: id}}).then(res => res.data).catch((error) => console.log(error));
+}
+
 const TaskService = {
-    createTask     
+    createTask,
+    getReceivers,
+    getReceiversWhoDone
 };
 
 export default TaskService;

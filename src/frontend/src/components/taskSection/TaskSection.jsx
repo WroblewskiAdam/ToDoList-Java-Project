@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import TaskItem from '../taskItem/TaskItem';
 import "./TaskSection.scss";
-import {Dropdown, DropdownButton} from "react-bootstrap";
 import noTasksImage from "../../images/picture/no-task.png";
 import TaskModal from '../taskModal/TaskModal';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 function TaskSection(props) {
     const [tasks, setTasks] = useState(null);
     const [open, setOpen] = React.useState(false);
+    const [fillter, setFillter] = useState("All");
 
     const handleOpen = () => setOpen(true);
 
@@ -17,8 +21,25 @@ function TaskSection(props) {
         setTasks(props.tasks);
     }, [props]);
 
+    useEffect(() => {
+        if(fillter === "All"){
+            
+        } else if (fillter === "Today"){
+
+        } else if (fillter === "Next 7 days"){
+            
+        } else if (fillter === "Expired"){
+            
+        }
+
+    }, [fillter])
+
     const handleCreateTaskBtn = () => {
         handleOpen();
+    }
+
+    const handleFillterChange = (e) => {
+        setFillter(e.target.value);
     }
 
     const taskBlock = tasks && tasks.length > 0? <div className="taskSection__tasks-body">
@@ -54,23 +75,23 @@ function TaskSection(props) {
                     <div className="taskSection__tasks">
                         <div className="taskSection__header">
                             <div className="taskSection__tasks-fillters">
-                                {/* <div className="taskSection__tasks-fillters-item"></div>
-                                <div className="taskSection__tasks-fillters-item"></div> */}
-                                <DropdownButton 
+                                <FormControl 
                                     className="taskSection__tasks-fillters-item"
-                                    title="Sorting"
                                 >
-                                    <Dropdown.Item>By title</Dropdown.Item>
-                                    <Dropdown.Item>By time</Dropdown.Item>
-                                </DropdownButton>
-                                <DropdownButton 
-                                    className="taskSection__tasks-fillters-item"
-                                    title="Fillters"
-                                >
-                                    <Dropdown.Item>All</Dropdown.Item>
-                                    <Dropdown.Item>Today</Dropdown.Item>
-                                    <Dropdown.Item>Next 7 days</Dropdown.Item>
-                                </DropdownButton>
+                                    <InputLabel className="taskSection__tasks-fillters-label">Fillter</InputLabel>
+                                    <Select
+
+                                        value={fillter}
+                                        label="Fillter"
+                                        onChange={handleFillterChange}
+                                        className="taskSection__tasks-fillters-select"
+                                    >
+                                        <MenuItem value={"All"}>All</MenuItem>
+                                        <MenuItem value={"Today"}>Today</MenuItem>
+                                        <MenuItem value={"Next 7 days"}>Next 7 days</MenuItem>expired
+                                        <MenuItem value={"Expired"}>Expired</MenuItem>
+                                    </Select>
+                                </FormControl>
                             </div>
                             <div className="taskSection__createBtn" onClick={handleCreateTaskBtn}>Create Task</div>
                         </div>
