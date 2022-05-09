@@ -8,7 +8,7 @@ import com.example.PAP2022.models.ApplicationUser;
 import com.example.PAP2022.models.Team;
 import com.example.PAP2022.payload.TeamMemberRequest;
 import com.example.PAP2022.payload.TeamRequest;
-import com.example.PAP2022.services.ApplicationUserDetailsServiceImplementation;
+import com.example.PAP2022.services.ApplicationUserDetailsService;
 import com.example.PAP2022.services.TeamService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ import java.util.List;
 @RequestMapping("/teams")
 public class TeamController {
     private final TeamService teamService;
-    private final ApplicationUserDetailsServiceImplementation applicationUserService;
+    private final ApplicationUserDetailsService applicationUserService;
 
     @GetMapping("/get")
     public ResponseEntity<?> getTeamById(@RequestParam Long teamId) {

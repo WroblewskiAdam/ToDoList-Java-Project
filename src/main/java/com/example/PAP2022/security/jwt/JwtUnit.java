@@ -2,7 +2,7 @@ package com.example.PAP2022.security.jwt;
 
 import java.util.Date;
 
-import com.example.PAP2022.models.ApplicationUserDetailsImplementation;
+import com.example.PAP2022.models.ApplicationUserDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -18,7 +18,7 @@ public class JwtUnit {
 
   public String generateJwtToken(Authentication authentication) {
 
-    ApplicationUserDetailsImplementation userPrincipal = (ApplicationUserDetailsImplementation) authentication.getPrincipal();
+    ApplicationUserDetails userPrincipal = (ApplicationUserDetails) authentication.getPrincipal();
 
     return Jwts.builder()
             .setSubject((userPrincipal.getUsername()))

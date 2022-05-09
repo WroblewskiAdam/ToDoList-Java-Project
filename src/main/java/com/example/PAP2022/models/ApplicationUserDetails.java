@@ -9,7 +9,7 @@ package com.example.PAP2022.models;
 
         import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class ApplicationUserDetailsImplementation implements UserDetails {
+public class ApplicationUserDetails implements UserDetails {
 
     private static final long serialVersionUID = 1L;
     private Long id;
@@ -22,8 +22,8 @@ public class ApplicationUserDetailsImplementation implements UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
     private final Boolean enabled;
 
-    public ApplicationUserDetailsImplementation(Long id, String firstName, String lastName, String email, String password, String img,
-                                                Collection<? extends GrantedAuthority> authorities, Boolean enabled) {
+    public ApplicationUserDetails(Long id, String firstName, String lastName, String email, String password, String img,
+                                  Collection<? extends GrantedAuthority> authorities, Boolean enabled) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -34,7 +34,7 @@ public class ApplicationUserDetailsImplementation implements UserDetails {
         this.enabled = enabled;
     }
 
-    public static ApplicationUserDetailsImplementation build(ApplicationUser user) {
+    public static ApplicationUserDetails build(ApplicationUser user) {
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 //      SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getApplicationUserRole().name());
 
@@ -44,7 +44,7 @@ public class ApplicationUserDetailsImplementation implements UserDetails {
 
 //        Collections.singleton(authority),
 
-        return new ApplicationUserDetailsImplementation(
+        return new ApplicationUserDetails(
                 user.getId(),
                 user.getFirstName(),
                 user.getLastName(),

@@ -1,7 +1,7 @@
 package com.example.PAP2022.security;
 
 import com.example.PAP2022.security.jwt.AuthorizationFilter;
-import com.example.PAP2022.services.ApplicationUserDetailsServiceImplementation;
+import com.example.PAP2022.services.ApplicationUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final ApplicationUserDetailsServiceImplementation userDetailsService;
+    private final ApplicationUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
     @Bean
