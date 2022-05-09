@@ -1,7 +1,8 @@
 package com.example.PAP2022.models;
 
+        import java.util.ArrayList;
         import java.util.Collection;
-        import java.util.Collections;
+
         import org.springframework.security.core.GrantedAuthority;
         import org.springframework.security.core.authority.SimpleGrantedAuthority;
         import org.springframework.security.core.userdetails.UserDetails;
@@ -34,7 +35,14 @@ public class ApplicationUserDetailsImplementation implements UserDetails {
     }
 
     public static ApplicationUserDetailsImplementation build(ApplicationUser user) {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getApplicationUserRole().name());
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+//      SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getApplicationUserRole().name());
+
+        user.getApplicationUserRole().forEach( role -> {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        });
+
+//        Collections.singleton(authority),
 
         return new ApplicationUserDetailsImplementation(
                 user.getId(),
@@ -43,7 +51,7 @@ public class ApplicationUserDetailsImplementation implements UserDetails {
                 user.getEmail(),
                 user.getPassword(),
                 user.getImg(),
-                Collections.singleton(authority),
+                authorities,
                 user.getEnabled()
         );
     }

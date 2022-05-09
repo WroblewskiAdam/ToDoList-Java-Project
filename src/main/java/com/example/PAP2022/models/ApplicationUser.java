@@ -6,8 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -37,8 +38,10 @@ public class ApplicationUser {
             mappedBy = "receivers")
     private List<Task> tasks;
 
-    @Enumerated(EnumType.STRING)
-    private ApplicationUserRole applicationUserRole;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Role> applicationUserRole;
+
+
     private Boolean enabled = false;
 
     public ApplicationUser(String firstName,
@@ -52,6 +55,6 @@ public class ApplicationUser {
         this.email = email;
         this.password = password;
         this.img = img;
-        this.applicationUserRole = applicationUserRole;
+        this.applicationUserRole = new ArrayList<>();
     }
 }
