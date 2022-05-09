@@ -21,7 +21,7 @@ import java.util.UUID;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ApplicationUserDetailsServiceImplementation implements UserDetailsService {
+public class ApplicationUserDetailsService implements UserDetailsService {
     private final ApplicationUserRepository applicationUserRepository;
     private final TokenService registrationTokenService;
     private final PasswordEncoder passwordEncoder;
@@ -32,7 +32,7 @@ public class ApplicationUserDetailsServiceImplementation implements UserDetailsS
         ApplicationUser user = applicationUserRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + email));
 
-        return ApplicationUserDetailsImplementation.build(user);
+        return ApplicationUserDetails.build(user);
     }
 
     public Optional<ApplicationUser> loadApplicationUserByEmail(String email) {

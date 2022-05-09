@@ -3,7 +3,7 @@ package com.example.PAP2022.controllers;
 import com.example.PAP2022.exceptions.TaskNotFoundException;
 import com.example.PAP2022.exceptions.UserNotFoundException;
 import com.example.PAP2022.payload.TaskRequest;
-import com.example.PAP2022.services.ApplicationUserDetailsServiceImplementation;
+import com.example.PAP2022.services.ApplicationUserDetailsService;
 import com.example.PAP2022.services.TaskService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import java.net.URI;
 public class TaskController {
 
     private final TaskService taskService;
-    private final ApplicationUserDetailsServiceImplementation applicationUserService;
+    private final ApplicationUserDetailsService applicationUserService;
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllTasks(){

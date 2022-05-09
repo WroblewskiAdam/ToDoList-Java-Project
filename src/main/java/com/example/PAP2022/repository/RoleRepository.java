@@ -11,5 +11,5 @@ import com.example.PAP2022.enums.ApplicationUserRole;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
-  Optional<Role> findByName(ApplicationUserRole name);
+  Role findByName(String name);
 }

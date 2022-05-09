@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Transactional
 public class RegistrationService {
 
-    private final ApplicationUserDetailsServiceImplementation applicationUserService;
+    private final ApplicationUserDetailsService applicationUserService;
     private final EmailValidator emailValidator;
     private final TokenService registrationTokenService;
     private final EmailService emailService;
