@@ -42,6 +42,10 @@ public class TaskService {
         return taskRepository.findById(taskId).get().getReceivers();
     }
 
+    public List<ApplicationUser> getTaskReceiversWhoDone(Long taskId){
+        return taskRepository.findById(taskId).get().getReceiversWhoDone();
+    }
+
     public List<Task> getTodayTasks(ApplicationUser applicationUser) {
         return applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
                 .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(1)))
@@ -99,6 +103,20 @@ public class TaskService {
     public List<Task> getExpiredTasksGiven(ApplicationUser applicationUser){
         return taskRepository.findByGiver(applicationUser).stream()
                 .filter(task -> task.getDeadline().isBefore(LocalDateTime.now()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> getDoneGivenTasks(ApplicationUser applicationUser) {
+        return applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
+                .filter(task -> task.getGiver() == applicationUser)
+                .filter(Task::getIsDone)
+                .collect(Collectors.toList());
+    }
+
+    // z punktu widzenia użytkownika któremu zostało zlecone zadanie
+    public List<Task> getDoneReceivedTasks(ApplicationUser applicationUser) {
+        return applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
+                .filter(task -> task.getReceiversWhoDone().contains(applicationUser))
                 .collect(Collectors.toList());
     }
 
@@ -209,24 +227,37 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    public Task tickTask(Long taskId, Long userId) throws UserNotFoundException, TaskNotFoundException {
+//        TODO jak robimy tego typu rzeczy, czy nie lepiej jest przerzuć sprawadzanie i wyrzucanie wyjątków w load ?
+    public void checkingConnectionBetweenTaskAndUser(Long taskId, Long userId) throws UserNotFoundException, TaskNotFoundException {
         if (!applicationUserService.loadApplicationUserById(userId).isPresent()) {
             throw new UserNotFoundException("Could not find user with ID " + userId);
         }
-
         if (!loadTaskById(taskId).isPresent()) {
             throw new TaskNotFoundException("Could not find task with ID " + userId);
         }
+    }
 
+    public Task tickTask(Long taskId, Long userId) throws UserNotFoundException, TaskNotFoundException {
+        checkingConnectionBetweenTaskAndUser(taskId, userId);
         Task task = loadTaskById(taskId).get();
-        List<Task> userTasks = applicationUserService.loadApplicationUserById(userId).get().getTasks();
+        ApplicationUser user = applicationUserService.loadApplicationUserById(userId).get();
 
-        if(!userTasks.contains(task)) {
-            throw new TaskNotFoundException("Could not find task with ID " + userId + " in your tasks");
+        if (task.getReceiversWhoDone().contains(user)) {
+            if (task.getIsDone()){
+                task.setIsDone(false);
+            }
+            task.getReceiversWhoDone().remove(user);
+
+        } else {
+            List<ApplicationUser> whoDone = task.getReceiversWhoDone();
+            whoDone.add(user);
+            task.setReceiversWhoDone(whoDone);
         }
 
-        boolean isTicked = task.getTicked();
-        task.setTicked(!isTicked);
+        if (task.getReceivers().size() == task.getReceiversWhoDone().size()) {
+            task.setIsDone(true);
+        }
+
         return taskRepository.save(task);
     }
 }

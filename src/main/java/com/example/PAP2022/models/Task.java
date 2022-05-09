@@ -34,7 +34,7 @@ public class Task {
     private LocalDateTime creationTime = LocalDateTime.now();
 
     @Column(nullable = false)
-    private Boolean ticked = false;
+    private Boolean isDone = false;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -56,6 +56,15 @@ public class Task {
             inverseJoinColumns = @JoinColumn(name = "application_user_id")
     )
     private List<ApplicationUser> receivers;
+
+    @JsonIgnore
+    @ManyToMany()
+    @JoinTable(
+            name = "tasks_receivers_who_done",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "application_user_id")
+    )
+    private List<ApplicationUser> receiversWhoDone;
 
     @JsonIgnore
     @ManyToOne()

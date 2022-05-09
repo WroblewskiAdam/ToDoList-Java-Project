@@ -29,6 +29,28 @@ public class TaskController {
         return ResponseEntity.ok().body(taskService.getAllTasks());
     }
 
+    @GetMapping("/get_receivers")
+    public ResponseEntity<?> getReceivers(@RequestParam Long taskId){
+        if(taskService.loadTaskById(taskId).isPresent()){
+            return ResponseEntity.ok().body(taskService.getTaskReceivers(taskId));
+        }
+        else{
+            return ResponseEntity.badRequest().body(
+                    new TaskNotFoundException("Could not find task with ID " + taskId).getMessage());
+        }
+    }
+
+    @GetMapping("/get_receivers_who_done")
+    public ResponseEntity<?> getTaskReceiversWhoDone(@RequestParam Long taskId){
+        if(taskService.loadTaskById(taskId).isPresent()){
+            return ResponseEntity.ok().body(taskService.getTaskReceiversWhoDone(taskId));
+        }
+        else{
+            return ResponseEntity.badRequest().body(
+                    new TaskNotFoundException("Could not find task with ID " + taskId).getMessage());
+        }
+    }
+
     @GetMapping("/today")
     public ResponseEntity<?> getTodayTasks(@RequestParam Long id) {
         if (applicationUserService.loadApplicationUserById(id).isPresent()) {
@@ -139,14 +161,25 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/get_receivers")
-    public ResponseEntity<?> getReceivers(@RequestParam Long id){
-        if(taskService.loadTaskById(id).isPresent()){
-            return ResponseEntity.ok().body(taskService.getTaskReceivers(id));
-        }
-        else{
+    @GetMapping("/done_given")
+    public ResponseEntity<?> getDoneGivenTasks(@RequestParam Long id) {
+        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
+            return ResponseEntity.ok().body(
+                    taskService.getDoneGivenTasks(applicationUserService.loadApplicationUserById(id).get()));
+        } else {
             return ResponseEntity.badRequest().body(
-                    new TaskNotFoundException("Could not find task with ID " + id).getMessage());
+                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
+        }
+    }
+    // z punktu widzenia użytkownika któremu zostało zlecone zadanie
+    @GetMapping("/done_received")
+    public ResponseEntity<?> getDoneReceivedTasks(@RequestParam Long id) {
+        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
+            return ResponseEntity.ok().body(
+                    taskService.getDoneReceivedTasks(applicationUserService.loadApplicationUserById(id).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
         }
     }
 
