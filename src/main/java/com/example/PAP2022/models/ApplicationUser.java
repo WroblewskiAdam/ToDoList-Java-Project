@@ -21,7 +21,7 @@ public class ApplicationUser {
     private String lastName;
     private String email;
     private String password;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private Image image;
 

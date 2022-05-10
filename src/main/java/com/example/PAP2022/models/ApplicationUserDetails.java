@@ -1,14 +1,14 @@
 package com.example.PAP2022.models;
 
-        import java.util.Collection;
-        import java.util.Collections;
-        import org.springframework.security.core.GrantedAuthority;
-        import org.springframework.security.core.authority.SimpleGrantedAuthority;
-        import org.springframework.security.core.userdetails.UserDetails;
+import java.util.Collection;
+import java.util.Collections;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-        import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class ApplicationUserDetailsImplementation implements UserDetails {
+public class ApplicationUserDetails implements UserDetails {
 
     private static final long serialVersionUID = 1L;
     private Long id;
@@ -18,25 +18,26 @@ public class ApplicationUserDetailsImplementation implements UserDetails {
     @JsonIgnore
     private String password;
     private Image image;
+
     private Collection<? extends GrantedAuthority> authorities;
     private final Boolean enabled;
 
-    public ApplicationUserDetailsImplementation(Long id, String firstName, String lastName, String email, String password, Image img,
+    public ApplicationUserDetails(Long id, String firstName, String lastName, String email, String password, Image image,
                                                 Collection<? extends GrantedAuthority> authorities, Boolean enabled) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.image = img;
+        this.image = image;
         this.authorities = authorities;
         this.enabled = enabled;
     }
 
-    public static ApplicationUserDetailsImplementation build(ApplicationUser user) {
+    public static ApplicationUserDetails build(ApplicationUser user) {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getApplicationUserRole().name());
 
-        return new ApplicationUserDetailsImplementation(
+        return new ApplicationUserDetails(
                 user.getId(),
                 user.getFirstName(),
                 user.getLastName(),

@@ -4,7 +4,7 @@ import com.example.PAP2022.exceptions.UserNotFoundException;
 import com.example.PAP2022.models.ApplicationUser;
 import com.example.PAP2022.models.Image;
 import com.example.PAP2022.payload.ApplicationUserRequest;
-import com.example.PAP2022.services.ApplicationUserDetailsServiceImplementation;
+import com.example.PAP2022.services.ApplicationUserDetailsService;
 import com.example.PAP2022.services.ImageService;
 import com.example.PAP2022.services.TaskService;
 import com.example.PAP2022.services.TeamService;
@@ -26,7 +26,7 @@ import java.io.IOException;
 public class ApplicationUserController {
 
     private final TeamService teamService;
-    private final ApplicationUserDetailsServiceImplementation applicationUserService;
+    private final ApplicationUserDetailsService applicationUserService;
     private final TaskService taskService;
     private final ImageService imageService;
     private final PasswordEncoder encoder;

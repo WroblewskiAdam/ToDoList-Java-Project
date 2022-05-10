@@ -4,6 +4,7 @@ package com.example.PAP2022.controllers;
 import javax.validation.Valid;
 
 import com.example.PAP2022.enums.ApplicationUserRole;
+import com.example.PAP2022.models.ApplicationUserDetails;
 import com.example.PAP2022.services.RegistrationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,6 @@ import com.example.PAP2022.payload.ApplicationUserRequest;
 import com.example.PAP2022.payload.AuthResponse;
 import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.security.jwt.JwtUnit;
-import com.example.PAP2022.models.ApplicationUserDetailsImplementation;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -42,7 +42,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 
-        ApplicationUserDetailsImplementation userDetails = (ApplicationUserDetailsImplementation) authentication.getPrincipal();
+        ApplicationUserDetails userDetails = (ApplicationUserDetails) authentication.getPrincipal();
         if (userDetails.isEnabled()) {
             String role = userDetails.getAuthorities().toString();
 
