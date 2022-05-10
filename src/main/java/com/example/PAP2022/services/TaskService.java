@@ -122,6 +122,58 @@ public class TaskService {
 
     // ############### Team filters ##################
 
+//    Wszysktie zadania expired teamu
+    public List<Task> getAllExpiredTasksTeam(Team team) {
+        return team.getTeamTasks().stream()
+                .filter(task -> task.getDeadline().isBefore(LocalDateTime.now()))
+                .collect(Collectors.toList());
+    }
+
+//    wszystkie zrobione w teamie
+    public List<Task> getAllDoneTasksTeam(Team team) {
+        return team.getTeamTasks().stream()
+                .filter(Task::getIsDone)
+                .collect(Collectors.toList());
+    }
+
+//    wszystkie zadania które otrzymaliśmy w teamie
+    public List<Task> getReceivedTasksTeam(Team team, ApplicationUser user) {
+        List<Task> teamTasks = new ArrayList<>(team.getTeamTasks());
+        List<Task> userTasks = new ArrayList<>(user.getTasks());
+        userTasks.retainAll(teamTasks);
+        return userTasks;
+    }
+
+//    wszystkie zadania które daliśmy w teamie
+    public List<Task> getGivenTasksTeam(Team team, ApplicationUser user) {
+        List<Task> teamTasks = new ArrayList<>(team.getTeamTasks());
+        List<Task> userTasks = new ArrayList<>(taskRepository.findByGiver(user));
+        userTasks.retainAll(teamTasks);
+        return userTasks;
+    }
+
+//    wszystkie zadania które otrzymaliśmy w teamie i są expired
+    public List<Task> getReceivedExpiredTasksTeam(Team team, ApplicationUser user) {
+        List<Task> teamTasks = new ArrayList<>(team.getTeamTasks());
+        List<Task> userTasks = new ArrayList<>(user.getTasks());
+        userTasks.retainAll(teamTasks);
+        return userTasks.stream()
+                .filter(task -> task.getDeadline().isBefore(LocalDateTime.now()))
+                .collect(Collectors.toList());
+    }
+
+//        wszystkie zadania które zrobiliśmy w teamie
+    public List<Task> getDoneTasksTeam(Team team, ApplicationUser user) {
+        List<Task> teamTasks = new ArrayList<>(team.getTeamTasks());
+        List<Task> userTasks = new ArrayList<>(user.getTasks());
+        userTasks.retainAll(teamTasks);
+        return userTasks.stream()
+                .filter(Task::getIsDone)
+                .collect(Collectors.toList());
+    }
+
+
+//    Wszystkie w teamie na dziś
     public List<Task> getTodayTasksTeam(Team team) {
         return team.getTeamTasks().stream()
                 .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(1)))
@@ -129,6 +181,7 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+//    Wszysktie które daliśmy na dzisiaj w teamie
     public List<Task> getTodayTasksGivenTeam(Team team, ApplicationUser user) {
         List<Task> teamTasks = new ArrayList<>(team.getTeamTasks());
         List<Task> userTasks = new ArrayList<>(taskRepository.findByGiver(user));
@@ -139,6 +192,29 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+//        Wszysktie które na dzisiaj otrzymaliśmy w teamie
+    public List<Task> getTodayTasksReceivedTeam(Team team, ApplicationUser user) {
+    List<Task> teamTasks = new ArrayList<>(team.getTeamTasks());
+    List<Task> userTasks = new ArrayList<>(user.getTasks());
+    userTasks.retainAll(teamTasks);
+    return userTasks.stream()
+            .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(1)))
+            .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
+            .collect(Collectors.toList());
+}
+
+//Do czegoś takiego chyba  by potrzeba ticked_time w bazie i takie filtroawnie chyba nie potrzebne
+////      Wszystkie które dzisiaj zrobiliśmy w teamie
+//    public List<Task> getTodayDoneTasksTeam(Team team, ApplicationUser user) {
+//        List<Task> teamTasks = new ArrayList<>(team.getTeamTasks());
+//        List<Task> userTasks = new ArrayList<>(user.getTasks());
+//        userTasks.retainAll(teamTasks);
+//        return userTasks.stream()
+//                .filter(Task::getIsDone)
+//                .collect(Collectors.toList());
+//    }
+
+//        wszystkie w teamie na 7 dni
     public List<Task> getSevenDaysTasksTeam(Team team) {
         return team.getTeamTasks().stream()
                 .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(7)))
@@ -146,6 +222,28 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+
+//      wszystkie które daliśmy w teamie na 7 dni
+    public List<Task> getSevenDaysTasksGivenTeam(Team team, ApplicationUser user) {
+        List<Task> teamTasks = new ArrayList<>(team.getTeamTasks());
+        List<Task> userTasks = new ArrayList<>(taskRepository.findByGiver(user));
+        userTasks.retainAll(teamTasks);
+        return userTasks.stream()
+                .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(7)))
+                .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
+                .collect(Collectors.toList());
+    }
+
+//    wszystkie które otrzymaliśmy w teamie na 7 dni
+    public List<Task> getSevenDaysReceivedTasksTeam(Team team, ApplicationUser user) {
+        List<Task> teamTasks = new ArrayList<>(team.getTeamTasks());
+        List<Task> userTasks = new ArrayList<>(user.getTasks());
+        userTasks.retainAll(teamTasks);
+        return userTasks.stream()
+                .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(7)))
+                .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
+                .collect(Collectors.toList());
+    }
 
     public Long deleteTask(Long id) {
         taskRepository.deleteById(id);

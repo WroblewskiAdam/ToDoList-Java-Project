@@ -226,7 +226,81 @@ public class TaskController {
         }
     }
 
-    //Filtrowanie po Teamie
+//    Filtrowanie po Teamie
+
+//    stare w całym teamie
+    @GetMapping("/team/expired_all")
+    public ResponseEntity<?> getAllExpiredTasksTeam(@RequestParam Long teamid) {
+        if (teamService.loadTeamById(teamid).isPresent()){
+            return ResponseEntity.ok().body(
+                    taskService.getAllExpiredTasksTeam(teamService.loadTeamById(teamid).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new TeamNotFoundException("Could not find team with ID " + teamid).getMessage());
+        }
+    }
+
+    //    Wszystkie zrobione w teamie
+    @GetMapping("/team/done_all")
+    public ResponseEntity<?> getAllDoneTasksTeam(@RequestParam Long teamid) {
+        if (teamService.loadTeamById(teamid).isPresent()){
+            return ResponseEntity.ok().body(
+                    taskService.getAllDoneTasksTeam(teamService.loadTeamById(teamid).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new TeamNotFoundException("Could not find team with ID " + teamid).getMessage());
+        }
+    }
+
+    //    wszystkie zadania które otrzymaliśmy w teamie
+    @GetMapping("/team/received")
+    public ResponseEntity<?> getReceivedTasksTeam(@RequestParam Long teamid, @RequestParam Long userid) {
+        if (teamService.loadTeamById(teamid).isPresent() && applicationUserService.loadApplicationUserById(userid).isPresent()){
+            return ResponseEntity.ok().body(
+                    taskService.getReceivedTasksTeam(teamService.loadTeamById(teamid).get(),applicationUserService.loadApplicationUserById(userid).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new TeamNotFoundException("Could not find team with ID " + teamid + " nor user with ID " + userid).getMessage());
+        }
+    }
+
+//    wszystkie zadania które daliśmy w teamie
+    @GetMapping("/team/given")
+    public ResponseEntity<?> getGivenTasksTeam(@RequestParam Long teamid, @RequestParam Long userid) {
+        if (teamService.loadTeamById(teamid).isPresent() && applicationUserService.loadApplicationUserById(userid).isPresent()){
+            return ResponseEntity.ok().body(
+                    taskService.getGivenTasksTeam(teamService.loadTeamById(teamid).get(),applicationUserService.loadApplicationUserById(userid).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new TeamNotFoundException("Could not find team with ID " + teamid + " nor user with ID " + userid).getMessage());
+        }
+    }
+
+//    Wszysktie które otrzymaliśmy w teamie i są expired
+    @GetMapping("/team/expired")
+    public ResponseEntity<?> getExpiredReceivedTasksTeam(@RequestParam Long teamid, @RequestParam Long userid) {
+        if (teamService.loadTeamById(teamid).isPresent() && applicationUserService.loadApplicationUserById(userid).isPresent()){
+            return ResponseEntity.ok().body(
+                    taskService.getReceivedExpiredTasksTeam(teamService.loadTeamById(teamid).get(),applicationUserService.loadApplicationUserById(userid).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new TeamNotFoundException("Could not find team with ID " + teamid + " nor user with ID " + userid).getMessage());
+        }
+    }
+
+//    Wszystkie zadania które zrobiliśmy w teamie
+    @GetMapping("/team/done")
+    public ResponseEntity<?> getDoneTasksTeam(@RequestParam Long teamid, @RequestParam Long userid) {
+        if (teamService.loadTeamById(teamid).isPresent() && applicationUserService.loadApplicationUserById(userid).isPresent()){
+            return ResponseEntity.ok().body(
+                    taskService.getDoneTasksTeam(teamService.loadTeamById(teamid).get(),applicationUserService.loadApplicationUserById(userid).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new TeamNotFoundException("Could not find team with ID " + teamid + " nor user with ID " + userid).getMessage());
+        }
+    }
+
+//    wszystkie w teamie na dziś
     @GetMapping("/team/today")
     public ResponseEntity<?> getTodayTasksTeam(@RequestParam Long teamid) {
         if (teamService.loadTeamById(teamid).isPresent()){
@@ -238,6 +312,7 @@ public class TaskController {
         }
     }
 
+//    wszystkie które daliśmy na dzisiaj w teamie
     @GetMapping("/team/today_given")
     public ResponseEntity<?> getTodayTasksGivenTeam(@RequestParam Long teamid, @RequestParam Long userid ) {
         if (teamService.loadTeamById(teamid).isPresent() && applicationUserService.loadApplicationUserById(userid).isPresent()){
@@ -245,10 +320,36 @@ public class TaskController {
                     taskService.getTodayTasksGivenTeam(teamService.loadTeamById(teamid).get(),applicationUserService.loadApplicationUserById(userid).get()));
         } else {
             return ResponseEntity.badRequest().body(
-                    new TeamNotFoundException("Could not find team with ID " + teamid).getMessage());
+                    new TeamNotFoundException("Could not find team with ID " + teamid + " nor user with ID " + userid).getMessage());
         }
     }
 
+//    Wszysktie które na dzisiaj otrzymaliśmy w teamie
+    @GetMapping("/team/today_received")
+    public ResponseEntity<?> getTodayTasksReceivedTeam(@RequestParam Long teamid, @RequestParam Long userid ) {
+        if (teamService.loadTeamById(teamid).isPresent() && applicationUserService.loadApplicationUserById(userid).isPresent()){
+            return ResponseEntity.ok().body(
+                    taskService.getTodayTasksReceivedTeam(teamService.loadTeamById(teamid).get(),applicationUserService.loadApplicationUserById(userid).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new TeamNotFoundException("Could not find team with ID " + teamid + " nor user with ID " + userid).getMessage());
+        }
+    }
+
+//    do czegoś takiego chyba by potrzeba ticked_time w bazie
+////          Wszystkie które dzisiaj zrobiliśmy w teamie
+//    @GetMapping("/team/today_done")
+//    public ResponseEntity<?> getTodayDoneTasksTeam(@RequestParam Long teamid, @RequestParam Long userid) {
+//        if (teamService.loadTeamById(teamid).isPresent() && applicationUserService.loadApplicationUserById(userid).isPresent()){
+//            return ResponseEntity.ok().body(
+//                    taskService.getTodayDoneTasksTeam(teamService.loadTeamById(teamid).get(),applicationUserService.loadApplicationUserById(userid).get()));
+//        } else {
+//            return ResponseEntity.badRequest().body(
+//                    new TeamNotFoundException("Could not find team with ID " + teamid + " nor user with ID " + userid).getMessage());
+//        }
+//    }
+
+//    wszystkie w teamie na 7 dni
     @GetMapping("/team/seven_days")
     public ResponseEntity<?> getSevenDaysTasksTeam(@RequestParam Long teamid) {
         if (teamService.loadTeamById(teamid).isPresent()) {
@@ -260,4 +361,27 @@ public class TaskController {
         }
     }
 
+//  wszystkie które daliśmy w teamie na 7 dni
+    @GetMapping("/team/seven_days_given")
+    public ResponseEntity<?> getSevenDaysTasksGivenTeam(@RequestParam Long teamid, @RequestParam Long userid ) {
+        if (teamService.loadTeamById(teamid).isPresent() && applicationUserService.loadApplicationUserById(userid).isPresent()){
+            return ResponseEntity.ok().body(
+                    taskService.getSevenDaysTasksGivenTeam(teamService.loadTeamById(teamid).get(),applicationUserService.loadApplicationUserById(userid).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new TeamNotFoundException("Could not find team with ID " + teamid + " nor user with ID " + userid).getMessage());
+        }
+    }
+
+//    wszystkie które otrzymaliśmy w teamie na 7 dni
+    @GetMapping("/team/seven_days_received")
+    public ResponseEntity<?> getSevenDaysReceivedTasksTeam(@RequestParam Long teamid, @RequestParam Long userid) {
+        if (teamService.loadTeamById(teamid).isPresent() && applicationUserService.loadApplicationUserById(userid).isPresent()){
+            return ResponseEntity.ok().body(
+                    taskService.getSevenDaysReceivedTasksTeam(teamService.loadTeamById(teamid).get(),applicationUserService.loadApplicationUserById(userid).get()));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new TeamNotFoundException("Could not find team with ID " + teamid + " nor user with ID " + userid).getMessage());
+        }
+    }
 }
