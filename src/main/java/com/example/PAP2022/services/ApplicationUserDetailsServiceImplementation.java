@@ -24,6 +24,7 @@ import java.util.UUID;
 public class ApplicationUserDetailsServiceImplementation implements UserDetailsService {
     private final ApplicationUserRepository applicationUserRepository;
     private final TokenService registrationTokenService;
+    private final ImageService imageService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -53,6 +54,10 @@ public class ApplicationUserDetailsServiceImplementation implements UserDetailsS
 
     public List<Task> getAllTasks(Long id){
         return applicationUserRepository.getById(id).getTasks();
+    }
+
+    public Image getImage(Long id){
+        return imageService.getImage(applicationUserRepository.getById(id));
     }
 
     public ApplicationUser editApplicationUser(ApplicationUser applicationUser) {

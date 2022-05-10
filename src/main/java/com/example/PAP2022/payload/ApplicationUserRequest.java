@@ -1,12 +1,15 @@
 package com.example.PAP2022.payload;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class ApplicationUserRequest {
   @NotBlank
   private String firstName;
@@ -22,5 +25,5 @@ public class ApplicationUserRequest {
   private String password;
 
   @NotBlank
-  private String img;
+  private MultipartFile image;
 }

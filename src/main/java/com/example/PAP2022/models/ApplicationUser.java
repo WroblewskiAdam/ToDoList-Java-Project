@@ -21,7 +21,9 @@ public class ApplicationUser {
     private String lastName;
     private String email;
     private String password;
-    private String img; // TODO trzeba ewentualnie zmienić typ
+    @ManyToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
 
     @JsonIgnore
     @ManyToMany(
@@ -45,13 +47,13 @@ public class ApplicationUser {
                            String lastName,
                            String email,
                            String password,
-                           String img,
+                           Image img,
                            ApplicationUserRole applicationUserRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.img = img;
+        this.image = img;
         this.applicationUserRole = applicationUserRole;
     }
 }

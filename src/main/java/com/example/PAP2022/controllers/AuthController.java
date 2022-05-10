@@ -22,6 +22,7 @@ import com.example.PAP2022.payload.AuthResponse;
 import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.security.jwt.JwtUnit;
 import com.example.PAP2022.models.ApplicationUserDetailsImplementation;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @Slf4j
@@ -60,6 +61,25 @@ public class AuthController {
         }
     }
 
+//    TODO jedna wersja jest do rejestracji za pomocą postamana
+    @PostMapping("/registration_postman")
+    public ResponseEntity<?> registerUser(
+            @RequestParam("firstName") String firstName,
+            @RequestParam("lastName") String lastName,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            @RequestParam("image") MultipartFile file) {
+
+        ApplicationUserRequest signUpRequest = new ApplicationUserRequest(firstName, lastName, email, password, file);
+        try {
+            registrationService.register(signUpRequest);
+            return ResponseEntity.ok("User is registered");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+//    TODO druga wersja jest do rejestracji za pomocą przeglądarki
     @PostMapping("/registration")
     public ResponseEntity<?> registerUser(@Valid @RequestBody ApplicationUserRequest signUpRequest) {
         try {

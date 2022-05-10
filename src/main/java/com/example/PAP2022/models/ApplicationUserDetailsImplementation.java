@@ -17,18 +17,18 @@ public class ApplicationUserDetailsImplementation implements UserDetails {
     private String email;
     @JsonIgnore
     private String password;
-    private String img; // TODO trzeba ewentualnie zmienić typ
+    private Image image;
     private Collection<? extends GrantedAuthority> authorities;
     private final Boolean enabled;
 
-    public ApplicationUserDetailsImplementation(Long id, String firstName, String lastName, String email, String password, String img,
+    public ApplicationUserDetailsImplementation(Long id, String firstName, String lastName, String email, String password, Image img,
                                                 Collection<? extends GrantedAuthority> authorities, Boolean enabled) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.img = img;
+        this.image = img;
         this.authorities = authorities;
         this.enabled = enabled;
     }
@@ -42,7 +42,7 @@ public class ApplicationUserDetailsImplementation implements UserDetails {
                 user.getLastName(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getImg(),
+                user.getImage(),
                 Collections.singleton(authority),
                 user.getEnabled()
         );
