@@ -42,10 +42,53 @@ const getReceiversWhoDone = async (id) => {
     return axios.get(API_URL + "/get_receivers_who_done", {headers: authHeader(), params: {taskId: id}}).then(res => res.data).catch((error) => console.log(error));
 }
 
+const getDoneTasks = async (teamId) => {
+    // const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+    return axios.get(API_URL + "/team/done_all", {headers: authHeader(), params: {teamid: teamId}}).then(res => res.data).catch((error) => console.log(error));
+}
+
+const getTodayTasks = async (teamId) => {
+    return axios.get(API_URL + "/team/today", {headers: authHeader(), params: {teamid: teamId}}).then(res => res.data).catch((error) => console.log(error));
+}
+
+const getSevenDaysTasks = async (teamId) => {
+    console.log(axios.get(API_URL + "/team/seven_days", {headers: authHeader(), params: {teamid: teamId}}));
+    return axios.get(API_URL + "/team/seven_days", {headers: authHeader(), params: {teamid: teamId}}).then(res => {
+        console.log(res);
+        console.log(res.data);
+        return res.data;
+    }).catch((error) => console.log(error));
+}
+
+const getExpiredTasks = async (teamId) => {
+    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+    
+    return axios.get(API_URL + "/team/expired", {headers: authHeader(), params: {teamid: teamId, userid: userId}}).then(res => res.data).catch((error) => console.log(error));
+}
+
+const tickTask = async (taskId) => {
+    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+
+    return axios({
+        method: 'put',
+        url: API_URL + "/tick",
+        params: {
+            "taskId" : taskId,
+            "userId" : userId
+        },
+        headers: authHeader()
+    }).catch(e => console.log(e));
+}
+
 const TaskService = {
     createTask,
     getReceivers,
-    getReceiversWhoDone
+    getReceiversWhoDone,
+    getDoneTasks,
+    getTodayTasks,
+    getSevenDaysTasks,
+    getExpiredTasks,
+    tickTask
 };
 
 export default TaskService;

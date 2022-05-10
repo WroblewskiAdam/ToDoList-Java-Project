@@ -39,9 +39,11 @@ function TaskModal(props) {
     let modalRef = useRef();
 
     useEffect(() => {
-        TeamService.getTeamMembers(props.teamId).then(res => {
-            setMembers(res);
-        });
+        if(props.teamId){
+            TeamService.getTeamMembers(props.teamId).then(res => {
+                setMembers(res);
+            });
+        }
     }, [props.teamId]);
 
     const closeModal = () =>{
@@ -86,9 +88,11 @@ function TaskModal(props) {
             receiversIds,
             props.teamId
         ).then(res => {
-            TeamService.getTeamTasks(props.teamId).then(res => {
-                props.setTasks(res);
-            });
+            if(props.teamId){
+                TeamService.getTeamTasks(props.teamId).then(res => {
+                    props.setTasks(res);
+                });
+            }
         }).catch(e => console.log(e));
 
         // console.log(
