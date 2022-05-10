@@ -1,9 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import TaskService from '../../services/tasksService';
 import "./TaskItem.scss";
 
 function TaskItem(props) {
     const [descr, setDescr] = useState(false);
-    
+    const [receivers, setReceivers] = useState([]);
+    const [receiversWhoDone, setReceiversWhoDone] = useState([]);
+
+    useEffect(() => {
+        TaskService.getReceivers(props.id).then(res => {
+            setReceivers(res);
+        });
+
+        TaskService.getReceiversWhoDone(props.id).then(res => {
+            setReceiversWhoDone(res);
+        });
+    }, []);
 
     const handleTaskItemClick = () => {
         setDescr((descr) => !descr);
@@ -68,8 +80,11 @@ function TaskItem(props) {
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M186.1 .1032c-105.1 3.126-186.1 94.75-186.1 199.9v264c0 14.25 17.3 21.38 27.3 11.25l24.95-18.5c6.625-5.001 16-4.001 21.5 2.25l43 48.31c6.25 6.251 16.37 6.251 22.62 0l40.62-45.81c6.375-7.251 17.62-7.251 24 0l40.63 45.81c6.25 6.251 16.38 6.251 22.62 0l43-48.31c5.5-6.251 14.88-7.251 21.5-2.25l24.95 18.5c10 10.13 27.3 3.002 27.3-11.25V192C384 83.98 294.9-3.147 186.1 .1032zM128 224c-17.62 0-31.1-14.38-31.1-32.01s14.38-32.01 31.1-32.01s32 14.38 32 32.01S145.6 224 128 224zM256 224c-17.62 0-32-14.38-32-32.01s14.38-32.01 32-32.01c17.62 0 32 14.38 32 32.01S273.6 224 256 224z"/></svg>
                     <div className="taskItem__time">
-                        People:
-                        5
+                        People: {receivers.length}
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M160 32V64H288V32C288 14.33 302.3 0 320 0C337.7 0 352 14.33 352 32V64H400C426.5 64 448 85.49 448 112V160H0V112C0 85.49 21.49 64 48 64H96V32C96 14.33 110.3 0 128 0C145.7 0 160 14.33 160 32zM0 192H448V464C448 490.5 426.5 512 400 512H48C21.49 512 0 490.5 0 464V192zM328.1 304.1C338.3 295.6 338.3 280.4 328.1 271C319.6 261.7 304.4 261.7 295 271L200 366.1L152.1 319C143.6 309.7 128.4 309.7 119 319C109.7 328.4 109.7 343.6 119 352.1L183 416.1C192.4 426.3 207.6 426.3 216.1 416.1L328.1 304.1z"/></svg>
+                    <div className="taskItem__time">
+                        Done: {receiversWhoDone.length}
                     </div>
                 </div>
             </div>

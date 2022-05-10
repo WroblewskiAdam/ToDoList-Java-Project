@@ -39,10 +39,10 @@ function TaskModal(props) {
     let modalRef = useRef();
 
     useEffect(() => {
-        TeamService.getTeamMembers(1).then(res => {
+        TeamService.getTeamMembers(props.teamId).then(res => {
             setMembers(res);
         });
-    }, []);
+    }, [props.teamId]);
 
     const closeModal = () =>{
         props.handleClose();
@@ -107,9 +107,8 @@ function TaskModal(props) {
         setDescription("");
         setDateTime(new Date());
         setPriority("GREEN");
-        setMembers([]);
         setSelectedMembers([]);
-        
+        setMembers([]);
         closeModal();
     }
 
@@ -125,7 +124,7 @@ function TaskModal(props) {
     return (
         <Modal
             open={props.open}
-            onClose={props.handleClose}
+            onClose={closeModal}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             className="taskModal"
@@ -133,9 +132,9 @@ function TaskModal(props) {
             <Box
                 sx={{"border":"none"}}
             >
-                <div ref={modalRef} className="taskModal__container" onPressOut={closeModal}>
+                <div ref={modalRef} className="taskModal__container">
                     <div className="taskModal__title">
-                        Add Team
+                        Add Task
                     </div>
                     <div className="taskModal__block">
                         <div className="taskModal__input">
@@ -151,7 +150,7 @@ function TaskModal(props) {
                                 sx={{"width":"100%", "marginBottom":"20px"}}
                                 rows={4}
                                 inputProps={{style: {fontSize: 20}}}
-                                InputLabelProps={{style: {fontSize: 20, backgroundColor: "#fff"}}}
+                                InputLabelProps={{style: {fontSize: 20, backgroundColor: "#f9f9f9"}}}
                             />
                         </div>
                         <div className="taskModal__picker">
@@ -187,8 +186,8 @@ function TaskModal(props) {
                             </div>
                         </div>
                         <div className="taskModal__users">
-                            <FormControl sx={{width: "100%" }}>
-                                <InputLabel sx={{"backgroundColor":"#fff"}}>Members</InputLabel>
+                            <FormControl sx={{width: "100%", "marginBottom" : "10px"}}>
+                                <InputLabel sx={{"backgroundColor":"#f9f9f9"}}>Members</InputLabel>
                                 <Select
                                     labelId="demo-multiple-checkbox-label"
                                     id="demo-multiple-checkbox"
@@ -199,7 +198,7 @@ function TaskModal(props) {
                                     renderValue={(selected) => selected.join(', ')}
                                     MenuProps={MenuProps}
                                 >
-                                    {   
+                                    { 
                                         
                                         members ? members.map((member) => {
                                         const name = member.firstName + " " + member.lastName;
@@ -214,7 +213,7 @@ function TaskModal(props) {
                                 </Select>
                             </FormControl>
                         </div>
-                        .
+                        
                         <div className="taskModal__buttons">
                             <div className="taskModal__btn add_btn" onClick={handleAddButton}>Add</div>
                             <div className="taskModal__btn" onClick={closeModal} >Cancel</div>

@@ -20,11 +20,11 @@ import java.util.stream.Collectors;
 public class TaskService {
 
     private final TaskRepository taskRepository;
-    private final ApplicationUserDetailsServiceImplementation applicationUserService;
+    private final ApplicationUserDetailsService applicationUserService;
     private final TeamService teamService;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository, ApplicationUserDetailsServiceImplementation applicationUserService, TeamService teamService) {
+    public TaskService(TaskRepository taskRepository, ApplicationUserDetailsService applicationUserService, TeamService teamService) {
         this.taskRepository = taskRepository;
         this.applicationUserService = applicationUserService;
         this.teamService = teamService;

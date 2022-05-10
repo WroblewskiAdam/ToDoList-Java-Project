@@ -47,56 +47,13 @@
         padding: 20px;
         border-left: 2px solid $white-gray;
         &-fillters{
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            background-color: $white-color;
-            padding: 5px 10px;
-            border-radius: 5px;
-            width: 250px;
-            margin-left: 20px;
             &-item{
-                margin-left: 20px;
-                &:first-child{
-                    margin-left: 0;
-                }
-                button{
-                    background-color: $aliceBlue;
-                    border: none;
-                    color: $nickel;
-                    &:focus{
-                        box-shadow: none;
-                        background-color: $mediumSlateBlue;
-                        color: $white-color;
-                    }
-                    &:hover{
-                        color: $white-color;
-                        background-color: $mediumSlateBlue;
-                    }
-                }
-                div{
-                    padding: 8px 5px;
-                    a{
-                        color: $nickel;
-                        border-radius: 8px;
-                        &:hover{
-                            background-color: $nickel;
-                            color: $white-color;
-                        }
-                    }
-                    &:focus{
-                        box-shadow: none;
-                        background-color: $mediumSlateBlue;
-                        color: $white-color;
-                    }
-                }
-                .btn-primary{
-                    &:focus{
-                        box-shadow: none;
-                        background-color: $mediumSlateBlue;
-                        color: $white-color;
-                    }
-                }
+                text-align: center;
+                width: 180px;
+            }
+            &-select{
+                height: 50px;
+                
             }
         }
         &-body{
@@ -131,7 +88,7 @@
         display: block;
         background-color: $aliceBlue;
         border-radius: 5px;
-        padding: 6px;
+        padding: 13px 15px;
         color: $nickel;
         transition: all .3s;
         &:hover{
