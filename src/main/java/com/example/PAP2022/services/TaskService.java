@@ -120,6 +120,33 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+    // ############### Team filters ##################
+
+    public List<Task> getTodayTasksTeam(Team team) {
+        return team.getTeamTasks().stream()
+                .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(1)))
+                .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> getTodayTasksGivenTeam(Team team, ApplicationUser user) {
+        List<Task> teamTasks = new ArrayList<>(team.getTeamTasks());
+        List<Task> userTasks = new ArrayList<>(taskRepository.findByGiver(user));
+        userTasks.retainAll(teamTasks);
+        return userTasks.stream()
+                .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(1)))
+                .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> getSevenDaysTasksTeam(Team team) {
+        return team.getTeamTasks().stream()
+                .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(7)))
+                .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
+                .collect(Collectors.toList());
+    }
+
+
     public Long deleteTask(Long id) {
         taskRepository.deleteById(id);
         return id;
