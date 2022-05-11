@@ -2,6 +2,7 @@ package com.example.PAP2022.controllers;
 
 import com.example.PAP2022.exceptions.TaskNotFoundException;
 import com.example.PAP2022.exceptions.TeamNotFoundException;
+import com.example.PAP2022.exceptions.UserIsNotAssignedToTaskException;
 import com.example.PAP2022.exceptions.UserNotFoundException;
 import com.example.PAP2022.payload.TaskRequest;
 import com.example.PAP2022.services.ApplicationUserDetailsService;
@@ -225,6 +226,21 @@ public class TaskController {
                     new UserNotFoundException("Could not find user with ID " + id).getMessage());
         }
     }
+
+    @GetMapping("/check_if_task_is_done_by_user")
+    public ResponseEntity<?> CheckIfTaskIsDoneByUser(@RequestParam Long taskId, @RequestParam Long userId) {
+        if (!(taskService.loadTaskById(taskId).isPresent() && applicationUserService.loadApplicationUserById(userId).isPresent())) {
+            return ResponseEntity.badRequest().body(
+                    new TaskNotFoundException("Could not find task with ID " + taskId + " or user with ID " + userId).getMessage());
+        } else if (!(taskService.getTaskReceivers(taskId).contains(applicationUserService.loadApplicationUserById(userId).get()))){
+            return ResponseEntity.badRequest().body(
+                    new UserIsNotAssignedToTaskException("User with Id  " + userId + " is not assigned to task with Id " + taskId).getMessage());
+        } else {
+            return ResponseEntity.ok().body(
+                    taskService.CheckIfTaskIsDoneByUser(taskId, userId));
+        }
+    }
+
 
 //    Filtrowanie po Teamie
 

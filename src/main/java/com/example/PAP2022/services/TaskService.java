@@ -120,6 +120,11 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+    public Boolean CheckIfTaskIsDoneByUser(Long taskId, Long userId){
+        ApplicationUser user = applicationUserService.loadApplicationUserById(userId).get();
+        return (taskRepository.findById(taskId).get().getReceiversWhoDone().contains(user));
+    }
+
     // ############### Team filters ##################
 
 //    Wszysktie zadania expired teamu
