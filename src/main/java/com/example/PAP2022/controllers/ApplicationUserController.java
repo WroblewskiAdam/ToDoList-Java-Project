@@ -4,6 +4,7 @@ import com.example.PAP2022.exceptions.UserNotFoundException;
 import com.example.PAP2022.models.ApplicationUser;
 import com.example.PAP2022.models.Image;
 import com.example.PAP2022.payload.ApplicationUserRequest;
+import com.example.PAP2022.security.PasswordEncoder;
 import com.example.PAP2022.services.ApplicationUserDetailsService;
 import com.example.PAP2022.services.ImageService;
 import com.example.PAP2022.services.TaskService;
@@ -12,7 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -104,7 +105,8 @@ public class ApplicationUserController {
             applicationUser.setFirstName(applicationUserRequest.getFirstName());
             applicationUser.setLastName(applicationUserRequest.getLastName());
             applicationUser.setImage(image);
-            applicationUser.setPassword(encoder.encode(applicationUserRequest.getPassword()));
+            applicationUser.setPassword(encoder.bCryptPasswordEncoder()
+                    .encode(applicationUserRequest.getPassword()));
 
             return ResponseEntity.ok(applicationUserService.editApplicationUser(applicationUser));
         } else {

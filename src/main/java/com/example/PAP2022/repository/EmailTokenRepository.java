@@ -1,7 +1,7 @@
 package com.example.PAP2022.repository;
 
 import com.example.PAP2022.models.ApplicationUser;
-import com.example.PAP2022.models.RegistrationToken;
+import com.example.PAP2022.models.EmailToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,14 +13,13 @@ import java.util.Optional;
 
 @Repository
 @Transactional
-public interface TokenRepository extends JpaRepository<RegistrationToken, Long> {
+public interface EmailTokenRepository extends JpaRepository<EmailToken, Long> {
 
-    Optional<RegistrationToken> findByToken(String token);
-    Optional<RegistrationToken> findByApplicationUser(String token);
+    Optional<EmailToken> findByToken(String token);
     void deleteByApplicationUser(ApplicationUser user);
 
     @Transactional
     @Modifying
-    @Query("UPDATE RegistrationToken rt " + "SET rt.confirmationTime = ?2 " + "WHERE rt.token = ?1")
+    @Query("UPDATE EmailToken et " + "SET et.confirmationTime = ?2 " + "WHERE et.token = ?1")
     int updateConfirmationTime(String token, LocalDateTime confirmationTime);
 }

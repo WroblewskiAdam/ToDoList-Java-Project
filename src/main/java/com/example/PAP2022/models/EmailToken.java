@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @Entity
-public class RegistrationToken {
+public class EmailToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +28,10 @@ public class RegistrationToken {
     )
     private ApplicationUser applicationUser;
 
-    public RegistrationToken(String token,
-                             LocalDateTime creatingTime,
-                             LocalDateTime expiringTime,
-                             ApplicationUser applicationUser) {
+    public EmailToken(String token,
+                      LocalDateTime creatingTime,
+                      LocalDateTime expiringTime,
+                      ApplicationUser applicationUser) {
         this.token = token;
         this.creatingTime = creatingTime;
         this.expiringTime = expiringTime;

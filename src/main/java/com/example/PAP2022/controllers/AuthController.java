@@ -3,9 +3,8 @@ package com.example.PAP2022.controllers;
 
 import javax.validation.Valid;
 
-import com.example.PAP2022.enums.ApplicationUserRole;
 import com.example.PAP2022.models.ApplicationUserDetails;
-import com.example.PAP2022.services.RegistrationService;
+import com.example.PAP2022.services.AuthService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +12,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.PAP2022.models.ApplicationUser;
 import com.example.PAP2022.payload.LoginRequest;
 import com.example.PAP2022.payload.ApplicationUserRequest;
 import com.example.PAP2022.payload.AuthResponse;
-import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.security.jwt.JwtUnit;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,7 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
-    private final RegistrationService registrationService;
+    private final AuthService authService;
     private final JwtUnit jwtUtils;
 
     @PostMapping("/login")
@@ -72,7 +68,7 @@ public class AuthController {
 
         ApplicationUserRequest signUpRequest = new ApplicationUserRequest(firstName, lastName, email, password, file);
         try {
-            registrationService.register(signUpRequest);
+            authService.register(signUpRequest);
             return ResponseEntity.ok("User is registered");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -83,7 +79,7 @@ public class AuthController {
     @PostMapping("/registration")
     public ResponseEntity<?> registerUser(@Valid @RequestBody ApplicationUserRequest signUpRequest) {
         try {
-            registrationService.register(signUpRequest);
+            authService.register(signUpRequest);
             return ResponseEntity.ok("User is registered");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -91,10 +87,40 @@ public class AuthController {
     }
 
     @GetMapping("/confirmation")
-    public ResponseEntity<?> confirmation(@RequestParam("token") String registrationToken) {
+    public ResponseEntity<?> confirmation(@RequestParam("token") String token) {
         try {
-            registrationService.confirmToken(registrationToken);
+            authService.confirmApplicationUser(token);
             return ResponseEntity.ok("Email has been confirmed");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/reset_password_email")
+    public ResponseEntity<?> sendResetPasswordEmail(@RequestParam("email") String email) {
+        try {
+            authService.sendResetPasswordEmail(email);
+            return ResponseEntity.ok("Email has just been sent");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/reset_password_token")
+    public ResponseEntity<?> getResetPasswordToken(@RequestParam("token") String token) {
+        try {
+            return ResponseEntity.ok(authService.getApplicationUserByResetPasswordToken(token));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // TODO trzeba zakodować hasło już w części webowej !!!!!
+    @PostMapping("/reset_password")
+    public ResponseEntity<?> resetPassword(@RequestParam("password") String password, @RequestParam("id") Long id) {
+        try {
+            authService.resetApplicationUserPassword(password, id);
+            return ResponseEntity.ok("Password has been changed");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
