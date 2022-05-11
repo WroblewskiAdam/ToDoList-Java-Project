@@ -1,14 +1,9 @@
 import React, { useRef } from 'react';
 import { useState, useEffect} from 'react';
 import "./TeamModal.scss"
-import useOuterClick from '../../hooks/useClickOutside';
-import Member from '../member/Member';
 import AppUserService from '../../services/appUserService';
 import TeamService from '../../services/teamService';
 import TextField from '@mui/material/TextField';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -18,7 +13,6 @@ import Modal from '@mui/material/Modal';
 import Box from "@mui/material/Box";
 import OutlinedInput from '@mui/material/OutlinedInput';
 import ListItemText from '@mui/material/ListItemText';
-import TaskService from '../../services/tasksService';
 
 
 const ITEM_HEIGHT = 48;

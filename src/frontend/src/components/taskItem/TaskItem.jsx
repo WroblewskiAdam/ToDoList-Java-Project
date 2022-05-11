@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import TaskService from '../../services/tasksService';
 import "./TaskItem.scss";
+import Checkbox from '@mui/material/Checkbox';
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 function TaskItem(props) {
     const [descr, setDescr] = useState(false);
     const [receivers, setReceivers] = useState([]);
     const [receiversWhoDone, setReceiversWhoDone] = useState([]);
+    const [checked, setChecked] = useState(false);
 
     useEffect(() => {
+        setChecked(props.done);
+
         TaskService.getReceivers(props.id).then(res => {
             setReceivers(res);
         });
@@ -15,10 +21,22 @@ function TaskItem(props) {
         TaskService.getReceiversWhoDone(props.id).then(res => {
             setReceiversWhoDone(res);
         });
+
     }, []);
 
-    const handleTaskItemClick = () => {
-        setDescr((descr) => !descr);
+    const handleTaskItemClick = (e) => {
+        if(!e.target.type){
+            setDescr((descr) => !descr);
+        }
+    }
+
+    const handleCheckboxClick = () =>{
+        setChecked((checked) => !checked);
+        TaskService.tickTask(props.id).then(smth => {
+            TaskService.getReceiversWhoDone(props.id).then(res => {
+                setReceiversWhoDone(res);
+            });
+        });
     }
 
     let colorLine = "#f26950";
@@ -46,15 +64,20 @@ function TaskItem(props) {
 
     const timeText = sub === 0 ? "Time is gone" : "Time Left: ";
     const timeTime = sub === 0 ? null : <>{years}{months}{days}{hours}{minutes}{seconds}</>
+
+    const taskItemClass = checked ? "taskItem checked" : "taskItem";
     return (
         <>
-            <div className='taskItem' onClick={handleTaskItemClick}>
-                <div className="taskItem__block">
-                    <div className="taskItem__priority" style={{"backgroundColor" : colorLine}}>
+            <div className={taskItemClass} onClick={handleTaskItemClick}>
+                <div className="taskItem__header">
+                    <div className="taskItem__header-item">
+                        <div className="taskItem__priority" style={{"backgroundColor" : colorLine}}>
+                        </div>
+                        <div className="taskItem__title">
+                            {props.title}
+                        </div>
                     </div>
-                    <div className="taskItem__title">
-                        {props.title}
-                    </div>
+                    <Checkbox checked={checked} {...label} onChange={handleCheckboxClick} />
                 </div>
                 <div className="taskItem__line"></div>
                 <div className={descrClass}>

@@ -7,6 +7,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import TaskService from '../../services/tasksService';
+import TeamService from '../../services/teamService';
 
 function TaskSection(props) {
     const [tasks, setTasks] = useState(null);
@@ -22,14 +24,28 @@ function TaskSection(props) {
     }, [props]);
 
     useEffect(() => {
-        if(fillter === "All"){
-            
-        } else if (fillter === "Today"){
-
-        } else if (fillter === "Next 7 days"){
-            
-        } else if (fillter === "Expired"){
-            
+        if(props.teamId){
+            if(fillter === "All"){
+                TeamService.getTeamTasks(props.teamId).then(res => {
+                    setTasks(res);
+                });
+            } else if (fillter === "Today"){
+                TaskService.getTodayTasks(props.teamId).then(res => {
+                    setTasks(res);
+                });
+            } else if (fillter === "Next 7 days"){
+                TaskService.getSevenDaysTasks(props.teamId).then(res => {
+                    setTasks(res);
+                });
+            } else if (fillter === "Expired"){
+                TaskService.getExpiredTasks(props.teamId).then(res => {
+                    setTasks(res);
+                });
+            } else if(fillter === "Done"){
+                TaskService.getDoneTasks(props.teamId).then(res => {
+                    setTasks(res);
+                });
+            }
         }
 
     }, [fillter])
@@ -54,6 +70,8 @@ function TaskSection(props) {
                                                 deadline={item.deadline}
                                                 creationTime={item.creationTime}
                                                 priority={item.priority}
+                                                done={item.isDone}
+                                                teamId={props.teamId}
                                             />
                                         );
                                     })
@@ -90,6 +108,7 @@ function TaskSection(props) {
                                         <MenuItem value={"Today"}>Today</MenuItem>
                                         <MenuItem value={"Next 7 days"}>Next 7 days</MenuItem>expired
                                         <MenuItem value={"Expired"}>Expired</MenuItem>
+                                        <MenuItem value={"Done"}>Done</MenuItem>
                                     </Select>
                                 </FormControl>
                             </div>
