@@ -47,7 +47,7 @@ public class TaskService {
     }
 
     public List<Task> getTodayTasks(ApplicationUser applicationUser) {
-        return applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
+        return applicationUser.getTasks().stream()
                 .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(1)))
                 .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
                 .collect(Collectors.toList());
@@ -61,7 +61,7 @@ public class TaskService {
     }
 
     public List<Task> getSevenDaysTasks(ApplicationUser applicationUser) {
-        return applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
+        return applicationUser.getTasks().stream()
                 .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(7)))
                 .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
                 .collect(Collectors.toList());
@@ -75,7 +75,7 @@ public class TaskService {
     }
 
     public List<Task> getPrivateTasks(ApplicationUser applicationUser) {
-        return applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
+        return applicationUser.getTasks().stream()
                 .filter(task -> task.getTeam() == null)
                 .collect(Collectors.toList());
     }
@@ -87,7 +87,7 @@ public class TaskService {
     }
 
     public List<Task> getReceivedTasks(ApplicationUser applicationUser) {
-        return applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks();
+        return applicationUser.getTasks();
     }
 
     public List<Task> getGivenTasks(ApplicationUser applicationUser){
@@ -95,7 +95,7 @@ public class TaskService {
     }
 
     public List<Task> getExpiredTasks(ApplicationUser applicationUser){
-        return applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
+        return applicationUser.getTasks().stream()
                 .filter(task -> task.getDeadline().isBefore(LocalDateTime.now()))
                 .collect(Collectors.toList());
     }
@@ -107,7 +107,7 @@ public class TaskService {
     }
 
     public List<Task> getDoneGivenTasks(ApplicationUser applicationUser) {
-        return applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
+        return applicationUser.getTasks().stream()
                 .filter(task -> task.getGiver() == applicationUser)
                 .filter(Task::getIsDone)
                 .collect(Collectors.toList());
@@ -115,7 +115,7 @@ public class TaskService {
 
     // z punktu widzenia użytkownika któremu zostało zlecone zadanie
     public List<Task> getDoneReceivedTasks(ApplicationUser applicationUser) {
-        return applicationUserService.loadApplicationUserById(applicationUser.getId()).get().getTasks().stream()
+        return applicationUser.getTasks().stream()
                 .filter(task -> task.getReceiversWhoDone().contains(applicationUser))
                 .collect(Collectors.toList());
     }
