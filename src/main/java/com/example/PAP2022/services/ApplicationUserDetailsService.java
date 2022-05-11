@@ -6,6 +6,7 @@ import com.example.PAP2022.models.*;
 import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.security.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,9 +24,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ApplicationUserDetailsService implements UserDetailsService {
     private final ApplicationUserRepository applicationUserRepository;
-    private final TokenService registrationTokenService;
+    private final EmailTokenService emailTokenService;
     private final ImageService imageService;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder encoder;
 
     @Override
     @Transactional
@@ -65,7 +66,7 @@ public class ApplicationUserDetailsService implements UserDetailsService {
     }
 
     public Long deleteUser(Long id){
-        registrationTokenService.deleteRegistrationToken(applicationUserRepository.getById(id));
+        emailTokenService.deleteEmailToken(applicationUserRepository.getById(id));
         applicationUserRepository.deleteById(id);
         return id;
     }
@@ -88,33 +89,43 @@ public class ApplicationUserDetailsService implements UserDetailsService {
         if (loadApplicationUserByEmail(applicationUser.getEmail()).isPresent()) {
             ApplicationUser existingUser = loadApplicationUserByEmail(applicationUser.getEmail()).get();
             if (!existingUser.getEnabled()) {
-                registrationTokenService.deleteRegistrationToken(existingUser);
+                emailTokenService.deleteEmailToken(existingUser);
                 applicationUserRepository.deleteByEmail(existingUser.getEmail());
             } else {
                 throw new EmailTakenException("Email is already taken");
             }
         }
 
-        String encodedPassword = passwordEncoder.bCryptPasswordEncoder().encode(applicationUser.getPassword());
+        String encodedPassword = encoder.bCryptPasswordEncoder().encode(applicationUser.getPassword());
 
         applicationUser.setPassword(encodedPassword);
         applicationUserRepository.save(applicationUser);
 
         String token = UUID.randomUUID().toString();
 
-        RegistrationToken registrationToken = new RegistrationToken(
+        EmailToken emailToken = new EmailToken(
                 token,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(15),
                 applicationUser
         );
 
-        registrationTokenService.saveRegistrationToken(registrationToken);
+        emailTokenService.saveEmailToken(emailToken);
         return token;
     }
 
     public int enableApplicationUser(String email) {
         return applicationUserRepository.enableApplicationUser(email);
+    }
+
+    public void resetPassword(String password, Long id) throws UserNotFoundException {
+        if (loadApplicationUserById(id).isPresent()) {
+            ApplicationUser applicationUser = loadApplicationUserById(id).get();
+            applicationUser.setPassword(encoder.bCryptPasswordEncoder().encode(password));
+            applicationUserRepository.save(applicationUser);
+        } else {
+            throw new UserNotFoundException("Could not find user with ID " + id);
+        }
     }
 }
 
