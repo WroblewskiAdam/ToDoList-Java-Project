@@ -5,11 +5,16 @@ server:
 
 spring:
 #  Z TEGO KORZYSTAJCIE !!!!!!!!!!!!!!!!!!!!!!
+#  datasource:
+#    password: papcrm123
+#    url: jdbc:mysql://34.118.36.189/PAPCRM
+#    username: root
+
   datasource:
-    password: papcrm123
-    url: jdbc:mysql://34.118.36.189/PAPCRM_DLA_MNIE
+    password: Atomuran92 # tutaj zmie?cie has?o
+    url: jdbc:mysql://localhost:3306/jwttest?useSSL=false # stw�rzcie nowy scheme
     username: root
-    
+
   jpa:
     hibernate:
       ddl-auto: update
