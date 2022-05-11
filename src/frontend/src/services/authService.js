@@ -17,14 +17,34 @@ const login = (email, password) => {
     });
 };
 
+// const register = (firstName, lastName, email, password, img) => {
+//     return axios({
+//         method: 'post',
+//         url: API_URL + "/registration",
+//         data : {
+//             "firstName": firstName,
+//             "lastName": lastName,
+//             "email": email,
+//             "password": password,
+//             "image": img
+//         },
+//     }).catch(e => console.log(e));
+// };
+
+
 const register = (firstName, lastName, email, password, img) => {
-    return axios.post(API_URL + "/registration", {
-        firstName,
-        lastName,
-        email,
-        password,
-        img
-    });
+    let formData = new FormData();
+    formData.append("firstName", firstName);
+    formData.append("lastName", lastName);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("image", img);
+    
+    return axios({
+        method: 'post',
+        url: API_URL + "/registration_postman",
+        data: formData,
+    }).catch(e => console.log(e));
 };
 
 const logout = () => {

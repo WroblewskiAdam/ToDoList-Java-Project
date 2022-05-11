@@ -79,6 +79,8 @@ function TaskModal(props) {
             }
         });
 
+        console.log(transformDateTime(dateTime));
+        
         TaskService.createTask(
             name,
             description,
@@ -112,7 +114,6 @@ function TaskModal(props) {
         setDateTime(new Date());
         setPriority("GREEN");
         setSelectedMembers([]);
-        setMembers([]);
         closeModal();
     }
 

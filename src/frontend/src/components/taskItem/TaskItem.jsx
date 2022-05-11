@@ -50,12 +50,12 @@ function TaskItem(props) {
 
     const deadlineItems = props.deadline.split("T");
     const creationTimeItems = props.creationTime.split("T");
-
+    
     const sub = subtractTime(deadlineItems[0], deadlineItems[1]);
-
+   
     const years = sub[0] ? <div className="taskItem__time-item">{sub[0]} {addS(sub[0], "year")}</div> : null;
     const months = sub[1] ? <div className="taskItem__time-item">{sub[1]} {addS(sub[1], "month")}</div> : null;
-    const days = (sub[0] === 0 && sub[2] !== 0) ? <div className="taskItem__time-item">{sub[2]} {addS(sub[2], "day")}</div> : null;
+    const days = (sub[0] === 0 && sub[1] === 0 && sub[2] !== 0) ? <div className="taskItem__time-item">{sub[2]} {addS(sub[2], "day")}</div> : null;
     const hours = (sub[0] === 0 && sub[1] === 0 && sub[3] !== 0) ? <div className="taskItem__time-item">{sub[3]} {addS(sub[3], "hour")}</div> : null;
     const minutes = (sub[0] === 0 && sub[1] === 0 && sub[2] === 0 && sub[4] !== 0) ? <div className="taskItem__time-item">{sub[4]} {addS(sub[3], "minute")}</div> : null;
     const seconds = sub[0] === 0 && sub[1] === 0 && sub[2] === 0 && sub[3] === 0 && sub[5] !== 0 ? <div className="taskItem__time-item">{sub[5]} {addS(sub[3], "second")}</div> : null;
@@ -131,9 +131,6 @@ const subtractTime = (date2, time2) => {
 
     let ans = dTime.getTime() - (now.getTime() );
 
-    // console.log("d" + dTime.getTime());
-    // console.log("n" + now.getFullYear() + " " + now.getMonth() + " " + now.getDate() + " " + now.getHours() + " " + now.getMinutes());
-
     if(ans <= 0){
         return 0;
     }
@@ -150,7 +147,7 @@ const subtractTime = (date2, time2) => {
     ans = ~~(ans / 24);
     
     if(Math.abs(dTime.getFullYear() - now.getFullYear()) > 0){
-        if(ansArray[5] === 0){
+        if(ans >=  365){
             ansArray[0] = dTime.getFullYear() - now.getFullYear();
         }
         else{
@@ -159,7 +156,7 @@ const subtractTime = (date2, time2) => {
     }
 
     if(Math.abs(dTime.getMonth() - now.getMonth()) > 0){
-        if(ansArray[5] === 0){
+        if(ans >= 30){
             ansArray[1] = dTime.getMonth() - now.getMonth();
         }
         else{
@@ -168,7 +165,7 @@ const subtractTime = (date2, time2) => {
     }
 
     if(Math.abs(dTime.getDate() - now.getDate()) > 0){
-        if(ansArray[5] === 0){
+        if(ans >= 1){
             ansArray[2] = dTime.getDate() - now.getDate();
         }
         else{
