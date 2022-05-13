@@ -1,13 +1,7 @@
 package com.example.PAP2022.controllers;
 
-import com.example.PAP2022.exceptions.TaskNotFoundException;
-import com.example.PAP2022.exceptions.TeamNotFoundException;
-import com.example.PAP2022.exceptions.UserIsNotAssignedToTaskException;
-import com.example.PAP2022.exceptions.UserNotFoundException;
 import com.example.PAP2022.payload.TaskRequest;
-import com.example.PAP2022.services.ApplicationUserDetailsService;
 import com.example.PAP2022.services.TaskService;
-import com.example.PAP2022.services.TeamService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +19,258 @@ import java.net.URI;
 public class TaskController {
 
     private final TaskService taskService;
-    private final ApplicationUserDetailsService applicationUserService;
-    private final TeamService teamService;
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllTasks(){
+        return ResponseEntity.ok().body(taskService.getAllTasks());
+    }
+
+    @GetMapping("/get_receivers")
+    public ResponseEntity<?> getReceivers(@RequestParam Long taskId){
+        try{
+            return ResponseEntity.ok().body(taskService.getTaskReceivers(taskId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/get_receivers_who_done")
+    public ResponseEntity<?> getTaskReceiversWhoDone(@RequestParam Long taskId){
+        try {
+            return ResponseEntity.ok().body(taskService.getTaskReceiversWhoDone(taskId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Filtrowanie po userze
+    @GetMapping("/today")
+    public ResponseEntity<?> getTodayTasks(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getTodayTasks(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/today_given")
+    public ResponseEntity<?> getTodayTasksGiven(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getTodayTasksGiven(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/seven_days")
+    public ResponseEntity<?> getSevenDaysTasks(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getSevenDaysTasks(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/seven_days_given")
+    public ResponseEntity<?>getSevenDaysTasksGiven(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getSevenDaysTasksGiven(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/private")
+    public ResponseEntity<?> getPrivateTasks(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getPrivateTasks(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/private_given")
+    public ResponseEntity<?> getPrivateTasksGiven(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getPrivateTasksGiven(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/received")
+    public ResponseEntity<?> getReceivedTasks(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getReceivedTasks(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/given")
+    public ResponseEntity<?> getGivenTasks(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getGivenTasks(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/expired")
+    public ResponseEntity<?> getExpiredTasks(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getExpiredTasks(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/expired_given")
+    public ResponseEntity<?> getExpiredTasksGiven(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getExpiredTasksGiven(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/done_given")
+    public ResponseEntity<?> getDoneGivenTasks(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getDoneGivenTasks(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // z punktu widzenia użytkownika któremu zostało zlecone zadanie
+    @GetMapping("/done_received")
+    public ResponseEntity<?> getDoneReceivedTasks(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getDoneReceivedTasks(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/check_if_task_is_done_by_user")
+    public ResponseEntity<?> checkIfTaskIsDoneByUser(@RequestParam Long taskId, @RequestParam Long userId) {
+        try {
+            return ResponseEntity.ok().body(taskService.checkIfTaskIsDoneByUser(taskId, userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+//    Filtrowanie po Teamie
+
+    @GetMapping("/team_expired_all")
+    public ResponseEntity<?> getAllExpiredTasksTeam(@RequestParam Long teamId) {
+        try {
+            return ResponseEntity.ok().body(taskService.getAllExpiredTasksTeam(teamId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/team_done_all")
+    public ResponseEntity<?> getAllDoneTasksTeam(@RequestParam Long teamId) {
+        try {
+            return ResponseEntity.ok().body(taskService.getAllDoneTasksTeam(teamId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/team_received")
+    public ResponseEntity<?> getReceivedTasksTeam(@RequestParam Long teamId, @RequestParam Long userId) {
+        try {
+            return ResponseEntity.ok().body(taskService.getReceivedTasksTeam(teamId, userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/team_given")
+    public ResponseEntity<?> getGivenTasksTeam(@RequestParam Long teamId, @RequestParam Long userId) {
+        try {
+            return ResponseEntity.ok().body(taskService.getGivenTasksTeam(teamId, userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/team_expired")
+    public ResponseEntity<?> getExpiredReceivedTasksTeam(@RequestParam Long teamId, @RequestParam Long userId) {
+        try {
+            return ResponseEntity.ok().body(taskService.getReceivedExpiredTasksTeam(teamId, userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/team_done")
+    public ResponseEntity<?> getDoneTasksTeam(@RequestParam Long teamId, @RequestParam Long userId) {
+        try {
+            return ResponseEntity.ok().body(taskService.getDoneTasksTeam(teamId, userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/team_today")
+    public ResponseEntity<?> getTodayTasksTeam(@RequestParam Long teamId) {
+        try {
+            return ResponseEntity.ok().body(taskService.getTodayTasksTeam(teamId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/team_today_given")
+    public ResponseEntity<?> getTodayTasksGivenTeam(@RequestParam Long teamId, @RequestParam Long userId ) {
+        try {
+            return ResponseEntity.ok().body(taskService.getTodayTasksGivenTeam(teamId, userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/team_today_received")
+    public ResponseEntity<?> getTodayTasksReceivedTeam(@RequestParam Long teamId, @RequestParam Long userId ) {
+        try {
+            return ResponseEntity.ok().body(taskService.getTodayTasksReceivedTeam(teamId, userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/team_seven_days")
+    public ResponseEntity<?> getSevenDaysTasksTeam(@RequestParam Long teamId) {
+        try {
+            return ResponseEntity.ok().body(taskService.getSevenDaysTasksTeam(teamId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/team_seven_days_given")
+    public ResponseEntity<?> getSevenDaysTasksGivenTeam(@RequestParam Long teamId, @RequestParam Long userId ) {
+        try {
+            return ResponseEntity.ok().body(taskService.getSevenDaysTasksGivenTeam(teamId, userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/team_seven_days_received")
+    public ResponseEntity<?> getSevenDaysReceivedTasksTeam(@RequestParam Long teamId, @RequestParam Long userId) {
+        try {
+            return ResponseEntity.ok().body(taskService.getSevenDaysReceivedTasksTeam(teamId, userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
     @PutMapping("/edit")
     public ResponseEntity<?> editTask(@RequestParam Long taskId, @RequestBody TaskRequest taskRequest) {
@@ -49,12 +293,10 @@ public class TaskController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteTask(@RequestParam Long taskId){
-        if (taskService.loadTaskById(taskId).isPresent()) {
+        try {
             return ResponseEntity.ok().body(taskService.deleteTask(taskId));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new TaskNotFoundException(
-                            "Could not find task with ID " + taskId).getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -64,327 +306,6 @@ public class TaskController {
             return ResponseEntity.ok().body(taskService.tickTask(taskId, userId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllTasks(){
-        return ResponseEntity.ok().body(taskService.getAllTasks());
-    }
-
-    @GetMapping("/get_receivers")
-    public ResponseEntity<?> getReceivers(@RequestParam Long taskId){
-        if(taskService.loadTaskById(taskId).isPresent()){
-            return ResponseEntity.ok().body(taskService.getTaskReceivers(taskId));
-        }
-        else{
-            return ResponseEntity.badRequest().body(
-                    new TaskNotFoundException("Could not find task with ID " + taskId).getMessage());
-        }
-    }
-
-    @GetMapping("/get_receivers_who_done")
-    public ResponseEntity<?> getTaskReceiversWhoDone(@RequestParam Long taskId){
-        if(taskService.loadTaskById(taskId).isPresent()){
-            return ResponseEntity.ok().body(taskService.getTaskReceiversWhoDone(taskId));
-        }
-        else{
-            return ResponseEntity.badRequest().body(
-                    new TaskNotFoundException("Could not find task with ID " + taskId).getMessage());
-        }
-    }
-
-    // Filtrowanie po userze
-    @GetMapping("/today")
-    public ResponseEntity<?> getTodayTasks(@RequestParam Long id) {
-        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
-            return ResponseEntity.ok().body(
-                    taskService.getTodayTasks(applicationUserService.loadApplicationUserById(id).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
-        }
-    }
-
-    @GetMapping("/today_given")
-    public ResponseEntity<?> getTodayTasksGiven(@RequestParam Long id) {
-        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
-            return ResponseEntity.ok().body(
-                    taskService.getTodayTasksGiven(applicationUserService.loadApplicationUserById(id).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
-        }
-    }
-
-    @GetMapping("/seven_days")
-    public ResponseEntity<?> getSevenDaysTasks(@RequestParam Long id) {
-        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
-            return ResponseEntity.ok().body(
-                    taskService.getSevenDaysTasks(applicationUserService.loadApplicationUserById(id).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
-        }
-    }
-
-    @GetMapping("/seven_days_given")
-    public ResponseEntity<?>getSevenDaysTasksGiven(@RequestParam Long id) {
-        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
-            return ResponseEntity.ok().body(
-                    taskService.getSevenDaysTasksGiven(applicationUserService.loadApplicationUserById(id).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
-        }
-    }
-
-    @GetMapping("/private")
-    public ResponseEntity<?> getPrivateTasks(@RequestParam Long id) {
-        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
-            return ResponseEntity.ok().body(
-                    taskService.getPrivateTasks(applicationUserService.loadApplicationUserById(id).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
-        }
-    }
-
-    @GetMapping("/private_given")
-    public ResponseEntity<?> getPrivateTasksGiven(@RequestParam Long id) {
-        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
-            return ResponseEntity.ok().body(
-                    taskService.getPrivateTasksGiven(applicationUserService.loadApplicationUserById(id).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
-        }
-    }
-
-    @GetMapping("/received")
-    public ResponseEntity<?> getReceivedTasks(@RequestParam Long id) {
-        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
-            return ResponseEntity.ok().body(
-                    taskService.getReceivedTasks(applicationUserService.loadApplicationUserById(id).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
-        }
-    }
-
-    @GetMapping("/given")
-    public ResponseEntity<?> getGivenTasks(@RequestParam Long id) {
-        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
-            return ResponseEntity.ok().body(
-                    taskService.getGivenTasks(applicationUserService.loadApplicationUserById(id).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
-        }
-    }
-
-    @GetMapping("/expired")
-    public ResponseEntity<?> getExpiredTasks(@RequestParam Long id) {
-        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
-            return ResponseEntity.ok().body(
-                    taskService.getExpiredTasks(applicationUserService.loadApplicationUserById(id).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
-        }
-    }
-
-    @GetMapping("/expired_given")
-    public ResponseEntity<?> getExpiredTasksGiven(@RequestParam Long id) {
-        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
-            return ResponseEntity.ok().body(
-                    taskService.getExpiredTasksGiven(applicationUserService.loadApplicationUserById(id).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
-        }
-    }
-
-    @GetMapping("/done_given")
-    public ResponseEntity<?> getDoneGivenTasks(@RequestParam Long id) {
-        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
-            return ResponseEntity.ok().body(
-                    taskService.getDoneGivenTasks(applicationUserService.loadApplicationUserById(id).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
-        }
-    }
-    // z punktu widzenia użytkownika któremu zostało zlecone zadanie
-    @GetMapping("/done_received")
-    public ResponseEntity<?> getDoneReceivedTasks(@RequestParam Long id) {
-        if (applicationUserService.loadApplicationUserById(id).isPresent()) {
-            return ResponseEntity.ok().body(
-                    taskService.getDoneReceivedTasks(applicationUserService.loadApplicationUserById(id).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new UserNotFoundException("Could not find user with ID " + id).getMessage());
-        }
-    }
-
-    @GetMapping("/check_if_task_is_done_by_user")
-    public ResponseEntity<?> CheckIfTaskIsDoneByUser(@RequestParam Long taskId, @RequestParam Long userId) {
-        if (!(taskService.loadTaskById(taskId).isPresent() && applicationUserService.loadApplicationUserById(userId).isPresent())) {
-            return ResponseEntity.badRequest().body(
-                    new TaskNotFoundException("Could not find task with ID " + taskId + " or user with ID " + userId).getMessage());
-        } else if (!(taskService.getTaskReceivers(taskId).contains(applicationUserService.loadApplicationUserById(userId).get()))){
-            return ResponseEntity.badRequest().body(
-                    new UserIsNotAssignedToTaskException("User with Id  " + userId + " is not assigned to task with Id " + taskId).getMessage());
-        } else {
-            return ResponseEntity.ok().body(
-                    taskService.CheckIfTaskIsDoneByUser(taskId, userId));
-        }
-    }
-
-
-//    Filtrowanie po Teamie
-
-//    stare w całym teamie
-    @GetMapping("/team_expired_all")
-    public ResponseEntity<?> getAllExpiredTasksTeam(@RequestParam Long teamId) {
-        if (teamService.loadTeamById(teamId).isPresent()){
-            return ResponseEntity.ok().body(
-                    taskService.getAllExpiredTasksTeam(teamService.loadTeamById(teamId).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new TeamNotFoundException("Could not find team with ID " + teamId).getMessage());
-        }
-    }
-
-    //    Wszystkie zrobione w teamie
-    @GetMapping("/team_done_all")
-    public ResponseEntity<?> getAllDoneTasksTeam(@RequestParam Long teamId) {
-        if (teamService.loadTeamById(teamId).isPresent()){
-            return ResponseEntity.ok().body(
-                    taskService.getAllDoneTasksTeam(teamService.loadTeamById(teamId).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new TeamNotFoundException("Could not find team with ID " + teamId).getMessage());
-        }
-    }
-
-    //    wszystkie zadania które otrzymaliśmy w teamie
-    @GetMapping("/team_received")
-    public ResponseEntity<?> getReceivedTasksTeam(@RequestParam Long teamId, @RequestParam Long userId) {
-        if (teamService.loadTeamById(teamId).isPresent() && applicationUserService.loadApplicationUserById(userId).isPresent()){
-            return ResponseEntity.ok().body(
-                    taskService.getReceivedTasksTeam(teamService.loadTeamById(teamId).get(),applicationUserService.loadApplicationUserById(userId).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new TeamNotFoundException("Could not find team with ID " + teamId + " nor user with ID " + userId).getMessage());
-        }
-    }
-
-//    wszystkie zadania które daliśmy w teamie
-    @GetMapping("/team_given")
-    public ResponseEntity<?> getGivenTasksTeam(@RequestParam Long teamId, @RequestParam Long userId) {
-        if (teamService.loadTeamById(teamId).isPresent() && applicationUserService.loadApplicationUserById(userId).isPresent()){
-            return ResponseEntity.ok().body(
-                    taskService.getGivenTasksTeam(teamService.loadTeamById(teamId).get(),applicationUserService.loadApplicationUserById(userId).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new TeamNotFoundException("Could not find team with ID " + teamId + " nor user with ID " + userId).getMessage());
-        }
-    }
-
-//    Wszysktie które otrzymaliśmy w teamie i są expired
-    @GetMapping("/team_expired")
-    public ResponseEntity<?> getExpiredReceivedTasksTeam(@RequestParam Long teamId, @RequestParam Long userId) {
-        if (teamService.loadTeamById(teamId).isPresent() && applicationUserService.loadApplicationUserById(userId).isPresent()){
-            return ResponseEntity.ok().body(
-                    taskService.getReceivedExpiredTasksTeam(teamService.loadTeamById(teamId).get(),applicationUserService.loadApplicationUserById(userId).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new TeamNotFoundException("Could not find team with ID " + teamId + " nor user with ID " + userId).getMessage());
-        }
-    }
-
-//    Wszystkie zadania które zrobiliśmy w teamie
-    @GetMapping("/team_done")
-    public ResponseEntity<?> getDoneTasksTeam(@RequestParam Long teamId, @RequestParam Long userId) {
-        if (teamService.loadTeamById(teamId).isPresent() && applicationUserService.loadApplicationUserById(userId).isPresent()){
-            return ResponseEntity.ok().body(
-                    taskService.getDoneTasksTeam(teamService.loadTeamById(teamId).get(),applicationUserService.loadApplicationUserById(userId).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new TeamNotFoundException("Could not find team with ID " + teamId + " nor user with ID " + userId).getMessage());
-        }
-    }
-
-//    wszystkie w teamie na dziś
-    @GetMapping("/team_today")
-    public ResponseEntity<?> getTodayTasksTeam(@RequestParam Long teamId) {
-        if (teamService.loadTeamById(teamId).isPresent()){
-            return ResponseEntity.ok().body(
-                    taskService.getTodayTasksTeam(teamService.loadTeamById(teamId).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new TeamNotFoundException("Could not find team with ID " + teamId).getMessage());
-        }
-    }
-
-//    wszystkie które daliśmy na dzisiaj w teamie
-    @GetMapping("/team_today_given")
-    public ResponseEntity<?> getTodayTasksGivenTeam(@RequestParam Long teamId, @RequestParam Long userId ) {
-        if (teamService.loadTeamById(teamId).isPresent() && applicationUserService.loadApplicationUserById(userId).isPresent()){
-            return ResponseEntity.ok().body(
-                    taskService.getTodayTasksGivenTeam(teamService.loadTeamById(teamId).get(),applicationUserService.loadApplicationUserById(userId).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new TeamNotFoundException("Could not find team with ID " + teamId + " nor user with ID " + userId).getMessage());
-        }
-    }
-
-//    Wszysktie które na dzisiaj otrzymaliśmy w teamie
-    @GetMapping("/team_today_received")
-    public ResponseEntity<?> getTodayTasksReceivedTeam(@RequestParam Long teamId, @RequestParam Long userId ) {
-        if (teamService.loadTeamById(teamId).isPresent() && applicationUserService.loadApplicationUserById(userId).isPresent()){
-            return ResponseEntity.ok().body(
-                    taskService.getTodayTasksReceivedTeam(teamService.loadTeamById(teamId).get(),applicationUserService.loadApplicationUserById(userId).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new TeamNotFoundException("Could not find team with ID " + teamId + " nor user with ID " + userId).getMessage());
-        }
-    }
-
-//    wszystkie w teamie na 7 dni
-    @GetMapping("/team_seven_days")
-    public ResponseEntity<?> getSevenDaysTasksTeam(@RequestParam Long teamId) {
-        if (teamService.loadTeamById(teamId).isPresent()) {
-            return ResponseEntity.ok().body(
-                    taskService.getSevenDaysTasksTeam(teamService.loadTeamById(teamId).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new UserNotFoundException("Could not find team with ID " + teamId).getMessage());
-        }
-    }
-
-//  wszystkie które daliśmy w teamie na 7 dni
-    @GetMapping("/team_seven_days_given")
-    public ResponseEntity<?> getSevenDaysTasksGivenTeam(@RequestParam Long teamId, @RequestParam Long userId ) {
-        if (teamService.loadTeamById(teamId).isPresent() && applicationUserService.loadApplicationUserById(userId).isPresent()){
-            return ResponseEntity.ok().body(
-                    taskService.getSevenDaysTasksGivenTeam(teamService.loadTeamById(teamId).get(),applicationUserService.loadApplicationUserById(userId).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new TeamNotFoundException("Could not find team with ID " + teamId + " nor user with ID " + userId).getMessage());
-        }
-    }
-
-//    wszystkie które otrzymaliśmy w teamie na 7 dni
-    @GetMapping("/team_seven_days_received")
-    public ResponseEntity<?> getSevenDaysReceivedTasksTeam(@RequestParam Long teamId, @RequestParam Long userId) {
-        if (teamService.loadTeamById(teamId).isPresent() && applicationUserService.loadApplicationUserById(userId).isPresent()){
-            return ResponseEntity.ok().body(
-                    taskService.getSevenDaysReceivedTasksTeam(teamService.loadTeamById(teamId).get(),applicationUserService.loadApplicationUserById(userId).get()));
-        } else {
-            return ResponseEntity.badRequest().body(
-                    new TeamNotFoundException("Could not find team with ID " + teamId + " nor user with ID " + userId).getMessage());
         }
     }
 }

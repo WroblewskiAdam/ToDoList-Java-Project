@@ -1,6 +1,5 @@
 package com.example.PAP2022.models;
 
-import com.example.PAP2022.models.ApplicationUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,13 +55,5 @@ public class Team {
     @Override
     public String toString() {
         return name;
-    }
-
-    // TODO zrobić refaktoryzację
-    public void addMemberToTeam(ApplicationUser member){
-        this.teamMembers.add(member);
-    }
-    public void addTaskToTeam(Task task){
-        this.teamTasks.add(task);
     }
 }

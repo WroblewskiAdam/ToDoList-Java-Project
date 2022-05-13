@@ -1,5 +1,7 @@
 package com.example.PAP2022.services;
 
+import com.example.PAP2022.exceptions.ImageNotFoundException;
+import com.example.PAP2022.exceptions.UserNotFoundException;
 import com.example.PAP2022.models.ApplicationUser;
 import com.example.PAP2022.models.Image;
 import com.example.PAP2022.repository.ImageRepository;
@@ -11,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
@@ -19,6 +22,10 @@ import java.util.zip.Inflater;
 public class ImageService {
 
     private final ImageRepository imageRepository;
+
+    public Optional<Image> loadImageById(Long id) {
+        return imageRepository.findById(id);
+    }
 
     public static byte[] compressImage(byte[] data) {
 
@@ -56,8 +63,12 @@ public class ImageService {
         return outputStream.toByteArray();
     }
 
-    public Image getImage(ApplicationUser applicationUser) {
-        return imageRepository.findById(applicationUser.getImage().getId()).get();
+    public Image getImage(Long id) throws ImageNotFoundException {
+        if (loadImageById(id).isPresent()) {
+            return loadImageById(id).get();
+        } else {
+            throw new ImageNotFoundException("Could not find image with ID " + id);
+        }
     }
 
     public Image saveImage(MultipartFile file) throws IOException {

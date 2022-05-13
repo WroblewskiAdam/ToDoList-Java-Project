@@ -1,18 +1,20 @@
 package com.example.PAP2022.services;
 
 import com.example.PAP2022.exceptions.EmailTakenException;
+import com.example.PAP2022.exceptions.ImageNotFoundException;
 import com.example.PAP2022.exceptions.UserNotFoundException;
 import com.example.PAP2022.models.*;
 import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.security.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.UUID;
 @Transactional
 @RequiredArgsConstructor
 public class ApplicationUserDetailsService implements UserDetailsService {
+
     private final ApplicationUserRepository applicationUserRepository;
     private final EmailTokenService emailTokenService;
     private final ImageService imageService;
@@ -45,29 +48,54 @@ public class ApplicationUserDetailsService implements UserDetailsService {
         return applicationUserRepository.findById(id);
     }
 
+    public ApplicationUser getApplicationUser(Long id) throws UserNotFoundException {
+        if (loadApplicationUserById(id).isPresent()) {
+            return loadApplicationUserById(id).get();
+        } else {
+            throw new UserNotFoundException("Could not find user with ID " + id);
+        }
+    }
+
     public List<ApplicationUser> getAllUsers(){
         return applicationUserRepository.findAll();
     }
 
-    public List<Team> getAllTeams(Long id){
-        return applicationUserRepository.getById(id).getTeams();
+    public List<Team> getAllTeams(Long id) throws UserNotFoundException {
+        return getApplicationUser(id).getTeams();
     }
 
-    public List<Task> getAllTasks(Long id){
-        return applicationUserRepository.getById(id).getTasks();
+    public List<Task> getAllTasks(Long id) throws UserNotFoundException {
+        return getApplicationUser(id).getTasks();
     }
 
-    public Image getImage(Long id){
-        return imageService.getImage(applicationUserRepository.getById(id));
+    public Image getImage(Long id) throws ImageNotFoundException, UserNotFoundException {
+        return imageService.getImage(getApplicationUser(id).getImage().getId());
     }
 
-    public ApplicationUser editApplicationUser(ApplicationUser applicationUser) {
+    public ApplicationUser editApplicationUser(Long id,
+                                               String firstName,
+                                               String lastName,
+                                               String password,
+                                               MultipartFile file) throws IOException, UserNotFoundException {
+
+        Image image = imageService.convertToImage(file);
+        ApplicationUser applicationUser = getApplicationUser(id);
+
+        applicationUser.setFirstName(firstName);
+        applicationUser.setLastName(lastName);
+        applicationUser.setImage(image);
+        applicationUser.setPassword(encoder.bCryptPasswordEncoder().encode(password));
+
         return applicationUserRepository.save(applicationUser);
     }
 
-    public Long deleteUser(Long id){
-        emailTokenService.deleteEmailToken(applicationUserRepository.getById(id));
-        applicationUserRepository.deleteById(id);
+    public Long deleteUser(Long id) throws UserNotFoundException {
+        if (loadApplicationUserById(id).isPresent()) {
+            emailTokenService.deleteEmailToken(getApplicationUser(id));
+            applicationUserRepository.deleteById(id);
+        } else {
+            throw new UserNotFoundException("Could not find user with ID " + id);
+        }
         return id;
     }
 
@@ -75,12 +103,8 @@ public class ApplicationUserDetailsService implements UserDetailsService {
         List<ApplicationUser> users = new ArrayList<>();
 
         for (Long id: usersIds) {
-            if (!loadApplicationUserById(id).isPresent()) {
-                throw new UserNotFoundException("Could not find user with ID " + id);
-            } else {
-                users.add(loadApplicationUserById(id).get());
+                users.add(getApplicationUser(id));
             }
-        }
 
         return users;
     }
@@ -119,13 +143,9 @@ public class ApplicationUserDetailsService implements UserDetailsService {
     }
 
     public void resetPassword(String password, Long id) throws UserNotFoundException {
-        if (loadApplicationUserById(id).isPresent()) {
-            ApplicationUser applicationUser = loadApplicationUserById(id).get();
-            applicationUser.setPassword(encoder.bCryptPasswordEncoder().encode(password));
-            applicationUserRepository.save(applicationUser);
-        } else {
-            throw new UserNotFoundException("Could not find user with ID " + id);
-        }
+        ApplicationUser applicationUser = getApplicationUser(id);
+        applicationUser.setPassword(encoder.bCryptPasswordEncoder().encode(password));
+        applicationUserRepository.save(applicationUser);
     }
 }
 

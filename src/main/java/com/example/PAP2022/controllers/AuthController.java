@@ -57,8 +57,7 @@ public class AuthController {
         }
     }
 
-//    TODO jedna wersja jest do rejestracji za pomocą postamana
-    @PostMapping("/registration_postman")
+    @PostMapping("/registration")
     public ResponseEntity<?> registerUser(
             @RequestParam("firstName") String firstName,
             @RequestParam("lastName") String lastName,
@@ -67,17 +66,6 @@ public class AuthController {
             @RequestParam("image") MultipartFile file) {
 
         ApplicationUserRequest signUpRequest = new ApplicationUserRequest(firstName, lastName, email, password, file);
-        try {
-            authService.register(signUpRequest);
-            return ResponseEntity.ok("User is registered");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-//    TODO druga wersja jest do rejestracji za pomocą przeglądarki
-    @PostMapping("/registration")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody ApplicationUserRequest signUpRequest) {
         try {
             authService.register(signUpRequest);
             return ResponseEntity.ok("User is registered");
@@ -115,7 +103,7 @@ public class AuthController {
         }
     }
 
-    // TODO trzeba zakodować hasło już w części webowej !!!!!
+    // TODO trzeba zaszyfrować hasło już w części webowej !!!!!
     @PostMapping("/reset_password")
     public ResponseEntity<?> resetPassword(@RequestParam("password") String password, @RequestParam("id") Long id) {
         try {
