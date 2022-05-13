@@ -1,12 +1,9 @@
 import React from 'react';
 import './FirstPage.scss'
-import { useHistory } from "react-router-dom";
 import { NavLink} from 'react-router-dom';
 import homeImage from "../../images/backgrounds/20944361.jpg";
 
 function FirstPage(props) {
-    let history = useHistory();
-
     return (
         <div className='firstPage'>
             <div className="firstPage__wrapper">

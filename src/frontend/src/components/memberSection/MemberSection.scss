@@ -1,0 +1,34 @@
+@import "../../style/variable.scss";
+
+.memberSection{
+    padding: 20px;
+    &__input{
+        display: flex;
+        justify-content: space-between;
+        align-items:center;
+        width: 100%;
+        margin-bottom: 15px;
+        &-submit{
+            margin-left: 10px;
+            display: block;
+            background-color: $aliceBlue;
+            border-radius: 5px;
+            padding: 15px 15px;
+            color: $nickel;
+            transition: all .3s;
+            &:hover{
+                color: $white-color;
+                background-color: $mediumSlateBlue;
+                transition: all .3s;
+                cursor: pointer;
+            }
+        }
+    }
+    &__block{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+    }
+}

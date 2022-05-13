@@ -20,10 +20,15 @@ const getTeams = async () => {
     return await axios.get(API_URL + "/teams", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch(error => console.log(error));
 }
 
+const getTasks = async (userId) => {
+    return await axios.get(API_URL + "/tasks", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch(error => console.log(error));
+}
+
 const AppUserService = {
     getAllUsers, 
     getUser,
-    getTeams        
+    getTeams,
+    getTasks  
 };
 
 export default AppUserService;

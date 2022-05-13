@@ -12,7 +12,10 @@ function TaskItem(props) {
     const [checked, setChecked] = useState(false);
 
     useEffect(() => {
-        setChecked(props.done);
+        TaskService.checkIfTaskDoneByUser(props.id).then((res) => {
+            setChecked(res);
+        });
+        
 
         TaskService.getReceivers(props.id).then(res => {
             setReceivers(res);
@@ -32,7 +35,7 @@ function TaskItem(props) {
 
     const handleCheckboxClick = () =>{
         setChecked((checked) => !checked);
-        TaskService.tickTask(props.id).then(smth => {
+        TaskService.tickTask(props.id).then(() => {
             TaskService.getReceiversWhoDone(props.id).then(res => {
                 setReceiversWhoDone(res);
             });

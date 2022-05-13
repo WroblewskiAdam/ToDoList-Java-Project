@@ -44,16 +44,16 @@ const getReceiversWhoDone = async (id) => {
 
 const getDoneTasks = async (teamId) => {
     // const userId = JSON.parse(localStorage.getItem("accessToken")).id;
-    return axios.get(API_URL + "/team/done_all", {headers: authHeader(), params: {teamid: teamId}}).then(res => res.data).catch((error) => console.log(error));
+    return axios.get(API_URL + "/team_done_all", {headers: authHeader(), params: {teamId: teamId}}).then(res => res.data).catch((error) => console.log(error));
 }
 
 const getTodayTasks = async (teamId) => {
-    return axios.get(API_URL + "/team/today", {headers: authHeader(), params: {teamid: teamId}}).then(res => res.data).catch((error) => console.log(error));
+    return axios.get(API_URL + "/team_today", {headers: authHeader(), params: {teamId: teamId}}).then(res => res.data).catch((error) => console.log(error));
 }
 
 const getSevenDaysTasks = async (teamId) => {
-    console.log(axios.get(API_URL + "/team/seven_days", {headers: authHeader(), params: {teamid: teamId}}));
-    return axios.get(API_URL + "/team/seven_days", {headers: authHeader(), params: {teamid: teamId}}).then(res => {
+    // console.log(axios.get(API_URL + "/team_seven_days", {headers: authHeader(), params: {teamId: teamId}}));
+    return axios.get(API_URL + "/team_seven_days", {headers: authHeader(), params: {teamId: teamId}}).then(res => {
         console.log(res);
         console.log(res.data);
         return res.data;
@@ -63,7 +63,7 @@ const getSevenDaysTasks = async (teamId) => {
 const getExpiredTasks = async (teamId) => {
     const userId = JSON.parse(localStorage.getItem("accessToken")).id;
     
-    return axios.get(API_URL + "/team/expired", {headers: authHeader(), params: {teamid: teamId, userid: userId}}).then(res => res.data).catch((error) => console.log(error));
+    return axios.get(API_URL + "/team_expired", {headers: authHeader(), params: {teamId: teamId, userId: userId}}).then(res => res.data).catch((error) => console.log(error));
 }
 
 const tickTask = async (taskId) => {
@@ -80,6 +80,12 @@ const tickTask = async (taskId) => {
     }).catch(e => console.log(e));
 }
 
+
+const checkIfTaskDoneByUser = async(taskId) => {
+    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+    
+    return axios.get(API_URL + "/check_if_task_is_done_by_user", {headers: authHeader(), params: {taskId: taskId, userId: userId}}).then(res => res.data).catch((error) => console.log(error));
+}
 const TaskService = {
     createTask,
     getReceivers,
@@ -88,7 +94,8 @@ const TaskService = {
     getTodayTasks,
     getSevenDaysTasks,
     getExpiredTasks,
-    tickTask
+    tickTask,
+    checkIfTaskDoneByUser
 };
 
 export default TaskService;

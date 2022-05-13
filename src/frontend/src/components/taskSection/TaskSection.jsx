@@ -9,6 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import TaskService from '../../services/tasksService';
 import TeamService from '../../services/teamService';
+import MemberSection from '../memberSection/MemberSection';
 
 function TaskSection(props) {
     const [tasks, setTasks] = useState(null);
@@ -87,8 +88,8 @@ function TaskSection(props) {
 
                 </div>
                 <div className="taskSection__body">
-                    <div className="taskSection__team">
-
+                    <div className="taskSection__members">
+                        <MemberSection teamId={props.teamId} />
                     </div>
                     <div className="taskSection__tasks">
                         <div className="taskSection__header">
@@ -98,7 +99,6 @@ function TaskSection(props) {
                                 >
                                     <InputLabel className="taskSection__tasks-fillters-label">Fillter</InputLabel>
                                     <Select
-
                                         value={fillter}
                                         label="Fillter"
                                         onChange={handleFillterChange}
