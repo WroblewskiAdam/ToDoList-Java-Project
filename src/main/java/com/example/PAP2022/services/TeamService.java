@@ -1,13 +1,13 @@
 package com.example.PAP2022.services;
 
-import com.example.PAP2022.exceptions.TeamNotFoundException;
-import com.example.PAP2022.exceptions.UserNotFoundException;
+import com.example.PAP2022.exceptions.*;
 import com.example.PAP2022.models.Task;
 import com.example.PAP2022.payload.TeamMemberRequest;
 import com.example.PAP2022.payload.TeamRequest;
 import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.PAP2022.models.Team;
@@ -22,91 +22,118 @@ public class TeamService {
 
     private final TeamRepository teamRepository;
     private final ApplicationUserDetailsService applicationUserService;
-    private final ApplicationUserRepository applicationUserRepository;
 
     @Autowired
     public TeamService(TeamRepository teamRepository,
-                       ApplicationUserDetailsService applicationUserService,
-                       ApplicationUserRepository applicationUserRepository) {
+                       ApplicationUserDetailsService applicationUserService) {
         this.teamRepository = teamRepository;
         this.applicationUserService = applicationUserService;
-        this.applicationUserRepository = applicationUserRepository;
     }
 
-    public Optional<Team> loadTeamById(Long id) {
-        return teamRepository.findById(id);
+    public Optional<Team> loadTeamById(Long teamId) {
+        return teamRepository.findById(teamId);
     }
 
     public List<Team> getAllTeams(){
         return teamRepository.findAll();
     }
 
-    public List<Task> getTeamTasks(Long teamId) {
-        return teamRepository.getById(teamId).getTeamTasks();
-    }
-
-    public List<ApplicationUser> getTeamMembers(Long teamId) {
-        return teamRepository.getById(teamId).getTeamMembers();
-    }
-
-    public ApplicationUser getTeamLeader(Long teamId) {
-        return teamRepository.getById(teamId).getTeamLeader();
-    }
-
-    public Long deleteTeamById(Long id) {
-        teamRepository.deleteById(id);
-        return id;
-    }
-
-    public Team saveTeam(Team team){
-        return teamRepository.save(team);
-    }
-
-    public Team addMember(ApplicationUser applicationUser, Team team) {
-        team.addMemberToTeam(applicationUser);
-        return teamRepository.save(team);
-    }
-
-    public Team addTask(Task task, Team team){
-        team.addTaskToTeam(task);
-        return teamRepository.save(team);
-    }
-
-    public Team editTeam(Long teamId, TeamRequest teamRequest) throws UserNotFoundException, TeamNotFoundException {
-        if (!applicationUserService.loadApplicationUserById(teamRequest.getTeamLeaderId()).isPresent()) {
-            throw new UserNotFoundException("Could not find user with ID " + teamRequest.getTeamLeaderId());
-        }
-
-        if (loadTeamById(teamId).isPresent()) {
-            Team team = loadTeamById(teamId).get();
-
-            team.setName(teamRequest.getName());
-            team.setTeamLeader(applicationUserService.loadApplicationUserById(teamRequest.getTeamLeaderId()).get());
-
-            return saveTeam(team);
-
+    public Team getTeam(Long teamId) throws TeamNotFoundException {
+        if (loadTeamById(teamId).isPresent()){
+            return loadTeamById(teamId).get();
         } else {
             throw new TeamNotFoundException("Could not find team with ID " + teamId);
         }
     }
 
-    public Team deleteMember(Long teamId, Long memberId){
-        Team team = teamRepository.getById(teamId);
-        List<ApplicationUser> filteredMembers = team.getTeamMembers().stream()
-                .filter(applicationUser -> applicationUser.getId() != memberId)
-                .collect(Collectors.toList());
-        team.setTeamMembers(filteredMembers);
+    public List<Task> getTeamTasks(Long teamId) throws TeamNotFoundException {
+        return getTeam(teamId).getTeamTasks();
+    }
+
+    public List<ApplicationUser> getTeamMembers(Long teamId) throws TeamNotFoundException {
+        return getTeam(teamId).getTeamMembers();
+    }
+
+    public ApplicationUser getTeamLeader(Long teamId) throws TeamNotFoundException {
+        return getTeam(teamId).getTeamLeader();
+    }
+
+    public Long deleteTeam(Long teamId) throws TeamNotFoundException {
+        if (loadTeamById(teamId).isPresent()) {
+            teamRepository.deleteById(teamId);
+        } else {
+            throw new TeamNotFoundException("Could not find team with ID " + teamId);
+        }
+        return teamId;
+    }
+
+    public Team saveTeam(TeamRequest request) throws UserNotFoundException {
+        ApplicationUser leader = applicationUserService.getApplicationUser(request.getTeamLeaderId());
+        List<ApplicationUser> teamMembers = applicationUserService.getUsersByIds(request.getMembersIds());
+//      TODO Jak ty widzisz zapisywanie zespołów, czy będziesz pokazywał userów bez teamleadera czy z teamleaderem?
+//          bo to co jest poniżej to tylko tak na chwilę jest zrobione
+        if (!teamMembers.contains(leader)) {
+            teamMembers.add(leader);
+        }
+
+        Team team = new Team(
+                request.getName(),
+                leader,
+                teamMembers
+        );
 
         return teamRepository.save(team);
     }
 
-    public void teamRequestValidation(TeamMemberRequest teamMemberRequest) throws TeamNotFoundException, UserNotFoundException {
-        if (!loadTeamById(teamMemberRequest.getTeamId()).isPresent()) {
-            throw new TeamNotFoundException("Could not find team with ID " + teamMemberRequest.getTeamId());
+    public Team addMember(Long teamId, Long memberId) throws
+            TeamNotFoundException,
+            UserNotFoundException,
+            UserExistsException,
+            UserNotEnabledException {
+
+        Team team = getTeam(teamId);
+        ApplicationUser applicationUser = applicationUserService.getApplicationUser(memberId);
+
+        if (team.getTeamMembers().contains(applicationUser)) {
+            throw new UserExistsException("User with ID " + memberId + " is already a member");
         }
 
-        if (!applicationUserService.loadApplicationUserById(teamMemberRequest.getMemberId()).isPresent()) {
-            throw new UserNotFoundException("Could not find user with ID " + teamMemberRequest.getMemberId());
+        if (!applicationUser.getEnabled()) {
+            throw new UserNotEnabledException("User with ID " + memberId + " is not enabled");
         }
+
+        List<ApplicationUser> users = team.getTeamMembers();
+        users.add(applicationUser);
+        team.setTeamMembers(users);
+
+        return teamRepository.save(team);
+    }
+
+    public Team editTeam(Long teamId, TeamRequest teamRequest) throws UserNotFoundException, TeamNotFoundException {
+        Team team = getTeam(teamId);
+        team.setName(teamRequest.getName());
+        team.setTeamLeader(applicationUserService.getApplicationUser(teamRequest.getTeamLeaderId()));
+
+        return teamRepository.save(team);
+    }
+
+    public Team deleteMember(Long teamId, Long memberId) throws TeamNotFoundException, UserNotFoundException, TeamLeaderDeletionException {
+        Team team = getTeam(teamId);
+        ApplicationUser applicationUser = applicationUserService.getApplicationUser(memberId);
+
+        if (!team.getTeamMembers().contains(applicationUser)) {
+            throw new UserNotFoundException("User with ID " + memberId + " is not a member");
+        }
+
+        if (team.getTeamLeader().getId() == applicationUser.getId()) {
+            throw new TeamLeaderDeletionException("The leader cannot be removed from the team");
+        }
+
+        List<ApplicationUser> filteredMembers = team.getTeamMembers().stream()
+                .filter(user -> user.getId() != memberId)
+                .collect(Collectors.toList());
+        team.setTeamMembers(filteredMembers);
+
+        return teamRepository.save(team);
     }
 }
