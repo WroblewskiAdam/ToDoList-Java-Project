@@ -6,27 +6,9 @@ server:
 spring:
 #  Z TEGO KORZYSTAJCIE !!!!!!!!!!!!!!!!!!!!!!
   datasource:
-<<<<<<< HEAD
     password: papcrm123
     url: jdbc:mysql://34.118.36.189/PAPCRM
-=======
-#    password: papcrm123
-#    url: jdbc:mysql:///PAPCRM_DLA_MNIE
-    password: Adamix123
-    url: jdbc:mysql://localhost/PAPCRM_DLA_MNIE
->>>>>>> 045597550fc42cd7099ebcde6b097396f97d3b63
     username: root
-
-#  datasource:
-#    password: Atomuran92 # tutaj zmie?cie has?o
-#    url: jdbc:mysql://localhost:3306/jwttest?useSSL=false # stw�rzcie nowy scheme
-#=======
-##    password: papcrm123
-##    url: jdbc:mysql:///PAPCRM_DLA_MNIE
-#    password: Adamix123
-#    url: jdbc:mysql://localhost/PAPCRM_DLA_MNIE
-#>>>>>>> 0e67bf96afb2326fa8bc5437db87076951780b7c
-#    username: root
 
   jpa:
     hibernate:
