@@ -154,15 +154,16 @@ public class TaskService {
                 .sorted(Comparator.comparing(Task::getDeadline).reversed())
                 .collect(Collectors.toList());
     }
-
-    public Boolean checkIfTaskIsDoneByUser(Long taskId, Long userId) throws TaskNotFoundException, UserNotFoundException, UserIsNotAssignedToTaskException {
-        ApplicationUser user = applicationUserService.getApplicationUser(userId);
+    
+    public Boolean checkIfTaskIsDoneByUser(Long taskId, Long userId) throws TaskNotFoundException, UserIsNotAssignedToTaskException {
+        ApplicationUser user = applicationUserService.loadApplicationUserById(userId).get();
         if (!(getTaskReceivers(taskId).contains(user))) {
             throw new UserIsNotAssignedToTaskException(
                     "User with Id  " + userId + " is not assigned to task with Id " + taskId);
         }
-        return true;
+        return (taskRepository.findById(taskId).get().getReceiversWhoDone().contains(user));
     }
+
 
     // ############### Team filters ##################
 
