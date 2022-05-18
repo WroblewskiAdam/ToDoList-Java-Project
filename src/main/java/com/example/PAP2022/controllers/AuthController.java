@@ -34,8 +34,7 @@ public class AuthController {
     @GetMapping("/confirmation")
     public ResponseEntity<?> confirmation(@RequestParam("token") String token) {
         try {
-            authService.confirmApplicationUser(token);
-            return ResponseEntity.ok("Email has been confirmed");
+            return ResponseEntity.ok(authService.confirmApplicationUser(token));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

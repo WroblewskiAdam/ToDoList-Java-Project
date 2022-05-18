@@ -21,7 +21,7 @@ const ResetPassword = (props) => {
 
     const handleSubmitClick = (e) => {
         if(!email){
-            setErrorMsg("Give me your email");
+            setErrorMsg("Enter your email");
             setError(true);
             return;
         }
@@ -77,7 +77,7 @@ const View = ({email, handleEmailChange, checkBtn, handleSubmitClick, errorMessa
                         </div>
                         <input type="email" name="email" placeholder="Your Email" value={email} className="logIn__form-input" onChange={handleEmailChange}/>
                     </div>
-                    <div className="logIn__form-submit" ref={checkBtn} onClick={handleSubmitClick}>Submit</div>
+                    <div className="logIn__form-submit" ref={checkBtn} onClick={handleSubmitClick}>Send</div>
                 </div>
             </div>
         </>

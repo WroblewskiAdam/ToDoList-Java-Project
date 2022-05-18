@@ -47,6 +47,16 @@ const register = (firstName, lastName, email, password, img) => {
     }).catch(e => console.log(e));
 };
 
+const confirmUser = async (token) => {
+    console.log(token);
+    return axios({
+        method: 'get',
+        url: API_URL + "/confirmation",
+        params: {token: token},
+    }).then(res => res.data)
+    .catch(e => console.log(e));
+};
+
 const resetPassword = async (email) => {
     return axios({
         method: 'post',
@@ -95,6 +105,7 @@ const getUserTeamId = () =>{
 
 const AuthService = {
     register,
+    confirmUser,
     login,
     resetPassword,
     getUserByToken,

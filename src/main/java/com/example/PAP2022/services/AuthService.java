@@ -40,7 +40,7 @@ public class AuthService {
                 )
         );
 
-        String link = "http://localhost:8080/auth/confirmation?token=" + token;
+        String link = "http://localhost:3000/confirmation?token=" + token;
         String subject = "Confirm your email";
         emailService.send(
                 request.getEmail(),
@@ -50,7 +50,6 @@ public class AuthService {
 
     @Transactional
     public void confirmToken(String token) throws EmailNotValidException {
-
         if (emailTokenService.getEmailToken(token).isPresent()) {
             EmailToken registrationToken = emailTokenService.getEmailToken(token).get();
             LocalDateTime expiringTime = registrationToken.getExpiringTime();
@@ -89,10 +88,11 @@ public class AuthService {
         }
     }
 
-    public void confirmApplicationUser(String token) throws EmailNotValidException {
+    public boolean confirmApplicationUser(String token) throws EmailNotValidException {
         confirmToken(token);
         applicationUserService.enableApplicationUser(emailTokenService.getEmailToken(token).get()
                 .getApplicationUser().getEmail());
+        return true;
     }
 
     public Long getApplicationUserByResetPasswordToken(String token) throws EmailNotValidException {

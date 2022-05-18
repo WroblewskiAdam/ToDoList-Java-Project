@@ -22,7 +22,6 @@ const ResetPasswordEditor = (props) => {
 
         const token = queryParams.get('token');
         
-        console.log(token);
         AuthService.getUserByToken(token).then(
             res => {setUserId(res)}
         )
