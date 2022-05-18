@@ -78,7 +78,7 @@ public class AuthService {
                     applicationUser
             );
 
-            String link = "http://localhost:8080/auth/get_reset_password_token?token=" + token;
+            String link = "http://localhost:3000/resetPasswordEditor?token=" + token;
             String subject = "Reset your password";
             emailService.send(
                     email,

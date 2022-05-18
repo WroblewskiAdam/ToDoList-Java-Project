@@ -6,6 +6,8 @@ import Registration from '../logIn/Registration';
 import FirstPage from '../../pages/firstPage/FirstPage';
 import Spinner from '../spinner/Spinner';
 import './App.css';
+import ResetPassword from '../resetPassword/ResetPassword';
+import ResetPasswordEditor from '../resetPassword/ResetPasswordEditor';
 
 const MainPage = lazy(() => import("../../pages/mainPage/mainPage"));
 
@@ -38,6 +40,12 @@ const App = () => {
             </Route>
             <Route exact path="/registration">
               <Registration/>
+            </Route>
+            <Route exact path="/resetPassword">
+              <ResetPassword/>
+            </Route>
+            <Route exact path="/resetPasswordEditor">
+              <ResetPasswordEditor/>
             </Route>
           </Switch>
         </Suspense>

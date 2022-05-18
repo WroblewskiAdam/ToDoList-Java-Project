@@ -32,6 +32,15 @@ public class ApplicationUserController {
         }
     }
 
+    @GetMapping("/get_by_email")
+    public ResponseEntity<?> getApplicationUserByEmail(@RequestParam String email) {
+        try{
+            return ResponseEntity.ok().body(applicationUserService.getApplicationUserByEmail(email));
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/all")
     public ResponseEntity<?> getUsers() {
         return ResponseEntity.ok().body(applicationUserService.getAllUsers());
@@ -68,15 +77,6 @@ public class ApplicationUserController {
         }
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteUser(@RequestParam Long id){
-        try{
-            return ResponseEntity.ok(applicationUserService.deleteUser(id));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
     // TODO już we Front-endzie trzeba szyfrować hasło
     @PutMapping("/edit")
     public ResponseEntity<?> editUser(@RequestParam("id") Long id,
@@ -93,6 +93,15 @@ public class ApplicationUserController {
                     password,
                     file
                     ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteUser(@RequestParam Long id){
+        try{
+            return ResponseEntity.ok(applicationUserService.deleteUser(id));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

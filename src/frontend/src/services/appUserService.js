@@ -13,7 +13,6 @@ const getUser = () => {
     return axios.get(API_URL + "/get", {headers: authHeader(), params: {id: userId}}).catch(error => console.log(error));
 };
 
-
 const getTeams = async () => {
     const userId = JSON.parse(localStorage.getItem("accessToken")).id;
 

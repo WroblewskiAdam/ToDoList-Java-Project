@@ -97,7 +97,7 @@ const View = ({email, handleEmailChange, password, handlePasswordChange, checkBt
                         <input type="password" name="password" value={password} className="logIn__form-input" placeholder="Your Password" onChange={handlePasswordChange}/>
                     </div>
                     <div className="logIn__form-submit" ref={checkBtn} onClick={handleSubmitClick}>Submit</div>
-                    <div className="logIn__form-reset">Forgot your password?</div>
+                    <a href="http://localhost:3000/resetPassword" className="logIn__form-reset">Forgot your password?</a>
                 </div>
             </div>
         </>

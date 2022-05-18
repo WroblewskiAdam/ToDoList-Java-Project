@@ -162,7 +162,7 @@ const View = ({
                         <input type="file" id="file" className="logIn__form-input" onChange={handleImageChange} accept='image/*'/>
                     </div>
                     <div className="logIn__form-submit" onClick={handleSubmitClick}>Submit</div>
-                    <div className="logIn__form-reset">Forgot your password?</div>
+                    <a href="http://localhost:3000/resetPassword" className="logIn__form-reset">Forgot your password?</a>
                 </div>
             </div>
         </>
