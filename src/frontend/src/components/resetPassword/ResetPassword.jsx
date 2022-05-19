@@ -1,13 +1,12 @@
 import { useState, useRef } from 'react';
-import './LogIn.scss';
+import '../logIn/LogIn.scss';
 import AuthService from '../../services/authService';
 import { useHistory } from "react-router-dom";
 import Spinner from '../spinner/Spinner';
 import ErrorAuth from '../errorMessage/errorAuth/ErrorAuth';
 
-const LogIn = (props) => {
+const ResetPassword = (props) => {
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
@@ -15,24 +14,14 @@ const LogIn = (props) => {
     const checkBtn = useRef();
 
     let history = useHistory();
-
-    const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
-    }
     
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
     }
 
     const handleSubmitClick = (e) => {
-        if(!password){
-            setErrorMsg("Give me a password");
-            setError(true);
-            return;
-        }
-
         if(!email){
-            setErrorMsg("Give me your email");
+            setErrorMsg("Enter your email");
             setError(true);
             return;
         }
@@ -40,13 +29,13 @@ const LogIn = (props) => {
         e.preventDefault();
         setLoading(true);
 
-        AuthService.login(email, password).then(
+        AuthService.resetPassword(email).then(
         () => {
-            history.push("/home");
+            history.push("/login");
         }).catch((error) => {
             console.log(error.response.status);
             if(error.response.status === 403){
-                setErrorMsg("Password or email is incorrect :(");
+                setErrorMsg("Email is incorrect");
             }
             else{
                 setErrorMsg("Enknown error :(((((");
@@ -62,8 +51,6 @@ const LogIn = (props) => {
     const content = !(loading) ? <View 
                                             email={email} 
                                             handleEmailChange={handleEmailChange} 
-                                            password={password}
-                                            handlePasswordChange={handlePasswordChange}
                                             checkBtn={checkBtn}
                                             handleSubmitClick={handleSubmitClick}
                                             errorMessage={errorMessage}/> : null;
@@ -76,12 +63,12 @@ const LogIn = (props) => {
     );
 }
 
-const View = ({email, handleEmailChange, password, handlePasswordChange, checkBtn, handleSubmitClick, errorMessage}) => {
+const View = ({email, handleEmailChange, checkBtn, handleSubmitClick, errorMessage}) => {
     return(
         <>
             {errorMessage}
             <div className='logIn'>
-                <div className="logIn__title">Log In</div>
+                <div className="logIn__title">Enter your email</div>
                 <div className="logIn__form">
                     <div className="logIn__form-item">
                         <div className="logIn__form-icon">
@@ -90,17 +77,10 @@ const View = ({email, handleEmailChange, password, handlePasswordChange, checkBt
                         </div>
                         <input type="email" name="email" placeholder="Your Email" value={email} className="logIn__form-input" onChange={handleEmailChange}/>
                     </div>
-                    <div className="logIn__form-item">
-                        <div className="logIn__form-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M282.3 343.7L248.1 376.1C244.5 381.5 238.4 384 232 384H192V424C192 437.3 181.3 448 168 448H128V488C128 501.3 117.3 512 104 512H24C10.75 512 0 501.3 0 488V408C0 401.6 2.529 395.5 7.029 391L168.3 229.7C162.9 212.8 160 194.7 160 176C160 78.8 238.8 0 336 0C433.2 0 512 78.8 512 176C512 273.2 433.2 352 336 352C317.3 352 299.2 349.1 282.3 343.7zM376 176C398.1 176 416 158.1 416 136C416 113.9 398.1 96 376 96C353.9 96 336 113.9 336 136C336 158.1 353.9 176 376 176z"/></svg>
-                        </div>
-                        <input type="password" name="password" value={password} className="logIn__form-input" placeholder="Your Password" onChange={handlePasswordChange}/>
-                    </div>
-                    <div className="logIn__form-submit" ref={checkBtn} onClick={handleSubmitClick}>Submit</div>
-                    <a href="http://localhost:3000/resetPassword" className="logIn__form-reset">Forgot your password?</a>
+                    <div className="logIn__form-submit" ref={checkBtn} onClick={handleSubmitClick}>Send</div>
                 </div>
             </div>
         </>
     )
 }
-export default LogIn;
+export default ResetPassword;

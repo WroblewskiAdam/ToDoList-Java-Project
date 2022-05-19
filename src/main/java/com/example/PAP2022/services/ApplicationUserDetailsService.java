@@ -56,6 +56,14 @@ public class ApplicationUserDetailsService implements UserDetailsService {
         }
     }
 
+    public ApplicationUser getApplicationUserByEmail(String email) throws UserNotFoundException {
+        if (loadApplicationUserByEmail(email).isPresent()) {
+            return loadApplicationUserByEmail(email).get();
+        } else {
+            throw new UserNotFoundException("Could not find user with email " + email);
+        }
+    }
+
     public List<ApplicationUser> getAllUsers(){
         return applicationUserRepository.findAll();
     }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './LogIn.scss';
+import '../logIn/LogIn.scss';
 import AuthService from '../../services/authService';
 import { useHistory } from "react-router-dom";
 import Spinner from '../spinner/Spinner';
@@ -39,31 +39,31 @@ function Registration(props) {
 
     const handleSubmitClick = () => {
         if(!firstName){
-            setErrorMsg("Give me your name");
+            setErrorMsg("Enter your name");
             setError(true);
             return;
         }
 
         if(!lastName){
-            setErrorMsg("Give me your surname");
+            setErrorMsg("Enter your surname");
             setError(true);
             return;
         }
 
         if(!password){
-            setErrorMsg("Give me a password");
+            setErrorMsg("Enter a password");
             setError(true);
             return;
         }
 
         if(!email){
-            setErrorMsg("Give me your email");
+            setErrorMsg("Enter your email");
             setError(true);
             return;
         }
 
         if(!image){
-            setErrorMsg("Give me your image");
+            setErrorMsg("Select your image");
             setError(true);
             return;
         }
@@ -162,7 +162,7 @@ const View = ({
                         <input type="file" id="file" className="logIn__form-input" onChange={handleImageChange} accept='image/*'/>
                     </div>
                     <div className="logIn__form-submit" onClick={handleSubmitClick}>Submit</div>
-                    <div className="logIn__form-reset">Forgot your password?</div>
+                    <a href="http://localhost:3000/resetPassword" className="logIn__form-reset">Forgot your password?</a>
                 </div>
             </div>
         </>

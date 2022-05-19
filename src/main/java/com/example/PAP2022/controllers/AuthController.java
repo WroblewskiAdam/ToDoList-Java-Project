@@ -31,6 +31,24 @@ public class AuthController {
     private final AuthService authService;
     private final JwtUnit jwtUtils;
 
+    @GetMapping("/confirmation")
+    public ResponseEntity<?> confirmation(@RequestParam("token") String token) {
+        try {
+            return ResponseEntity.ok(authService.confirmApplicationUser(token));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/get_user_by_reset_password_token")
+    public ResponseEntity<?> getApplicationUserByResetPasswordToken(@RequestParam("token") String token) {
+        try {
+            return ResponseEntity.ok(authService.getApplicationUserByResetPasswordToken(token));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
@@ -74,30 +92,11 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/confirmation")
-    public ResponseEntity<?> confirmation(@RequestParam("token") String token) {
-        try {
-            authService.confirmApplicationUser(token);
-            return ResponseEntity.ok("Email has been confirmed");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
     @PostMapping("/reset_password_email")
     public ResponseEntity<?> sendResetPasswordEmail(@RequestParam("email") String email) {
         try {
             authService.sendResetPasswordEmail(email);
             return ResponseEntity.ok("Email has just been sent");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/reset_password_token")
-    public ResponseEntity<?> getResetPasswordToken(@RequestParam("token") String token) {
-        try {
-            return ResponseEntity.ok(authService.getApplicationUserByResetPasswordToken(token));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

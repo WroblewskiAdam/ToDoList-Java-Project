@@ -42,8 +42,47 @@ const register = (firstName, lastName, email, password, img) => {
     
     return axios({
         method: 'post',
-        url: API_URL + "/registration_postman",
+        url: API_URL + "/registration",
         data: formData,
+    }).catch(e => console.log(e));
+};
+
+const confirmUser = async (token) => {
+    console.log(token);
+    return axios({
+        method: 'get',
+        url: API_URL + "/confirmation",
+        params: {token: token},
+    }).then(res => res.data)
+    .catch(e => console.log(e));
+};
+
+const resetPassword = async (email) => {
+    return axios({
+        method: 'post',
+        url: API_URL + "/reset_password_email",
+        params: {email: email},
+    }).catch(e => console.log(e));
+};
+
+const getUserByToken = async (token) => {
+    console.log(token);
+    return axios({
+        method: 'get',
+        url: API_URL + "/get_user_by_reset_password_token",
+        params: {token: token},
+    }).then(res => res.data)
+    .catch(e => console.log(e));
+};
+
+const resetPasswordEditor = async (password, id) => {
+    return axios({
+        method: 'post',
+        url: API_URL + "/reset_password",
+        params: {
+            password: password,
+            id: id
+        },
     }).catch(e => console.log(e));
 };
 
@@ -51,7 +90,6 @@ const logout = () => {
     localStorage.removeItem("accessToken");
     window.location.reload();
 };
-
 
 const getCurrentUser = () => {
     return JSON.parse(localStorage.getItem("accessToken"));
@@ -67,7 +105,11 @@ const getUserTeamId = () =>{
 
 const AuthService = {
     register,
+    confirmUser,
     login,
+    resetPassword,
+    getUserByToken,
+    resetPasswordEditor,
     logout,
     getCurrentUser,
     getUserToken,

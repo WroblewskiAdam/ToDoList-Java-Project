@@ -291,19 +291,19 @@ public class TaskController {
         }
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteTask(@RequestParam Long taskId){
+    @PutMapping("/tick")
+    public ResponseEntity<?> tickTask(@RequestParam Long taskId, @RequestParam Long userId) {
         try {
-            return ResponseEntity.ok().body(taskService.deleteTask(taskId));
+            return ResponseEntity.ok().body(taskService.tickTask(taskId, userId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PutMapping("/tick")
-    public ResponseEntity<?> tickTask(@RequestParam Long taskId, @RequestParam Long userId) {
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteTask(@RequestParam Long taskId){
         try {
-            return ResponseEntity.ok().body(taskService.tickTask(taskId, userId));
+            return ResponseEntity.ok().body(taskService.deleteTask(taskId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
