@@ -13,33 +13,36 @@ function MemberItem(props) {
     const [doneTasks, setDoneTasks] = useState([]);
 
     useEffect(() => {
-        AppUserService.getTasks(props.id).then((res) => {
-            setAllTasks(res);
-        });
+        AppUserService.getTasks(props.id).then((res1) => {
+            setAllTasks(res1);
 
-        TeamService.getTeamTasks(props.teamId).then((res) => {
-            setAllTeamTasks(res);
+            TeamService.getTeamTasks(props.teamId).then((res2) => {
+                setAllTeamTasks(res2);
+
+                let teamTasksIds = res2.map((item) => item.id);
+                
+                setDoneTasks([]);
+                setTasks([]);
+
+                res1.forEach((task) => {
+                    if(teamTasksIds.indexOf(task.id) > -1){
+                        if(task.isDone){
+                            setDoneTasks((doneTasks) => [...doneTasks, task]);
+                        }
+                        setTasks((tasks) => [...tasks, task]);
+                    }
+                });
+            });
         });
     }, [props.id, props.teamId]);
 
-    if(allTasks && allTeamTasks){
-        let teamTasksTitle = allTeamTasks.map((item) => item.title);
+    let percentage = 0;
+    if(tasks.length && doneTasks.length){
+        let lenDoneTasks= doneTasks.length;
+        let lenTasks = tasks.length;
 
-        allTasks.forEach((task) => {
-            console.log(task.title);
-            if(teamTasksTitle.indexOf(task.title) > -1){
-                if(task.isDone){
-                    setDoneTasks((doneTasks) => [...doneTasks, task]);
-                }
-                setTasks((tasks) => [...tasks, task]);
-            }
-        });
+        percentage = Math.round(lenDoneTasks/lenTasks*100);
     }
-
-    let lenDoneTasks= doneTasks.length;
-    let lenTasks = tasks.length;
-    
-    let percentage = Math.round(lenDoneTasks/lenTasks) * 100;
     
     return (
         <div className="memberItem">

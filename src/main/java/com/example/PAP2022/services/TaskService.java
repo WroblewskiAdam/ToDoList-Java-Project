@@ -154,7 +154,7 @@ public class TaskService {
                 .sorted(Comparator.comparing(Task::getDeadline).reversed())
                 .collect(Collectors.toList());
     }
-    
+
     public Boolean checkIfTaskIsDoneByUser(Long taskId, Long userId) throws TaskNotFoundException, UserIsNotAssignedToTaskException {
         ApplicationUser user = applicationUserService.loadApplicationUserById(userId).get();
         if (!(getTaskReceivers(taskId).contains(user))) {

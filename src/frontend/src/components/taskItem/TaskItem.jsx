@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import TaskService from '../../services/tasksService';
 import "./TaskItem.scss";
 import Checkbox from '@mui/material/Checkbox';
+import AppUserService from '../../services/appUserService';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -10,6 +11,7 @@ function TaskItem(props) {
     const [receivers, setReceivers] = useState([]);
     const [receiversWhoDone, setReceiversWhoDone] = useState([]);
     const [checked, setChecked] = useState(false);
+    const [tasksId, setTasksId] = useState([]);
 
     useEffect(() => {
         TaskService.checkIfTaskDoneByUser(props.id).then((res) => {
@@ -24,7 +26,10 @@ function TaskItem(props) {
         TaskService.getReceiversWhoDone(props.id).then(res => {
             setReceiversWhoDone(res);
         });
-
+        
+        AppUserService.getTasks().then(res => {
+            setTasksId(res.map((item => item.id)));
+        });
     }, []);
 
     const handleTaskItemClick = (e) => {
@@ -69,6 +74,9 @@ function TaskItem(props) {
     const timeTime = sub === 0 ? null : <>{years}{months}{days}{hours}{minutes}{seconds}</>
 
     const taskItemClass = checked ? "taskItem checked" : "taskItem";
+
+    const checkbox = tasksId.indexOf(props.id) >= 0? <Checkbox checked={checked} {...label} onChange={handleCheckboxClick} /> : null;
+    
     return (
         <>
             <div className={taskItemClass} onClick={handleTaskItemClick}>
@@ -80,7 +88,7 @@ function TaskItem(props) {
                             {props.title}
                         </div>
                     </div>
-                    <Checkbox checked={checked} {...label} onChange={handleCheckboxClick} />
+                    {checkbox}
                 </div>
                 <div className="taskItem__line"></div>
                 <div className={descrClass}>

@@ -2,6 +2,7 @@
 
 .memberSection{
     padding: 20px;
+    height: 90%;
     &__input{
         display: flex;
         justify-content: space-between;
@@ -25,10 +26,19 @@
         }
     }
     &__block{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-direction: column;
-        width: 100%;
+        // display: flex;
+        // justify-content: space-between;
+        // align-items: center;
+        // flex-direction: column;
+        // width: 100%;
+        overflow-y: auto;
+        scrollbar-width: none;
+        height: 100%;
+        &::-webkit-scrollbar{
+            display: none;
+        }
+        &:last-child{
+            margin-bottom: 0;
+        }
     }
 }

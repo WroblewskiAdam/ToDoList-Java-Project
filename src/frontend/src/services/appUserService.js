@@ -20,7 +20,7 @@ const getTeams = async () => {
     return await axios.get(API_URL + "/teams", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch(error => console.log(error));
 }
 
-const getTasks = async (userId) => {
+const getTasks = async (userId=JSON.parse(localStorage.getItem("accessToken")).id) => {
     return await axios.get(API_URL + "/tasks", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch(error => console.log(error));
 }
 
