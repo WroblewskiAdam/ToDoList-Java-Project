@@ -16,10 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -65,15 +63,21 @@ public class ApplicationUserDetailsService implements UserDetailsService {
     }
 
     public List<ApplicationUser> getAllUsers(){
-        return applicationUserRepository.findAll();
+        return applicationUserRepository.findAll().stream()
+                .sorted(Comparator.comparing(ApplicationUser::getLastName, String.CASE_INSENSITIVE_ORDER))
+                .collect(Collectors.toList());
     }
 
     public List<Team> getAllTeams(Long id) throws UserNotFoundException {
-        return getApplicationUser(id).getTeams();
+        return getApplicationUser(id).getTeams().stream()
+                .sorted(Comparator.comparing(Team::getName))
+                .collect(Collectors.toList());
     }
 
     public List<Task> getAllTasks(Long id) throws UserNotFoundException {
-        return getApplicationUser(id).getTasks();
+        return getApplicationUser(id).getTasks().stream()
+                .sorted(Comparator.comparing(Task::getDeadline).reversed())
+                .collect(Collectors.toList());
     }
 
     public Image getImage(Long id) throws ImageNotFoundException, UserNotFoundException {
@@ -114,7 +118,10 @@ public class ApplicationUserDetailsService implements UserDetailsService {
                 users.add(getApplicationUser(id));
             }
 
-        return users;
+        return users.stream()
+                .sorted(Comparator.comparing(ApplicationUser::getLastName))
+                .collect(Collectors.toList());
+
     }
 
     public String signUpUser(ApplicationUser applicationUser) throws EmailTakenException {

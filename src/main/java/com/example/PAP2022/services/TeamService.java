@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.example.PAP2022.models.Team;
 import com.example.PAP2022.models.ApplicationUser;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,7 +36,9 @@ public class TeamService {
     }
 
     public List<Team> getAllTeams(){
-        return teamRepository.findAll();
+        return teamRepository.findAll().stream()
+                .sorted(Comparator.comparing(Team::getName))
+                .collect(Collectors.toList());
     }
 
     public Team getTeam(Long teamId) throws TeamNotFoundException {
@@ -47,11 +50,15 @@ public class TeamService {
     }
 
     public List<Task> getTeamTasks(Long teamId) throws TeamNotFoundException {
-        return getTeam(teamId).getTeamTasks();
+        return getTeam(teamId).getTeamTasks().stream()
+                .sorted(Comparator.comparing(Task::getDeadline).reversed())
+                .collect(Collectors.toList());
     }
 
     public List<ApplicationUser> getTeamMembers(Long teamId) throws TeamNotFoundException {
-        return getTeam(teamId).getTeamMembers();
+        return getTeam(teamId).getTeamMembers().stream()
+                .sorted(Comparator.comparing(ApplicationUser::getLastName))
+                .collect(Collectors.toList());
     }
 
     public ApplicationUser getTeamLeader(Long teamId) throws TeamNotFoundException {
