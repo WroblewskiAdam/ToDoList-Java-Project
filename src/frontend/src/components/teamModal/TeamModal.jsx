@@ -36,9 +36,33 @@ function TeamModal(props) {
 
     useEffect(() => {
         AppUserService.getAllUsers().then(data=>{
-            setMembers(data)
+            data.forEach((item) => {
+                if(item.id !== JSON.parse(localStorage.getItem("accessToken")).id){
+                    setMembers((members) => [...members, item]);
+                }
+            })
         });
     }, []);
+
+    useEffect(() => {
+        console.log(props.function, " ", props.teamId)
+        if(props.function === "Edit" && props.teamId){
+            TeamService.getTeamName(props.teamId).then(res => {
+                setTitle(res);
+            });
+
+            TeamService.getTeamMembers(props.teamId).then(res => {
+                let selected = [];
+                res.forEach((member) => {
+                    if(member.id !== JSON.parse(localStorage.getItem("accessToken")).id){
+                        selected = [...selected, member.firstName + " " + member.lastName];
+                    }
+                })
+
+                setSelectedMembers(selected);
+            });
+        }
+    }, [props.teamId, props.function])
 
     const handleTitleChange = (e) =>{
         setTitle(e.target.value);
@@ -46,6 +70,7 @@ function TeamModal(props) {
 
     const handleSelectMember = (e) => {
         const value = e.target.value;
+
         setSelectedMembers(
             value
         );
@@ -66,18 +91,34 @@ function TeamModal(props) {
             }
         });
 
-        TeamService.createTeam(
-            title,
-            id,
-            receiversIds
-        ).then(res => {
-            AppUserService.getTeams().then(res => {
-                props.setTeam(res);
-            });
-        }).catch(e => console.log(e));
+        if(props.function === "Add"){
+            TeamService.createTeam(
+                title,
+                id,
+                receiversIds
+            ).then(res => {
+                AppUserService.getTeams().then(res => {
+                    props.setTeam(res);
+                });
+            }).catch(e => console.log(e));
 
-        setTitle("");
-        setSelectedMembers([]);
+            setTitle("");
+            setSelectedMembers([]);
+        } else if(props.function === "Edit"){
+            if(props.teamId){
+                console.log(receiversIds);
+                TeamService.editTeam(
+                    props.teamId,
+                    title,
+                    id,
+                    receiversIds
+                ).then(res => {
+                    AppUserService.getTeams().then(res => {
+                        props.setTeam(res);
+                    });
+                }).catch(e => console.log(e));
+            }
+        }
 
         closeModal();
     }
@@ -95,7 +136,7 @@ function TeamModal(props) {
             >
                 <div ref={modalRef} className="teamModal__container">
                     <div className="teamModal__title">
-                        Add Team
+                        {props.function} Team
                     </div>
                     <div className="teamModal__block">
                         <div className="teamModal__input">
@@ -133,7 +174,7 @@ function TeamModal(props) {
                             </FormControl>
                         </div>
                         <div className="teamModal__buttons">
-                            <div className="teamModal__btn add_btn" onClick={handleAddButton}>Add</div>
+                            <div className="teamModal__btn add_btn" onClick={handleAddButton}>{props.function}</div>
                             <div className="teamModal__btn" onClick={closeModal} >Cancel</div>
                         </div>
                     </div>

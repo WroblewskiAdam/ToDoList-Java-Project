@@ -9,6 +9,8 @@ import AppUserService from "../../services/appUserService";
 function TeamSideBar(props) {
     const [teams, setTeam] = useState([]);
     const [modalState, setModalState] = useState(false);
+    const [modalFunction, setModalFunction] = useState("Add");
+    const [selectedTeam, setSelectedTeam] = useState(undefined);
 
     useEffect(() => {
         AppUserService.getTeams().then(res => {
@@ -17,6 +19,8 @@ function TeamSideBar(props) {
     }, [])
 
     const handleAddTeamButton = () => {
+        setModalFunction("Add");
+        setSelectedTeam(null);
         setModalState(true);
     }
 
@@ -43,16 +47,18 @@ function TeamSideBar(props) {
                     {
                         teams ? teams.map((item) => {
                             return (
-                                <TeamItem key={item.id} id={item.id} title={item.name} image={image} setTasks={props.setTasks} setTitle={props.setTitle} setTeamId={props.setTeamId} reload={props.reload} setReload={props.setReload}/>
+                                <TeamItem key={item.id} id={item.id} title={item.name} image={image} setTasks={props.setTasks} setTitle={props.setTitle} setTeamId={props.setTeamId} reload={props.reload} setReload={props.setReload} setModalState={setModalState} setModalFunction={setModalFunction} setSelectedTeam={setSelectedTeam}/>
                             )
                         }) : null
                     }
                 </div>
-                <TeamModal 
+                <TeamModal
+                    function={modalFunction}
                     modalState={modalState}
                     setModalState={setModalState}
                     updateTeam={updateTeam}
                     setTeam={setTeam}
+                    teamId={selectedTeam}
                 />
             </div>
         </div>

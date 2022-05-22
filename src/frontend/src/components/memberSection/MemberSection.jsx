@@ -31,11 +31,12 @@ function MemberSection(props) {
                     value={input}
                     onChange={handleInputChange}
                 />
-                <div className="memberSection__input-submit">Search</div>
             </div>
             <div className="memberSection__block">
                 {
-                    members.map((item) => {
+                    members.filter((member) => {
+                        return input === "" || ((member.firstName + " " + member.lastName + " " + member.firstName).indexOf(input) !== -1);
+                    }).map((item) => {
                         return(
                             <MemberItem key={item.id} teamId={props.teamId} id={item.id} firstName={item.firstName} lastName={item.lastName} />
                         )

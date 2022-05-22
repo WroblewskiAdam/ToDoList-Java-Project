@@ -11,6 +11,7 @@ function MemberItem(props) {
     const [allTeamTasks, setAllTeamTasks] = useState([]);
     const [tasks, setTasks] = useState([]);
     const [doneTasks, setDoneTasks] = useState([]);
+    const [image, setImage] = useState(undefined);
 
     useEffect(() => {
         AppUserService.getTasks(props.id).then((res1) => {
@@ -35,6 +36,23 @@ function MemberItem(props) {
             });
         });
     }, [props.id, props.teamId]);
+
+
+    // useEffect(() => {
+    //     AppUserService.getImage(props.id).then((res) => {
+    //         // console.log(res);
+    //         let blob = new Blob([res], {type: props.image.type});
+
+    //         var reader = new FileReader();
+    //         reader.readAsDataURL(blob);
+    //         reader.onloadend = function () {
+    //             var base64String = reader.result;
+    //             // console.log('Base64 String - ', base64String);
+    //             setImage(base64String);
+    //             // console.log('Base64 String without Tags- ', base64String.substr(base64String.indexOf(', ') + 1));
+    //         }
+    //     })
+    // }, []);
 
     let percentage = 0;
     if(tasks.length && doneTasks.length){

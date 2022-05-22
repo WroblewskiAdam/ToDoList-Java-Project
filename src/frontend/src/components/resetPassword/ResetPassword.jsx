@@ -29,10 +29,11 @@ const ResetPassword = (props) => {
         e.preventDefault();
         setLoading(true);
 
-        AuthService.resetPassword(email).then(
-        () => {
+        AuthService.resetPassword(email).then(() => {
+            setLoading(false);
             history.push("/login");
         }).catch((error) => {
+            setLoading(false);
             console.log(error.response.status);
             if(error.response.status === 403){
                 setErrorMsg("Email is incorrect");
@@ -42,8 +43,6 @@ const ResetPassword = (props) => {
             }
             setError(true);
         });
-
-        setLoading(false);
     }
 
     const spinner = loading ? <Spinner/> : null;

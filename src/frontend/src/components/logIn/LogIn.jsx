@@ -40,10 +40,11 @@ const LogIn = (props) => {
         e.preventDefault();
         setLoading(true);
 
-        AuthService.login(email, password).then(
-        () => {
+        AuthService.login(email, password).then(() => {
+            setLoading(false);
             history.push("/home");
         }).catch((error) => {
+            setLoading(false);
             console.log(error.response.status);
             if(error.response.status === 403){
                 setErrorMsg("Password or email is incorrect :(");
@@ -53,8 +54,6 @@ const LogIn = (props) => {
             }
             setError(true);
         });
-
-        setLoading(false);
     }
 
     const spinner = loading ? <Spinner/> : null;

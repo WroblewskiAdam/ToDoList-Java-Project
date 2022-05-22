@@ -57,10 +57,11 @@ const ResetPasswordEditor = (props) => {
         e.preventDefault();
         setLoading(true);
 
-        AuthService.resetPasswordEditor(password, userId).then(
-        () => {
+        AuthService.resetPasswordEditor(password, userId).then(() => {
+            setLoading(false);
             history.push("/login");
         }).catch((error) => {
+            setLoading(false);
             console.log(error.response.status);
             if(error.response.status === 403){
                 setErrorMsg("????");
@@ -70,8 +71,6 @@ const ResetPasswordEditor = (props) => {
             }
             setError(true);
         });
-
-        setLoading(false);
     }
 
     const spinner = loading ? <Spinner/> : null;

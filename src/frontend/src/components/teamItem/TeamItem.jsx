@@ -29,10 +29,15 @@ function TeamItem(props) {
 
     const handleDeleteClick = () => {
         console.log("Delete: ", props.id);
+        TeamService.deleteTeam(props.id);
+        window.location.reload();
     }
 
     const handleEditClick = () => {
         console.log("Edit: ", props.id);
+        props.setSelectedTeam(props.id);
+        props.setModalFunction("Edit");
+        props.setModalState(true);
     }
 
     

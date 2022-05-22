@@ -23,11 +23,17 @@ const getTasks = async (userId=JSON.parse(localStorage.getItem("accessToken")).i
     return await axios.get(API_URL + "/tasks", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch(error => console.log(error));
 }
 
+
+const getImage = async (userId) => {
+    return await axios.get(API_URL + "/image", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch(error => console.log(error));
+}
+
 const AppUserService = {
     getAllUsers, 
     getUser,
     getTeams,
-    getTasks  
+    getTasks,
+    getImage
 };
 
 export default AppUserService;

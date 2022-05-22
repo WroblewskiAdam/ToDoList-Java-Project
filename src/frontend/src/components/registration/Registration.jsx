@@ -69,21 +69,20 @@ function Registration(props) {
         }
 
         setLoading(true);
-        AuthService.register(firstName, lastName, email, password, image).then(
-            () => {
-                history.push("/login");
-            }).catch((error) => {
-                console.log(error.response);
-                if(error.response.status === 400){
-                    setErrorMsg(error.response.data);
-                }
-                else{
-                    setErrorMsg("Enknown error :(((((");
-                }
-                setError(true);
-            });
-    
-        setLoading(false);
+        AuthService.register(firstName, lastName, email, password, image).then(() => {
+            setLoading(false);
+            history.push("/login");
+        }).catch((error) => {
+            setLoading(false);
+            console.log(error.response);
+            if(error.response.status === 400){
+                setErrorMsg(error.response.data);
+            }
+            else{
+                setErrorMsg("Enknown error :(((((");
+            }
+            setError(true);
+        });
     }
 
     const spinner = loading ? <Spinner/> : null;

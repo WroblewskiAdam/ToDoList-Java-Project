@@ -66,6 +66,15 @@ public class TeamController {
         }
     }
 
+    @GetMapping("/getTeamName")
+    public ResponseEntity<?> getTeamName(@RequestParam Long teamId) {
+        try {
+            return ResponseEntity.ok().body(teamService.getTeamName(teamId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/save")
     public ResponseEntity<?> saveTeam(@RequestBody TeamRequest request) {
         try {

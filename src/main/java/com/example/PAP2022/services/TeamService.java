@@ -65,6 +65,10 @@ public class TeamService {
         return getTeam(teamId).getTeamLeader();
     }
 
+    public String getTeamName(Long teamId) throws TeamNotFoundException {
+        return getTeam(teamId).getName();
+    }
+
     public Long deleteTeam(Long teamId) throws TeamNotFoundException {
         if (loadTeamById(teamId).isPresent()) {
             teamRepository.deleteById(teamId);
@@ -118,8 +122,17 @@ public class TeamService {
 
     public Team editTeam(Long teamId, TeamRequest teamRequest) throws UserNotFoundException, TeamNotFoundException {
         Team team = getTeam(teamId);
+        ApplicationUser leader = applicationUserService.getApplicationUser(teamRequest.getTeamLeaderId());
+        List<ApplicationUser> teamMembers = applicationUserService.getUsersByIds(teamRequest.getMembersIds());
+
         team.setName(teamRequest.getName());
         team.setTeamLeader(applicationUserService.getApplicationUser(teamRequest.getTeamLeaderId()));
+
+        if (!teamMembers.contains(leader)) {
+            teamMembers.add(leader);
+        }
+
+        team.setTeamMembers(teamMembers);
 
         return teamRepository.save(team);
     }

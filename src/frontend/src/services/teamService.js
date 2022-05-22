@@ -25,10 +25,44 @@ const getTeamMembers = async (teamId) => {
     return axios.get(API_URL + "/getMembers", {headers: authHeader(), params: {teamId: teamId}}).then(res => res.data).catch((error) => console.log(error));
 }
 
+const getTeamName = async (teamId) => {
+    return axios.get(API_URL + "/getTeamName", {headers: authHeader(), params: {teamId: teamId}}).then(res => res.data).catch((error) => console.log(error));
+}
+
+const editTeam = async (teamId, name, teamLeaderId, membersIds) => {
+    return axios({
+        method: 'put',
+        url: API_URL + "/edit",
+        params: {
+            teamId: teamId,
+        },
+        data : {
+            "name": name,
+            "teamLeaderId": teamLeaderId,
+            "membersIds": membersIds,
+        },
+        headers: authHeader()
+    }).then(res => res.data).catch((error) => console.log(error));
+}
+
+const deleteTeam = async (teamId) => {
+    return axios({
+        method: 'delete',
+        url: API_URL + "/delete",
+        params: {
+            teamId: teamId,
+        },
+        headers: authHeader()
+    }).then(res => res.data).catch((error) => console.log(error));
+}
+
 const TeamService = {
     createTeam,
     getTeamTasks,
-    getTeamMembers
+    getTeamMembers,
+    editTeam,
+    getTeamName,
+    deleteTeam
 };
 
 export default TeamService;
