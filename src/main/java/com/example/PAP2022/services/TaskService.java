@@ -105,22 +105,6 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    public List<Task> getPrivateTasks(Long userId) throws UserNotFoundException {
-        ApplicationUser user = applicationUserService.getApplicationUser(userId);
-        return user.getTasks().stream()
-                .filter(task -> task.getTeam() == null)
-                .sorted(Comparator.comparing(Task::getDeadline).reversed())
-                .collect(Collectors.toList());
-    }
-
-    public List<Task> getPrivateTasksGiven(Long userId) throws UserNotFoundException {
-        ApplicationUser user = applicationUserService.getApplicationUser(userId);
-        return taskRepository.findByGiver(user).stream()
-                .filter(task -> task.getTeam() == null)
-                .sorted(Comparator.comparing(Task::getDeadline).reversed())
-                .collect(Collectors.toList());
-    }
-
     public List<Task> getExpiredTasks(Long userId) throws UserNotFoundException {
         ApplicationUser user = applicationUserService.getApplicationUser(userId);
         return user.getTasks().stream()
@@ -155,13 +139,101 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    public Boolean checkIfTaskIsDoneByUser(Long taskId, Long userId) throws TaskNotFoundException, UserIsNotAssignedToTaskException {
-        ApplicationUser user = applicationUserService.loadApplicationUserById(userId).get();
-        if (!(getTaskReceivers(taskId).contains(user))) {
-            throw new UserIsNotAssignedToTaskException(
-                    "User with Id  " + userId + " is not assigned to task with Id " + taskId);
-        }
-        return (taskRepository.findById(taskId).get().getReceiversWhoDone().contains(user));
+
+    // ############### Private filters ##################
+
+    public List<Task> getPrivateTasks(Long userId) throws UserNotFoundException {
+        ApplicationUser user = applicationUserService.getApplicationUser(userId);
+        return user.getTasks().stream()
+                .filter(task -> task.getTeam() == null)
+                .sorted(Comparator.comparing(Task::getDeadline).reversed())
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> getPrivateTasksGiven(Long userId) throws UserNotFoundException {
+        ApplicationUser user = applicationUserService.getApplicationUser(userId);
+        return taskRepository.findByGiver(user).stream()
+                .filter(task -> task.getTeam() == null)
+                .sorted(Comparator.comparing(Task::getDeadline).reversed())
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> getPrivateTodayTasks(Long userId) throws UserNotFoundException {
+        ApplicationUser user = applicationUserService.getApplicationUser(userId);
+        return user.getTasks().stream()
+                .filter(task -> task.getTeam() == null)
+                .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(1)))
+                .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
+                .sorted(Comparator.comparing(Task::getDeadline).reversed())
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> getPrivateTodayTasksGiven(Long userId) throws UserNotFoundException {
+        ApplicationUser user = applicationUserService.getApplicationUser(userId);
+        return taskRepository.findByGiver(user).stream()
+                .filter(task -> task.getTeam() == null)
+                .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(1)))
+                .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
+                .sorted(Comparator.comparing(Task::getDeadline).reversed())
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> getPrivateSevenDaysTasks(Long userId) throws UserNotFoundException {
+        ApplicationUser user = applicationUserService.getApplicationUser(userId);
+        return user.getTasks().stream()
+                .filter(task -> task.getTeam() == null)
+                .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(7)))
+                .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
+                .sorted(Comparator.comparing(Task::getDeadline).reversed())
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> getPrivateSevenDaysTasksGiven(Long userId) throws UserNotFoundException {
+        ApplicationUser user = applicationUserService.getApplicationUser(userId);
+        return taskRepository.findByGiver(user).stream()
+                .filter(task -> task.getTeam() == null)
+                .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(7)))
+                .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
+                .sorted(Comparator.comparing(Task::getDeadline).reversed())
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> getPrivateExpiredTasks(Long userId) throws UserNotFoundException {
+        ApplicationUser user = applicationUserService.getApplicationUser(userId);
+        return user.getTasks().stream()
+                .filter(task -> task.getTeam() == null)
+                .filter(task -> task.getDeadline().isBefore(LocalDateTime.now()))
+                .sorted(Comparator.comparing(Task::getDeadline).reversed())
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> getPrivateExpiredTasksGiven(Long userId) throws UserNotFoundException {
+        ApplicationUser user = applicationUserService.getApplicationUser(userId);
+        return taskRepository.findByGiver(user).stream()
+                .filter(task -> task.getTeam() == null)
+                .filter(task -> task.getDeadline().isBefore(LocalDateTime.now()))
+                .sorted(Comparator.comparing(Task::getDeadline).reversed())
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> getPrivateDoneGivenTasks(Long userId) throws UserNotFoundException {
+        ApplicationUser user = applicationUserService.getApplicationUser(userId);
+        return user.getTasks().stream()
+                .filter(task -> task.getTeam() == null)
+                .filter(task -> task.getGiver() == user)
+                .filter(Task::getIsDone)
+                .sorted(Comparator.comparing(Task::getDeadline).reversed())
+                .collect(Collectors.toList());
+    }
+
+    // z punktu widzenia użytkownika któremu zostało zlecone zadanie
+    public List<Task> getPrivateDoneReceivedTasks(Long userId) throws UserNotFoundException {
+        ApplicationUser user = applicationUserService.getApplicationUser(userId);
+        return applicationUserService.getApplicationUser(userId).getTasks().stream()
+                .filter(task -> task.getTeam() == null)
+                .filter(task -> task.getReceiversWhoDone().contains(user))
+                .sorted(Comparator.comparing(Task::getDeadline).reversed())
+                .collect(Collectors.toList());
     }
 
 
@@ -413,4 +485,14 @@ public class TaskService {
 
         return taskRepository.save(task);
     }
+
+    public Boolean checkIfTaskIsDoneByUser(Long taskId, Long userId) throws TaskNotFoundException, UserIsNotAssignedToTaskException {
+        ApplicationUser user = applicationUserService.loadApplicationUserById(userId).get();
+        if (!(getTaskReceivers(taskId).contains(user))) {
+            throw new UserIsNotAssignedToTaskException(
+                    "User with Id  " + userId + " is not assigned to task with Id " + taskId);
+        }
+        return (taskRepository.findById(taskId).get().getReceiversWhoDone().contains(user));
+    }
+
 }

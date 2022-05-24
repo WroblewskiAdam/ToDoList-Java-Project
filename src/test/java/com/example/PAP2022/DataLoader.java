@@ -82,7 +82,7 @@ public class DataLoader implements CommandLineRunner {
 //        Task task4 = new Task("Task 4", "Description to task 4", LocalDateTime.now().plusDays(10), TaskPriority.RED, user3, List.of(user1), team1);
 //        Task task5 = new Task("Task 5", "Description to task 5", LocalDateTime.now().plusDays(12), TaskPriority.GREEN, user1, List.of(user3), team3);
 
-        Task pvTask1 = new Task("Private Task 1", "Description to private task 1", LocalDateTime.now().plusDays(5), TaskPriority.GREEN, user1, List.of(user2), null);
+        Task pvTask1 = new Task("Private Task 1", "Description to private task 1", LocalDateTime.now().plusDays(5), TaskPriority.GREEN, user2, List.of(user1, user2), null);
         Task pvTask2 = new Task("Private Task 2", "Description to private task 2", LocalDateTime.now().plusDays(8), TaskPriority.YELLOW, user3, List.of(user2), null);
         Task pvTask3 = new Task("Private Task 3", "Description to private task 3", LocalDateTime.now().plusDays(8), TaskPriority.RED, user2, List.of(user3), null);
 
@@ -95,7 +95,8 @@ public class DataLoader implements CommandLineRunner {
         taskRepository.save(pvTask2);
         taskRepository.save(pvTask3);
 
+        ApplicationUser user5 = new ApplicationUser("Zenek 2", "Błazenek", "blazenek@gmail.com", "password", image4, USER);
+        userRepository.save(user5);
 
-        System.out.println(userRepository.findAll());
     }
 }
