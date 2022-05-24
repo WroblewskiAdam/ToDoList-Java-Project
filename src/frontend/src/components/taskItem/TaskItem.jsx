@@ -14,11 +14,6 @@ function TaskItem(props) {
     const [tasksId, setTasksId] = useState([]);
 
     useEffect(() => {
-        TaskService.checkIfTaskDoneByUser(props.id).then((res) => {
-            setChecked(res);
-        });
-        
-
         TaskService.getReceivers(props.id).then(res => {
             setReceivers(res);
         });
@@ -28,8 +23,16 @@ function TaskItem(props) {
         });
         
         AppUserService.getTasks().then(res => {
-            setTasksId(res.map((item => item.id)));
+            let response = res.map((item => item.id));
+            setTasksId(response);
+
+            if(response.indexOf(props.id) >= 0){
+                TaskService.checkIfTaskDoneByUser(props.id).then((res) => {
+                    setChecked(res);
+                });
+            }
         });
+
     }, []);
 
     const handleTaskItemClick = (e) => {
@@ -44,6 +47,7 @@ function TaskItem(props) {
             TaskService.getReceiversWhoDone(props.id).then(res => {
                 setReceiversWhoDone(res);
             });
+            props.setUpadate((update) => !update);
         });
     }
 
@@ -77,6 +81,18 @@ function TaskItem(props) {
 
     const checkbox = tasksId.indexOf(props.id) >= 0? <Checkbox checked={checked} {...label} onChange={handleCheckboxClick} /> : null;
     
+    console.log(receivers);
+    const receiversBlock = receivers && receivers.length > 0 ? <>
+                                                                    {
+                                                                        receivers.map((receiver) => {
+                                                                            return(
+                                                                                <div className="taskItem__receivers-item">
+                                                                                    {receiver.firstName} {receiver.lastName}
+                                                                                </div>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </> : null;
     return (
         <>
             <div className={taskItemClass} onClick={handleTaskItemClick}>
@@ -99,6 +115,10 @@ function TaskItem(props) {
                         <div className="taskItem__description-time">
                             Deadline: {deadlineItems[0]} {deadlineItems[1]}
                         </div>
+                    </div>
+                    <div className="taskItem__line"></div>
+                    <div className="taskItem__receivers">
+                        {receiversBlock}
                     </div>
                     <div className="taskItem__line"></div>
                     <div className="taskItem__description-item">

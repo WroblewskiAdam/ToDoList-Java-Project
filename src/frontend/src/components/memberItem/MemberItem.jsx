@@ -35,7 +35,7 @@ function MemberItem(props) {
                 });
             });
         });
-    }, [props.id, props.teamId]);
+    }, [props.id, props.teamId, props.update]);
 
 
     // useEffect(() => {

@@ -15,18 +15,6 @@ function TeamItem(props) {
         setOption((option) => !option);
     }
 
-    const handleTeamItemClick = (e) => {
-        if((!optionRef.current.contains(e.target) && !moreButtonRef.current.contains(e.target)) || props.reload){
-            if(props.id){
-                TeamService.getTeamTasks(props.id).then(res => {
-                    props.setTasks(res);
-                    props.setTitle(props.title);
-                    props.setTeamId(props.id);
-                });
-            }
-        }
-    }
-
     const handleDeleteClick = () => {
         console.log("Delete: ", props.id);
         TeamService.deleteTeam(props.id);
@@ -45,6 +33,39 @@ function TeamItem(props) {
         setOption(false);
     });
 
+    const btn = JSON.parse(localStorage.getItem("accessToken")).role !== "[USER]"?  
+    <>
+        <div ref={moreButtonRef} className="teamItem__more" onClick={handleOptionClick}>
+            ...
+        </div>
+        <div ref={optionRef} className={"teamItem__options" + (option ? "" : " hide")}>               
+            <div className="teamItem__btn teamItem__edit" onClick={handleEditClick}>
+                Edit
+            </div>
+            <div className="teamItem__btn teamItem__delete" onClick={handleDeleteClick}>
+                Delete
+            </div>
+        </div>
+    </> : null;
+
+    const handleTeamItemClick = (e) => {
+        if(btn){
+            console.log("btn")
+            if((!optionRef.current.contains(e.target) && !moreButtonRef.current.contains(e.target)) || props.reload){
+                if(props.id){
+                    props.setTitle(props.title);
+                    props.setTeamId(props.id);
+                }
+            }
+        }
+        else{
+            if(props.id){
+                props.setTitle(props.title);
+                props.setTeamId(props.id);
+            }
+        }
+    }
+
     return (
         <div className='teamItem' onClick={handleTeamItemClick}>
             <div className="teamItem__image">
@@ -53,17 +74,8 @@ function TeamItem(props) {
             <div className="teamItem__title">
                 {props.title}
             </div>
-            <div ref={moreButtonRef} className="teamItem__more" onClick={handleOptionClick}>
-                ...
-            </div>
-            <div ref={optionRef} className={"teamItem__options" + (option ? "" : " hide")}>               
-                <div className="teamItem__btn teamItem__edit" onClick={handleEditClick}>
-                    Edit
-                </div>
-                <div className="teamItem__btn teamItem__delete" onClick={handleDeleteClick}>
-                    Delete
-                </div>
-            </div>
+            {btn}
+            
         </div>
     );
 }
