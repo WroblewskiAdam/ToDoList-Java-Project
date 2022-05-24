@@ -21,7 +21,7 @@ public class ApplicationUser {
     private String lastName;
     private String email;
     private String password;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "image_id")
     private Image image;
 
@@ -56,4 +56,6 @@ public class ApplicationUser {
         this.image = img;
         this.applicationUserRole = applicationUserRole;
     }
+
+
 }

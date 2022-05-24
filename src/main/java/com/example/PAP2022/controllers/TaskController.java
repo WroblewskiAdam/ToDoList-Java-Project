@@ -43,7 +43,9 @@ public class TaskController {
         }
     }
 
-    // Filtrowanie po userze
+
+// User
+
     @GetMapping("/today")
     public ResponseEntity<?> getTodayTasks(@RequestParam Long id) {
         try {
@@ -75,24 +77,6 @@ public class TaskController {
     public ResponseEntity<?>getSevenDaysTasksGiven(@RequestParam Long id) {
         try {
             return ResponseEntity.ok().body(taskService.getSevenDaysTasksGiven(id));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/private")
-    public ResponseEntity<?> getPrivateTasks(@RequestParam Long id) {
-        try {
-            return ResponseEntity.ok().body(taskService.getPrivateTasks(id));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/private_given")
-    public ResponseEntity<?> getPrivateTasksGiven(@RequestParam Long id) {
-        try {
-            return ResponseEntity.ok().body(taskService.getPrivateTasksGiven(id));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -162,7 +146,102 @@ public class TaskController {
         }
     }
 
-//    Filtrowanie po Teamie
+
+//    Private
+
+    @GetMapping("/private")
+    public ResponseEntity<?> getPrivateTasks(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getPrivateTasks(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/private_given")
+    public ResponseEntity<?> getPrivateTasksGiven(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getPrivateTasksGiven(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/private_today")
+    public ResponseEntity<?> getPrivateTodayTasks(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getPrivateTodayTasks(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/private_today_given")
+    public ResponseEntity<?> getPrivateTodayTasksGiven(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getPrivateTodayTasksGiven(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/private_seven_days")
+    public ResponseEntity<?> getPrivateSevenDaysTasks(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getPrivateSevenDaysTasks(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/private_seven_days_given")
+    public ResponseEntity<?>getPrivateSevenDaysTasksGiven(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getPrivateSevenDaysTasksGiven(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/private_expired")
+    public ResponseEntity<?> getPrivateExpiredTasks(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getPrivateExpiredTasks(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/private_expired_given")
+    public ResponseEntity<?> getPrivateExpiredTasksGiven(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getPrivateExpiredTasksGiven(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/private_done_given")
+    public ResponseEntity<?> getPrivateDoneGivenTasks(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getPrivateDoneGivenTasks(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // z punktu widzenia użytkownika któremu zostało zlecone zadanie
+    @GetMapping("/private_done_received")
+    public ResponseEntity<?> getPrivateDoneReceivedTasks(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok().body(taskService.getPrivateDoneReceivedTasks(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
+//    Team
 
     @GetMapping("/team_expired_all")
     public ResponseEntity<?> getAllExpiredTasksTeam(@RequestParam Long teamId) {

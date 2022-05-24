@@ -4,23 +4,25 @@ server:
     include-binding-errors: always
 
 spring:
-#  Z TEGO KORZYSTAJCIE !!!!!!!!!!!!!!!!!!!!!!
-  datasource:
-    password: papcrm123
-    url: jdbc:mysql://34.118.36.189/TDL
-    username: root
 
 #  datasource:
-#    password: Adamix123
-#    url: jdbc:mysql://localhost/PAPCRM_DLA_MNIE
+#    password: papcrm123
+#    url: jdbc:mysql://34.118.36.189/PAPCRM_SYF
 #    username: root
+
+  datasource:
+    password: password
+    url: jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1
+    username: sa
+    driver-class-name: org.h2.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+#        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.H2Dialect
         format_sql: true
     show-sql: true
 
