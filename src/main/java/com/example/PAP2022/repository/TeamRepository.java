@@ -8,9 +8,5 @@ import com.example.PAP2022.models.ApplicationUser;
 import java.util.List;
 
 @Repository
-public interface TeamRepository extends JpaRepository<Team, Long> {
-
-    List<Team> findTeamByTeamLeader(ApplicationUser teamLeader);
-    void deleteByName(String name);
-
+public interface TeamRepository extends JpaRepository<Team, Long>{
 }
