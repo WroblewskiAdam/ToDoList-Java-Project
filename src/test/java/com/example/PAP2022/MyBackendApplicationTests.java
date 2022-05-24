@@ -10,5 +10,4 @@ class MyBackendApplicationTests {
 	void contextLoads() {
 
 	}
-
 }
