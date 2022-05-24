@@ -30,8 +30,4 @@ public class EmailTokenService {
     public void deleteEmailToken(ApplicationUser applicationUser) {
         emailTokenRepository.deleteByApplicationUser(applicationUser);
     }
-
-    public void deleteEmailToken(Long tokenId) {
-        emailTokenRepository.deleteById(tokenId);
-    }
 }

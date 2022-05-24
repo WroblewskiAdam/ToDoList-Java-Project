@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 public interface ApplicationUserRepository extends JpaRepository<ApplicationUser, Long> {
 
   Optional<ApplicationUser> findByEmail(String email);
-  void deleteByEmail(String email);
 
+  void deleteByEmail(String email);
 
   @Transactional
   @Modifying
