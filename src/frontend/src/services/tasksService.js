@@ -86,6 +86,25 @@ const checkIfTaskDoneByUser = async(taskId) => {
     
     return axios.get(API_URL + "/check_if_task_is_done_by_user", {headers: authHeader(), params: {taskId: taskId, userId: userId}}).then(res => res.data).catch((error) => console.log(error));
 }
+
+
+
+const getPrivateTasks = async() => {
+    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+
+    return axios.get(API_URL + "/private", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch((error) => console.log(error));
+}
+
+const getUserDoneTasks = async () => {
+    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+    return axios.get(API_URL + "/done_received", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch((error) => console.log(error));
+}
+
+const getGivenTasks = async () => {
+    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+    return axios.get(API_URL + "/private_given", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch((error) => console.log(error));
+}
+
 const TaskService = {
     createTask,
     getReceivers,
@@ -95,7 +114,10 @@ const TaskService = {
     getSevenDaysTasks,
     getExpiredTasks,
     tickTask,
-    checkIfTaskDoneByUser
+    checkIfTaskDoneByUser,
+    getPrivateTasks,
+    getUserDoneTasks,
+    getGivenTasks
 };
 
 export default TaskService;

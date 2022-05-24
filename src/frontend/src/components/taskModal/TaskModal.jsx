@@ -15,6 +15,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import ListItemText from '@mui/material/ListItemText';
 import TaskService from '../../services/tasksService';
 import "./TaskModal.scss";
+import AppUserService from '../../services/appUserService';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -41,6 +42,11 @@ function TaskModal(props) {
     useEffect(() => {
         if(props.teamId){
             TeamService.getTeamMembers(props.teamId).then(res => {
+                setMembers(res);
+            });
+        }
+        if(props.teamId === 0){
+            AppUserService.getAllUsers().then(res => {
                 setMembers(res);
             });
         }

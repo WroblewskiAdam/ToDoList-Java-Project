@@ -38,7 +38,7 @@ function MemberSection(props) {
                         return input === "" || ((member.firstName + " " + member.lastName + " " + member.firstName).indexOf(input) !== -1);
                     }).map((item) => {
                         return(
-                            <MemberItem key={item.id} teamId={props.teamId} id={item.id} firstName={item.firstName} lastName={item.lastName} />
+                            <MemberItem key={item.id} teamId={props.teamId} id={item.id} firstName={item.firstName} lastName={item.lastName} update={props.update}/>
                         )
                     })
                 }

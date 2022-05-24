@@ -7,12 +7,13 @@ import { useHistory } from "react-router-dom";
 import AppUserService from "../../services/appUserService";
 import TaskSection from "../../components/taskSection/TaskSection";
 import TeamService from "../../services/teamService";
+import TaskService from "../../services/tasksService";
 
 const MainPage = () => {
     const [, setUserData] = useState(null);
-    const [tasks, setTasks] = useState(null);
     const [title, setTitle] = useState("Choose Team");
     const [teamId, setTeamId] = useState(null);
+    const [update, setUpadate] = useState(false);
 
     let history = useHistory();
     
@@ -30,8 +31,8 @@ const MainPage = () => {
     return (
         <div className="mainPage">
             <SideBar/>
-            <TeamSideBar setTitle={setTitle} setTasks={setTasks} setTeamId={setTeamId}/>
-            <TaskSection title={title} tasks={tasks} teamId={teamId} setTasks={setTasks}/>
+            <TeamSideBar setTitle={setTitle} setTeamId={setTeamId} update={update} />
+            <TaskSection title={title} teamId={teamId} update={update} setUpadate={setUpadate} />
         </div>
     )
 }
