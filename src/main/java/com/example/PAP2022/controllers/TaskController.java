@@ -282,16 +282,34 @@ public class TaskController {
     @GetMapping("/team_expired")
     public ResponseEntity<?> getExpiredReceivedTasksTeam(@RequestParam Long teamId, @RequestParam Long userId) {
         try {
-            return ResponseEntity.ok().body(taskService.getReceivedExpiredTasksTeam(teamId, userId));
+            return ResponseEntity.ok().body(taskService.getExpiredReceivedTasksTeam(teamId, userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/team_expired_given")
+    public ResponseEntity<?> getExpiredGivenTasksTeam(@RequestParam Long teamId, @RequestParam Long userId) {
+        try {
+            return ResponseEntity.ok().body(taskService.getExpiredGivenTasksTeam(teamId, userId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @GetMapping("/team_done")
-    public ResponseEntity<?> getDoneTasksTeam(@RequestParam Long teamId, @RequestParam Long userId) {
+    public ResponseEntity<?> getDoneReceivedTasksTeam(@RequestParam Long teamId, @RequestParam Long userId) {
         try {
-            return ResponseEntity.ok().body(taskService.getDoneTasksTeam(teamId, userId));
+            return ResponseEntity.ok().body(taskService.getDoneReceivedTasksTeam(teamId, userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/team_done_given")
+    public ResponseEntity<?> getDoneGivenTasksTeam(@RequestParam Long teamId, @RequestParam Long userId) {
+        try {
+            return ResponseEntity.ok().body(taskService.getDoneGivenTasksTeam(teamId, userId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
