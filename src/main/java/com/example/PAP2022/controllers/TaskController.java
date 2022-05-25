@@ -43,8 +43,16 @@ public class TaskController {
         }
     }
 
+    @GetMapping("/check_if_task_is_done_by_user")
+    public ResponseEntity<?> checkIfTaskIsDoneByUser(@RequestParam Long taskId, @RequestParam Long userId) {
+        try {
+            return ResponseEntity.ok().body(taskService.checkIfTaskIsDoneByUser(taskId, userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
-// User
+//    ################## Task - User Only ##################
 
     @GetMapping("/today")
     public ResponseEntity<?> getTodayTasks(@RequestParam Long id) {
@@ -137,17 +145,8 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/check_if_task_is_done_by_user")
-    public ResponseEntity<?> checkIfTaskIsDoneByUser(@RequestParam Long taskId, @RequestParam Long userId) {
-        try {
-            return ResponseEntity.ok().body(taskService.checkIfTaskIsDoneByUser(taskId, userId));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
 
-
-//    Private
+//    ################## Task - Private ##################
 
     @GetMapping("/private")
     public ResponseEntity<?> getPrivateTasks(@RequestParam Long id) {
@@ -241,7 +240,16 @@ public class TaskController {
     }
 
 
-//    Team
+//    ################## Task - In Team ##################
+
+    @GetMapping("/team_all")
+    public ResponseEntity<?> getAllTasksTeam(@RequestParam Long teamId) {
+        try {
+            return ResponseEntity.ok().body(taskService.getAllTasksTeam(teamId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
     @GetMapping("/team_expired_all")
     public ResponseEntity<?> getAllExpiredTasksTeam(@RequestParam Long teamId) {
@@ -369,20 +377,23 @@ public class TaskController {
         }
     }
 
-    @PutMapping("/edit")
-    public ResponseEntity<?> editTask(@RequestParam Long taskId, @RequestBody TaskRequest taskRequest) {
-        try {
-            return ResponseEntity.ok().body(taskService.editTask(taskId, taskRequest));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+
+//    ################## Operation on task ##################
 
     @PostMapping("/save")
     public ResponseEntity<?> saveTask(@RequestBody TaskRequest request) {
         try {
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/tasks/save").toUriString());
             return ResponseEntity.created(uri).body(taskService.saveTask(request));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/edit")
+    public ResponseEntity<?> editTask(@RequestParam Long taskId, @RequestBody TaskRequest taskRequest) {
+        try {
+            return ResponseEntity.ok().body(taskService.editTask(taskId, taskRequest));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
