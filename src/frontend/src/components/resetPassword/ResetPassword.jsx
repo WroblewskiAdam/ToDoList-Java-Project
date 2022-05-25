@@ -29,11 +29,10 @@ const ResetPassword = (props) => {
         e.preventDefault();
         setLoading(true);
 
-        AuthService.resetPassword(email).then(() => {
-            setLoading(false);
+        AuthService.resetPassword(email).then(
+        () => {
             history.push("/login");
         }).catch((error) => {
-            setLoading(false);
             console.log(error.response.status);
             if(error.response.status === 403){
                 setErrorMsg("Email is incorrect");
@@ -43,6 +42,8 @@ const ResetPassword = (props) => {
             }
             setError(true);
         });
+
+        setLoading(false);
     }
 
     const spinner = loading ? <Spinner/> : null;
@@ -76,7 +77,7 @@ const View = ({email, handleEmailChange, checkBtn, handleSubmitClick, errorMessa
                         </div>
                         <input type="email" name="email" placeholder="Your Email" value={email} className="logIn__form-input" onChange={handleEmailChange}/>
                     </div>
-                    <div className="logIn__form-submit" ref={checkBtn} onClick={handleSubmitClick}>Send</div>
+                    <div className="logIn__form-submit" ref={checkBtn} onClick={handleSubmitClick}>Submit</div>
                 </div>
             </div>
         </>

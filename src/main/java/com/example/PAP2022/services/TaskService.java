@@ -275,7 +275,7 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    public List<Task> getReceivedExpiredTasksTeam(Long teamId, Long userId) throws TeamNotFoundException, UserNotFoundException {
+    public List<Task> getExpiredReceivedTasksTeam(Long teamId, Long userId) throws TeamNotFoundException, UserNotFoundException {
         List<Task> teamTasks = teamService.getTeam(teamId).getTeamTasks();
         List<Task> userTasks = applicationUserService.getApplicationUser(userId).getTasks();
         userTasks.retainAll(teamTasks);
@@ -285,9 +285,31 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    public List<Task> getDoneTasksTeam(Long teamId, Long userId) throws TeamNotFoundException, UserNotFoundException {
+    public List<Task> getExpiredGivenTasksTeam(Long teamId, Long userId) throws TeamNotFoundException, UserNotFoundException {
+        List<Task> teamTasks = teamService.getTeam(teamId).getTeamTasks();
+        List<Task> userTasks = taskRepository.findByGiver(
+                applicationUserService.getApplicationUser(userId));
+        userTasks.retainAll(teamTasks);
+        return userTasks.stream()
+                .filter(task -> task.getDeadline().isBefore(LocalDateTime.now()))
+                .sorted(Comparator.comparing(Task::getDeadline).reversed())
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> getDoneReceivedTasksTeam(Long teamId, Long userId) throws TeamNotFoundException, UserNotFoundException {
         List<Task> teamTasks = teamService.getTeam(teamId).getTeamTasks();
         List<Task> userTasks = applicationUserService.getApplicationUser(userId).getTasks();
+        userTasks.retainAll(teamTasks);
+        return userTasks.stream()
+                .filter(Task::getIsDone)
+                .sorted(Comparator.comparing(Task::getDeadline).reversed())
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> getDoneGivenTasksTeam(Long teamId, Long userId) throws TeamNotFoundException, UserNotFoundException {
+        List<Task> teamTasks = teamService.getTeam(teamId).getTeamTasks();
+        List<Task> userTasks = taskRepository.findByGiver(
+                applicationUserService.getApplicationUser(userId));
         userTasks.retainAll(teamTasks);
         return userTasks.stream()
                 .filter(Task::getIsDone)
@@ -316,15 +338,15 @@ public class TaskService {
     }
 
     public List<Task> getTodayTasksReceivedTeam(Long teamId, Long userId) throws TeamNotFoundException, UserNotFoundException {
-    List<Task> teamTasks = teamService.getTeam(teamId).getTeamTasks();
-    List<Task> userTasks = applicationUserService.getApplicationUser(userId).getTasks();
-    userTasks.retainAll(teamTasks);
-    return userTasks.stream()
-            .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(1)))
-            .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
-            .sorted(Comparator.comparing(Task::getDeadline).reversed())
-            .collect(Collectors.toList());
-}
+        List<Task> teamTasks = teamService.getTeam(teamId).getTeamTasks();
+        List<Task> userTasks = applicationUserService.getApplicationUser(userId).getTasks();
+        userTasks.retainAll(teamTasks);
+        return userTasks.stream()
+                .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(1)))
+                .filter(task -> task.getDeadline().isAfter(LocalDateTime.now()))
+                .sorted(Comparator.comparing(Task::getDeadline).reversed())
+                .collect(Collectors.toList());
+    }
 
     public List<Task> getSevenDaysTasksTeam(Long teamId) throws TeamNotFoundException {
         return teamService.getTeam(teamId).getTeamTasks().stream()
@@ -360,7 +382,7 @@ public class TaskService {
         if (loadTaskById(taskId).isPresent()) {
                 taskRepository.deleteById(taskId);
             } else {
-                throw new TeamNotFoundException("Could not find team with ID " + taskId);
+                throw new TeamNotFoundException("Could not find task with ID " + taskId);
             }
         return taskId;
     }
