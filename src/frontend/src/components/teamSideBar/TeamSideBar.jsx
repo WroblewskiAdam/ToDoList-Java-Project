@@ -25,7 +25,7 @@ function TeamSideBar(props) {
         TaskService.getUserDoneTasks().then(res => {
             setDoneTasks(res);
         })
-    }, [props.update])
+    }, [props.updateTeam])
 
     const handleAddTeamButton = () => {
         setModalFunction("Add");

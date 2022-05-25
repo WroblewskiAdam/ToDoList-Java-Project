@@ -46,9 +46,19 @@
         padding: 20px;
         border-left: 2px solid $white-gray;
         &-fillters{
+            display: flex;
             &-item{
                 text-align: center;
                 width: 180px;
+            }
+            &-checkbox{
+                margin-left: 20px;
+                display: flex;
+                align-items:center;
+                justify-content: space-between;
+                span{
+                    font-size: 16px;
+                }
             }
             &-select{
                 height: 50px;

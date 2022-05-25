@@ -35,10 +35,10 @@ function MemberSection(props) {
             <div className="memberSection__block">
                 {
                     members.filter((member) => {
-                        return input === "" || ((member.firstName + " " + member.lastName + " " + member.firstName).indexOf(input) !== -1);
+                        return input === "" || ((member.firstName.toLowerCase() + " " + member.lastName.toLowerCase() + " " + member.firstName.toLowerCase()).indexOf(input.toLowerCase()) !== -1);
                     }).map((item) => {
                         return(
-                            <MemberItem key={item.id} teamId={props.teamId} id={item.id} firstName={item.firstName} lastName={item.lastName} update={props.update}/>
+                            <MemberItem key={item.id} teamId={props.teamId} id={item.id} firstName={item.firstName} lastName={item.lastName} updateProgres={props.updateProgres}/>
                         )
                     })
                 }

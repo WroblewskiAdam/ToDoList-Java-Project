@@ -12,6 +12,7 @@ function TaskItem(props) {
     const [receiversWhoDone, setReceiversWhoDone] = useState([]);
     const [checked, setChecked] = useState(false);
     const [tasksId, setTasksId] = useState([]);
+    const [doneTask, setDoneTask] = useState(false);
 
     useEffect(() => {
         TaskService.getReceivers(props.id).then(res => {
@@ -31,8 +32,12 @@ function TaskItem(props) {
                     setChecked(res);
                 });
             }
+            else{
+                setChecked(props.done);
+            }
         });
 
+        // setDoneTask(props.done);
     }, []);
 
     const handleTaskItemClick = (e) => {
@@ -47,7 +52,8 @@ function TaskItem(props) {
             TaskService.getReceiversWhoDone(props.id).then(res => {
                 setReceiversWhoDone(res);
             });
-            props.setUpadate((update) => !update);
+            props.setUpdateProgres((update) => !update);
+            props.setUpdateTeam((update) => !update);
         });
     }
 
@@ -64,7 +70,7 @@ function TaskItem(props) {
     const creationTimeItems = props.creationTime.split("T");
     
     const sub = subtractTime(deadlineItems[0], deadlineItems[1]);
-   
+
     const years = sub[0] ? <div className="taskItem__time-item">{sub[0]} {addS(sub[0], "year")}</div> : null;
     const months = sub[1] ? <div className="taskItem__time-item">{sub[1]} {addS(sub[1], "month")}</div> : null;
     const days = (sub[0] === 0 && sub[1] === 0 && sub[2] !== 0) ? <div className="taskItem__time-item">{sub[2]} {addS(sub[2], "day")}</div> : null;
@@ -81,13 +87,12 @@ function TaskItem(props) {
 
     const checkbox = tasksId.indexOf(props.id) >= 0? <Checkbox checked={checked} {...label} onChange={handleCheckboxClick} /> : null;
     
-    console.log(receivers);
     const receiversBlock = receivers && receivers.length > 0 ? <>
                                                                     {
                                                                         receivers.map((receiver) => {
                                                                             return(
                                                                                 <div className="taskItem__receivers-item">
-                                                                                    {receiver.firstName} {receiver.lastName}
+                                                                                    {receiver.firstName} {receiver.lastName} 
                                                                                 </div>
                                                                             )
                                                                         })
@@ -110,14 +115,15 @@ function TaskItem(props) {
                 <div className={descrClass}>
                     <div className="taskItem__description-item">
                         <div className="taskItem__description-time">
-                            Creation time: {creationTimeItems[0]} {creationTimeItems[1]}
+                            <span>Creation time:</span> {creationTimeItems[0]} {creationTimeItems[1]}
                         </div>
                         <div className="taskItem__description-time">
-                            Deadline: {deadlineItems[0]} {deadlineItems[1]}
+                        <span>Deadline:</span> {deadlineItems[0]} {deadlineItems[1]}
                         </div>
                     </div>
                     <div className="taskItem__line"></div>
                     <div className="taskItem__receivers">
+                        <span>Receivers: </span>
                         {receiversBlock}
                     </div>
                     <div className="taskItem__line"></div>
@@ -156,11 +162,11 @@ const timeConverter = (date, time) => {
 }
 
 const subtractTime = (date2, time2) => {
-    const nowXD = new Date();
-    const now = new Date(nowXD.getFullYear(), nowXD.getMonth() + 1, nowXD.getDate(), nowXD.getHours(), nowXD.getMinutes(), nowXD.getSeconds(), 0);
+    const now = new Date();
+    // const now = new Date(nowXD.getFullYear(), nowXD.getMonth() + 1, nowXD.getDate(), nowXD.getHours(), nowXD.getMinutes(), nowXD.getSeconds(), 0);
     const dTime = timeConverter(date2, time2);
 
-    let ans = dTime.getTime() - (now.getTime() );
+    let ans = dTime.getTime() - (now.getTime()) - 1000*60*60*24*30;
 
     if(ans <= 0){
         return 0;
@@ -179,28 +185,19 @@ const subtractTime = (date2, time2) => {
     
     if(Math.abs(dTime.getFullYear() - now.getFullYear()) > 0){
         if(ans >=  365){
-            ansArray[0] = dTime.getFullYear() - now.getFullYear();
-        }
-        else{
-            ansArray[0] = dTime.getFullYear() - now.getFullYear() - 1;
+            ansArray[0] = ~~(ans / 365);
         }
     }
 
     if(Math.abs(dTime.getMonth() - now.getMonth()) > 0){
         if(ans >= 30){
-            ansArray[1] = dTime.getMonth() - now.getMonth();
-        }
-        else{
-            ansArray[1] = dTime.getMonth() - now.getMonth() - 1;
+            ansArray[1] = ~~(ans / 30);
         }
     }
 
     if(Math.abs(dTime.getDate() - now.getDate()) > 0){
         if(ans >= 1){
-            ansArray[2] = dTime.getDate() - now.getDate();
-        }
-        else{
-            ansArray[2] = dTime.getDate() - now.getDate() - 1;
+            ansArray[2] = ans;
         }
     }
 

@@ -8,51 +8,103 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import TaskService from '../../services/tasksService';
-import TeamService from '../../services/teamService';
 import MemberSection from '../memberSection/MemberSection';
+import Checkbox from '@mui/material/Checkbox';
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 function TaskSection(props) {
     const [tasks, setTasks] = useState(null);
     const [open, setOpen] = React.useState(false);
     const [fillter, setFillter] = useState("All");
     const [givenTasks, setGivenTasks] = useState([]);
+    const [updateProgres, setUpdateProgres] = useState(false);
+    const [showGivenTasks, setShowGivenTasks] = useState(false);
 
     const handleOpen = () => setOpen(true);
 
     const handleClose = () => setOpen(false);
 
-    
+
     useEffect(() => {
         if(props.teamId){
-            TeamService.getTeamTasks(props.teamId).then(res => {
+            TaskService.getAllTeamTasks(props.teamId).then(res => {
                 setTasks(res);
-            });
+            })
         }
         if(props.teamId === 0){
             TaskService.getPrivateTasks().then(res => {
                 setTasks(res);
-                getAllPrivateTasks(props.teamId, res, setGivenTasks);
             });
         }
-    }, [props.teamId]);
+    }, [props.teamId, props.update]);
 
     useEffect(() => {
         if(props.teamId){
             if(fillter === "All"){
-                TeamService.getTeamTasks(props.teamId).then(res => {
-                    setTasks(res);
-                });
+                if(!showGivenTasks){
+                    TaskService.getAllTeamTasks(props.teamId).then(res => {
+                        setTasks(res);
+                    });
+                }
+                else{
+                    TaskService.getAllGivenTeamTasks(props.teamId).then(res => {
+                        setTasks(res);
+                    });
+                }
             } else if (fillter === "Today"){
-                TaskService.getTodayTasks(props.teamId).then(res => {
-                    setTasks(res);
-                });
+                if(!showGivenTasks){
+                    TaskService.getTodayTasks(props.teamId).then(res => {
+                        setTasks(res);
+                    });
+                }
+                else{
+                    TaskService.getTodayGivenTasks(props.teamID).then(res => {
+                        setTasks(res);
+                    });
+                }
             } else if (fillter === "Next 7 days"){
-                TaskService.getSevenDaysTasks(props.teamId).then(res => {
-                    setTasks(res);
-                });
+                if(!showGivenTasks){
+                    TaskService.getSevenDaysTasks(props.teamId).then(res => {
+                        setTasks(res);
+                    });
+                }
+                else{
+                    TaskService.getSevenDaysGivenTasks(props.teamId).then(res => {
+                        setTasks(res);
+                    });
+                }
             } else if (fillter === "Expired"){
                 TaskService.getExpiredTasks(props.teamId).then(res => {
                     setTasks(res);
+                });
+
+            } else if(fillter === "Done"){
+                TaskService.getDoneTasks(props.teamId).then(res => {
+                    setTasks(res);
+                });
+            }
+        }
+        if(props.teamId === 0){
+            if(fillter === "All"){
+                TaskService.getPrivateTasks().then(res => {
+                    setTasks(res);
+                    getAllPrivateTasks(props.teamId, res, setGivenTasks);
+                });
+            } else if (fillter === "Today"){
+                TaskService.getPrivateTodayTasks().then(res => {
+                    setTasks(res);
+                })
+            } else if (fillter === "Next 7 days"){
+                TaskService.getPrivateSevenDaysTasks(props.teamId).then(res => {
+                    setTasks(res);
+                });
+            } else if (fillter === "Expired"){
+                TaskService.getPrivateExpiredTasks(props.teamId).then(res => {
+                    setTasks(res);
+                });
+                TaskService.getPrivateGivenExpiredTasks(props.teamId).then(res => {
+                    setGivenTasks(res);
                 });
             } else if(fillter === "Done"){
                 TaskService.getDoneTasks(props.teamId).then(res => {
@@ -60,32 +112,8 @@ function TaskSection(props) {
                 });
             }
         }
-        // if(props.teamId === 0){
-        //     if(fillter === "All"){
-        //         TaskService.getPrivateTasks().then(res => {
-        //             setTasks(res);
-        //             getAllPrivateTasks(props.teamId, props.tasks, setGivenTasks);
-        //         });
-        //     } else if (fillter === "Today"){
-        //         TaskService.getTodayTasks(props.teamId).then(res => {
-        //             setTasks(res);
-        //         });
-        //     } else if (fillter === "Next 7 days"){
-        //         TaskService.getSevenDaysTasks(props.teamId).then(res => {
-        //             setTasks(res);
-        //         });
-        //     } else if (fillter === "Expired"){
-        //         TaskService.getExpiredTasks(props.teamId).then(res => {
-        //             setTasks(res);
-        //         });
-        //     } else if(fillter === "Done"){
-        //         TaskService.getDoneTasks(props.teamId).then(res => {
-        //             setTasks(res);
-        //         });
-        //     }
-        // }
 
-    }, [fillter])
+    }, [fillter, showGivenTasks])
 
     const handleCreateTaskBtn = () => {
         handleOpen();
@@ -95,50 +123,58 @@ function TaskSection(props) {
         setFillter(e.target.value);
     }
 
-    const taskBlock = tasks && tasks.length > 0? <>
-                                {
-                                    tasks.map((item) => {
-                                        return (
-                                            <TaskItem 
-                                                key={item.id}
-                                                id={item.id}
-                                                title={item.title}
-                                                description={item.description}
-                                                deadline={item.deadline}
-                                                creationTime={item.creationTime}
-                                                priority={item.priority}
-                                                done={item.isDone}
-                                                teamId={props.teamId}
-                                                setUpadate={props.setUpadate}
-                                            />
-                                        );
-                                    })
-                                }
-                            </> : <NoTasksView/>;
+    const handleCheckboxClick = () => {
+        setShowGivenTasks((state) => !state);
+    }
+
+    const taskBlock = tasks && tasks.length > 0? 
+    <>
+        {
+            tasks.map((item) => {
+                return (
+                    <TaskItem 
+                        key={item.id}
+                        id={item.id}
+                        title={item.title}
+                        description={item.description}
+                        deadline={item.deadline}
+                        creationTime={item.creationTime}
+                        priority={item.priority}
+                        done={item.isDone}
+                        teamId={props.teamId}
+                        setUpdateProgres={setUpdateProgres}
+                        setUpdateTeam={props.setUpdateTeam}
+                    />
+                );
+            })
+        }
+    </> : null;
     
-    const givenTasksBlock = props.teamId === 0 && givenTasks && givenTasks.length > 0 ? <>
-                                                                    {
-                                                                        givenTasks.map((item) => {
-                                                                            return (
-                                                                                <TaskItem 
-                                                                                    key={item.id}
-                                                                                    id={item.id}
-                                                                                    title={item.title}
-                                                                                    description={item.description}
-                                                                                    deadline={item.deadline}
-                                                                                    creationTime={item.creationTime}
-                                                                                    priority={item.priority}
-                                                                                    done={item.isDone}
-                                                                                    teamId={props.teamId}
-                                                                                    setUpadate={props.setUpadate}
-                                                                                />
-                                                                            );
-                                                                        })
-                                                                    }
-                                                                </> : null;
+    const givenTasksBlock = props.teamId === 0 && givenTasks && givenTasks.length > 0 ? 
+    <>
+        {
+            givenTasks.map((item) => {
+                return (
+                    <TaskItem 
+                        key={item.id}
+                        id={item.id}
+                        title={item.title}
+                        description={item.description}
+                        deadline={item.deadline}
+                        creationTime={item.creationTime}
+                        priority={item.priority}
+                        done={item.isDone}
+                        teamId={props.teamId}
+                        setUpdateProgres={setUpdateProgres}
+                        setUpdateTeam={props.setUpdateTeam}
+                    />
+                );
+            })
+        }
+    </> : null;
 
     const members = props.teamId !== 0 ? <div className="taskSection__members">
-                                            <MemberSection teamId={props.teamId} update={props.update}/>
+                                            <MemberSection teamId={props.teamId} updateProgres={updateProgres}/>
                                         </div> : null;
     return (
         <div className='taskSection'>
@@ -171,6 +207,10 @@ function TaskSection(props) {
                                         <MenuItem value={"Done"}>Done</MenuItem>
                                     </Select>
                                 </FormControl>
+                                <div className="taskSection__tasks-fillters-checkbox">
+                                    <span>Show given tasks:</span>
+                                    <Checkbox checked={showGivenTasks} {...label} onChange={handleCheckboxClick} />
+                                </div>
                             </div>
                             <div className="taskSection__createBtn" onClick={handleCreateTaskBtn}>Create Task</div>
                         </div>
@@ -182,19 +222,19 @@ function TaskSection(props) {
                     </div>
                 </div>
             </div>
-            <TaskModal open={open} handleOpen={handleOpen} handleClose={handleClose} teamId={props.teamId} setTasks={props.setTasks} />
+            <TaskModal setUpdate={props.setUpdate} open={open} handleOpen={handleOpen} handleClose={handleClose} teamId={props.teamId} setTasks={props.setTasks} />
         </div>
     );
 }
 
-const NoTasksView = () => {
-    return (
-        <div className="taskSection__noTasks">
-            <div className="taskSection__noTasks-title">No tasks :) </div>
-            <img src={noTasksImage} alt='https://www.flaticon.com/free-icons/no-task' />
-        </div>
-    )
-}
+// const NoTasksView = () => {
+//     return (
+//         <div className="taskSection__noTasks">
+//             <div className="taskSection__noTasks-title">No tasks :) </div>
+//             <img src={noTasksImage} alt='https://www.flaticon.com/free-icons/no-task' />
+//         </div>
+//     )
+// }
 
 const getAllPrivateTasks = (teamId, tasks, setGivenTasks) => {
     if(teamId === 0){
@@ -217,4 +257,5 @@ const getAllPrivateTasks = (teamId, tasks, setGivenTasks) => {
         });
     }
 }
+
 export default TaskSection;
