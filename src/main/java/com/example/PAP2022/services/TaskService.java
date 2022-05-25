@@ -60,7 +60,9 @@ public class TaskService {
     // ############### User Only filters ##################
 
     public List<Task> getReceivedTasks(Long userId) throws UserNotFoundException {
-        return applicationUserService.getApplicationUser(userId).getTasks().stream()
+        ApplicationUser user = applicationUserService.getApplicationUser(userId);
+        return user.getTasks().stream()
+                .filter(task -> !task.getReceiversWhoDone().contains(user))
                 .sorted(Comparator.comparing(Task::getDeadline).reversed())
                 .collect(Collectors.toList());
     }
