@@ -106,7 +106,6 @@ function TeamModal(props) {
             setSelectedMembers([]);
         } else if(props.function === "Edit"){
             if(props.teamId){
-                console.log(receiversIds);
                 TeamService.editTeam(
                     props.teamId,
                     title,

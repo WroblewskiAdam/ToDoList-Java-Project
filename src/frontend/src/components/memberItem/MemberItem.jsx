@@ -7,8 +7,8 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 function MemberItem(props) {
-    const [allTasks, setAllTasks] = useState([]);
-    const [allTeamTasks, setAllTeamTasks] = useState([]);
+    const [, setAllTasks] = useState([]);
+    const [, setAllTeamTasks] = useState([]);
     const [tasks, setTasks] = useState([]);
     const [doneTasks, setDoneTasks] = useState([]);
     const [image, setImage] = useState(undefined);
@@ -35,7 +35,7 @@ function MemberItem(props) {
                 });
             });
         });
-    }, [props.id, props.teamId, props.update]);
+    }, [props.id, props.teamId, props.updateProgres]);
 
 
     // useEffect(() => {
@@ -55,11 +55,16 @@ function MemberItem(props) {
     // }, []);
 
     let percentage = 0;
-    if(tasks.length && doneTasks.length){
-        let lenDoneTasks= doneTasks.length;
-        let lenTasks = tasks.length;
+    if(tasks.length){
+        if(doneTasks.length){
+            let lenDoneTasks= doneTasks.length;
+            let lenTasks = tasks.length;
 
-        percentage = Math.round(lenDoneTasks/lenTasks*100);
+            percentage = Math.round(lenDoneTasks/lenTasks*100);
+        }
+    }
+    else{
+        percentage = 100;
     }
     
     return (

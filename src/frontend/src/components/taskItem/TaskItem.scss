@@ -56,6 +56,20 @@
         background-color: $white-gray;
         margin: 0 auto;
     }
+    &__receivers{
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        &-item{
+            margin-right: 5px;
+        }
+        span{
+            margin-right: 10px;
+            font-weight: 500;
+            color: $aliceBlueDark;
+        }
+    }
     &__description{
         display: block;
         transition: all 2s linear;
@@ -66,7 +80,7 @@
         background-color: $white-color;
         margin-top: 5px;
         text-align: left;
-        padding: 10px 0;
+        padding-top: 10px;
         min-height: 100px;
         animation: fade-in .4s;
         &-active{
@@ -76,12 +90,18 @@
         &-time{
             margin-bottom: 10px;
             color: $dark-gray;
+            font-size: 16px;
+            span{
+                color: $aliceBlueDark;
+                font-weight: 500;
+            }
         }
         &-item{
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 10px;
+            font-size: 18px;
             &:last-child{
                 padding: 10px;
             }

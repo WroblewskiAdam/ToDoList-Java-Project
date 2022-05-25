@@ -96,11 +96,7 @@ function TaskModal(props) {
             receiversIds,
             props.teamId
         ).then(res => {
-            if(props.teamId){
-                TeamService.getTeamTasks(props.teamId).then(res => {
-                    props.setTasks(res);
-                });
-            }
+            props.setUpdate((update) => !update);
         }).catch(e => console.log(e));
 
         // console.log(
@@ -244,4 +240,5 @@ const transformDateTime = (dateTime) => {
 const padTime = (number) => {
     return (number + '').padStart(2, '0');
 }
+
 export default TaskModal;

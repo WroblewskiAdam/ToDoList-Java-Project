@@ -253,6 +253,10 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+    public List<Task> getAllTasksTeam(Long teamId) throws  TeamNotFoundException {
+        return teamService.getTeam(teamId).getTeamTasks();
+    }
+
     public List<Task> getReceivedTasksTeam(Long teamId, Long userId) throws TeamNotFoundException, UserNotFoundException {
         List<Task> teamTasks = teamService.getTeam(teamId).getTeamTasks();
         List<Task> userTasks = applicationUserService.getApplicationUser(userId).getTasks();
@@ -264,8 +268,7 @@ public class TaskService {
 
     public List<Task> getGivenTasksTeam(Long teamId, Long userId) throws TeamNotFoundException, UserNotFoundException {
         List<Task> teamTasks = teamService.getTeam(teamId).getTeamTasks();
-        List<Task> userTasks = taskRepository.findByGiver(
-                applicationUserService.getApplicationUser(userId));
+        List<Task> userTasks = taskRepository.findByGiver(applicationUserService.getApplicationUser(userId));
         userTasks.retainAll(teamTasks);
         return userTasks.stream()
                 .sorted(Comparator.comparing(Task::getDeadline).reversed())
@@ -333,8 +336,7 @@ public class TaskService {
 
     public List<Task> getSevenDaysTasksGivenTeam(Long teamId, Long userId) throws TeamNotFoundException, UserNotFoundException {
         List<Task> teamTasks = teamService.getTeam(teamId).getTeamTasks();
-        List<Task> userTasks = taskRepository.findByGiver(
-                applicationUserService.getApplicationUser(userId));
+        List<Task> userTasks = taskRepository.findByGiver(applicationUserService.getApplicationUser(userId));
         userTasks.retainAll(teamTasks);
         return userTasks.stream()
                 .filter(task -> task.getDeadline().isBefore(LocalDateTime.now().plusDays(7)))
