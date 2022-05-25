@@ -70,8 +70,9 @@ public class ApplicationUserController {
             Image image = applicationUserService.getImage(id);
             return ResponseEntity
                     .ok()
-                    .contentType(MediaType.valueOf(image.getType()))
-                    .body(ImageService.decompressImage(image.getImage()));
+//                    .contentType(MediaType.valueOf(image.getType()))
+                    .body(image.getImage());
+//                    .body(ImageService.decompressImage(image.getImage()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

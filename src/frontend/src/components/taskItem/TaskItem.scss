@@ -21,24 +21,40 @@
         }
     }
     &__block{
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin-top: 10px;
         margin-bottom: 10px;
-        &:last-child{
-            margin-bottom: 0;
-        }
-        svg{
-            width: 20px;
-            height: 20px;
-            fill: $dark-gray;
-            margin-left: 20px;
-            &:first-child{
-                margin-left: 0;
+        padding-right: 12px;
+        &-item{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            svg{
+                width: 20px;
+                height: 20px;
+                fill: $dark-gray;
+                margin-left: 20px;
+                &:first-child{
+                    margin-left: 0;
+                }
             }
         }
+        
     }
+    &__trash{
+        width: 20px;
+        height: 20px;
+        fill: $nickel;
+        transition: 0.1s all;
+        &:hover{
+            transition: 0.1s all;
+            fill: red ;
+        }
+    }
+
     &__title{
         font-size: 20px;
         color: $onyx;

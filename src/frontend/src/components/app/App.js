@@ -9,6 +9,7 @@ import Spinner from '../spinner/Spinner';
 import './App.css';
 import ResetPassword from '../resetPassword/ResetPassword';
 import ResetPasswordEditor from '../resetPassword/ResetPasswordEditor';
+import UserPage from '../../pages/userPage/UserPage';
 
 const MainPage = lazy(() => import("../../pages/mainPage/mainPage"));
 
@@ -35,6 +36,9 @@ const App = () => {
             </Route>
             <Route exact path="/home">
               <MainPage/>
+            </Route>
+            <Route exact path="/user">
+              <UserPage/>
             </Route>
             <Route exact path="/login">
               <LogIn/>

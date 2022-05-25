@@ -54,9 +54,16 @@ const getReceivers = async (id) => {
     return axios.get(API_URL + "/get_receivers", {headers: authHeader(), params: {taskId: id}}).then(res => res.data).catch((error) => console.log(error));
 }
 
+const getGivenTasks = async () => {
+    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+    return axios.get(API_URL + "/given", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch((error) => console.log(error)); 
+}
+
 const getReceiversWhoDone = async (id) => {
     return axios.get(API_URL + "/get_receivers_who_done", {headers: authHeader(), params: {taskId: id}}).then(res => res.data).catch((error) => console.log(error));
 }
+
+// --------------- Team ---------------------------
 
 const getAllTeamTasks = async (teamId) => {
     const userId = JSON.parse(localStorage.getItem("accessToken")).id;
@@ -94,10 +101,23 @@ const getExpiredTasks = async (teamId) => {
     return axios.get(API_URL + "/team_expired", {headers: authHeader(), params: {teamId: teamId, userId: userId}}).then(res => res.data).catch((error) => console.log(error));
 }
 
-const getDoneTasks = async (teamId) => {
-    return axios.get(API_URL + "/team_done_all", {headers: authHeader(), params: {teamId: teamId}}).then(res => res.data).catch((error) => console.log(error));
+const getExpiredGivenTasks = async (teamId) => {
+    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+    
+    return axios.get(API_URL + "/team_expired_given", {headers: authHeader(), params: {teamId: teamId, userId: userId}}).then(res => res.data).catch((error) => console.log(error));
 }
 
+const getDoneTasks = async (teamId) => {
+    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+    return axios.get(API_URL + "/team_done", {headers: authHeader(), params: {teamId: teamId, userId: userId}}).then(res => res.data).catch((error) => console.log(error));
+}
+
+const getDoneGivenTasks = async (teamId) => {
+    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+    return axios.get(API_URL + "/team_done_given", {headers: authHeader(), params: {teamId: teamId, userId: userId}}).then(res => res.data).catch((error) => console.log(error));
+}
+
+// ---------- Private -------------------------
 
 const getPrivateTasks = async() => {
     const userId = JSON.parse(localStorage.getItem("accessToken")).id;
@@ -105,12 +125,7 @@ const getPrivateTasks = async() => {
     return axios.get(API_URL + "/private", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch((error) => console.log(error));
 }
 
-const getUserDoneTasks = async () => {
-    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
-    return axios.get(API_URL + "/done_received", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch((error) => console.log(error));
-}
-
-const getGivenTasks = async () => {
+const getPrivateGivenTasks = async () => {
     const userId = JSON.parse(localStorage.getItem("accessToken")).id;
     return axios.get(API_URL + "/private_given", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch((error) => console.log(error));
 }
@@ -120,9 +135,19 @@ const getPrivateTodayTasks = async () => {
     return axios.get(API_URL + "/private_today", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch((error) => console.log(error));
 }
 
+const getPrivateTodayGivenTasks = async () => {
+    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+    return axios.get(API_URL + "/private_today_given", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch((error) => console.log(error));
+}
+
 const getPrivateSevenDaysTasks = async () => {
     const userId = JSON.parse(localStorage.getItem("accessToken")).id;
     return axios.get(API_URL + "/private_seven_days", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch((error) => console.log(error));
+}
+
+const getPrivateSevenDaysGivenTasks = async () => {
+    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+    return axios.get(API_URL + "/private_seven_days_given", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch((error) => console.log(error));
 }
 
 const getPrivateExpiredTasks = async () => {
@@ -130,16 +155,41 @@ const getPrivateExpiredTasks = async () => {
     return axios.get(API_URL + "/private_expired", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch((error) => console.log(error));
 }
 
-const getPrivateGivenExpiredTasks = async () => {
+const getPrivateExpiredGivenTasks = async () => {
     const userId = JSON.parse(localStorage.getItem("accessToken")).id;
     return axios.get(API_URL + "/private_expired_given", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch((error) => console.log(error));
-
 }
 
+const getPrivateDoneTasks = async () => {
+    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+    return axios.get(API_URL + "/private_done_received", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch((error) => console.log(error));
+}
+
+const getPrivateDoneGivenTasks = async () => {
+    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+    return axios.get(API_URL + "/private_done_given", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch((error) => console.log(error));
+}
+
+const getUserDoneTasks = async () => {
+    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+    return axios.get(API_URL + "/done_received", {headers: authHeader(), params: {id: userId}}).then(res => res.data).catch((error) => console.log(error));
+}
+
+const deleteTask = async (taskId) => {
+    return axios({
+        method: 'delete',
+        url: API_URL + "/delete",
+        params: {
+            taskId: taskId,
+        },
+        headers: authHeader()
+    }).then(res => res.data).catch((error) => console.log(error));
+}
 
 const TaskService = {
     createTask,
     getReceivers,
+    getGivenTasks,
     getReceiversWhoDone,
     getDoneTasks,
     getTodayTasks,
@@ -149,15 +199,22 @@ const TaskService = {
     checkIfTaskDoneByUser,
     getPrivateTasks,
     getUserDoneTasks,
-    getGivenTasks,
+    getPrivateGivenTasks,
     getPrivateTodayTasks,
+    getPrivateTodayGivenTasks,
     getPrivateSevenDaysTasks,
+    getPrivateSevenDaysGivenTasks,
     getPrivateExpiredTasks,
-    getPrivateGivenExpiredTasks,
+    getPrivateExpiredGivenTasks,
+    getPrivateDoneTasks,
+    getPrivateDoneGivenTasks,
     getAllTeamTasks,
     getAllGivenTeamTasks,
     getTodayGivenTasks,
-    getSevenDaysGivenTasks
+    getSevenDaysGivenTasks,
+    getExpiredGivenTasks,
+    getDoneGivenTasks,
+    deleteTask
 };
 
 export default TaskService;

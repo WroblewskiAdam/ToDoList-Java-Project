@@ -1,10 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './FirstPage.scss'
 import { NavLink} from 'react-router-dom';
 import homeImage from "../../images/backgrounds/20944361.jpg";
+import Spinner from '../../components/spinner/Spinner';
 
 function FirstPage(props) {
+    const [loading, setLoading] = useState(false);
+
+    const handleImageLoading = () => {
+        setLoading(true);
+    }
+
+    const spinner = loading ? <Spinner/> : null;
+    const content = !loading ? <View homeImage={homeImage} handleImageLoading={handleImageLoading} />: null;
+
     return (
+        <>
+            {spinner}
+            {content}
+        </>
+    );
+}
+
+
+const View = ({homeImage, handleImageLoading}) => {
+    return(
         <div className='firstPage'>
             <div className="firstPage__wrapper">
                 <div className="firstPage__item firstPage__item-border">
@@ -18,11 +38,11 @@ function FirstPage(props) {
                     </div>
                 </div>
                 <div className="firstPage__item">
-                    <img src={homeImage} className="firstPage__image" alt="" />
+                    <img src={homeImage} className="firstPage__image" alt="" onLoad={handleImageLoading}/>
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
 export default FirstPage;

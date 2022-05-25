@@ -37,7 +37,7 @@ function TaskSection(props) {
                 setTasks(res);
             });
         }
-    }, [props.teamId, props.update]);
+    }, [props.teamId]);
 
     useEffect(() => {
         if(props.teamId){
@@ -75,45 +75,90 @@ function TaskSection(props) {
                     });
                 }
             } else if (fillter === "Expired"){
-                TaskService.getExpiredTasks(props.teamId).then(res => {
-                    setTasks(res);
-                });
+                if(!showGivenTasks){
+                    TaskService.getExpiredTasks(props.teamId).then(res => {
+                        setTasks(res);
+                    });
+                }
+                else{
+                    TaskService.getExpiredGivenTasks(props.teamId).then(res => {
+                        setTasks(res);
+                    });
+                }
 
             } else if(fillter === "Done"){
-                TaskService.getDoneTasks(props.teamId).then(res => {
-                    setTasks(res);
-                });
+                if(!showGivenTasks){
+                    TaskService.getDoneTasks(props.teamId).then(res => {
+                        setTasks(res);
+                    });
+                }
+                else{
+                    TaskService.getDoneGivenTasks(props.teamId).then(res => {
+                        setTasks(res);
+                    });
+                }
             }
         }
         if(props.teamId === 0){
             if(fillter === "All"){
-                TaskService.getPrivateTasks().then(res => {
-                    setTasks(res);
-                    getAllPrivateTasks(props.teamId, res, setGivenTasks);
-                });
+                if(!showGivenTasks){
+                    TaskService.getPrivateTasks().then(res => {
+                        setTasks(res);
+                    });
+                }
+                else{
+                    TaskService.getPrivateGivenTasks().then(res => {
+                        setTasks(res);
+                    });
+                }
             } else if (fillter === "Today"){
-                TaskService.getPrivateTodayTasks().then(res => {
-                    setTasks(res);
-                })
+                if(!showGivenTasks){
+                    TaskService.getPrivateTodayTasks().then(res => {
+                        setTasks(res);
+                    });
+                }
+                else{
+                    TaskService.getPrivateTodayGivenTasks().then(res => {
+                        setTasks(res);
+                    });
+                }
             } else if (fillter === "Next 7 days"){
-                TaskService.getPrivateSevenDaysTasks(props.teamId).then(res => {
-                    setTasks(res);
-                });
+                if(!showGivenTasks){
+                    TaskService.getPrivateSevenDaysTasks(props.teamId).then(res => {
+                        setTasks(res);
+                    });
+                }
+                else{
+                    TaskService.getPrivateSevenDaysGivenTasks(props.teamId).then(res => {
+                        setTasks(res);
+                    });
+                }
             } else if (fillter === "Expired"){
-                TaskService.getPrivateExpiredTasks(props.teamId).then(res => {
-                    setTasks(res);
-                });
-                TaskService.getPrivateGivenExpiredTasks(props.teamId).then(res => {
-                    setGivenTasks(res);
-                });
+                if(!showGivenTasks){
+                    TaskService.getPrivateExpiredTasks(props.teamId).then(res => {
+                        setTasks(res);
+                    });
+                }
+                else{
+                    TaskService.getPrivateExpiredGivenTasks(props.teamId).then(res => {
+                        setTasks(res);
+                    });
+                }
             } else if(fillter === "Done"){
-                TaskService.getDoneTasks(props.teamId).then(res => {
-                    setTasks(res);
-                });
+                if(!showGivenTasks){
+                    TaskService.getPrivateDoneTasks(props.teamId).then(res => {
+                        setTasks(res);
+                    });
+                }
+                else{
+                    TaskService.getPrivateDoneGivenTasks(props.teamId).then(res => {
+                        setTasks(res);
+                    });
+                }
             }
         }
 
-    }, [fillter, showGivenTasks])
+    }, [fillter, showGivenTasks, props.update])
 
     const handleCreateTaskBtn = () => {
         handleOpen();
@@ -127,13 +172,13 @@ function TaskSection(props) {
         setShowGivenTasks((state) => !state);
     }
 
+
     const taskBlock = tasks && tasks.length > 0? 
     <>
         {
             tasks.map((item) => {
                 return (
                     <TaskItem 
-                        key={item.id}
                         id={item.id}
                         title={item.title}
                         description={item.description}
@@ -142,8 +187,10 @@ function TaskSection(props) {
                         priority={item.priority}
                         done={item.isDone}
                         teamId={props.teamId}
+                        key={item.id}
                         setUpdateProgres={setUpdateProgres}
                         setUpdateTeam={props.setUpdateTeam}
+                        setUpdate={props.setUpdate}
                     />
                 );
             })
@@ -167,6 +214,7 @@ function TaskSection(props) {
                         teamId={props.teamId}
                         setUpdateProgres={setUpdateProgres}
                         setUpdateTeam={props.setUpdateTeam}
+                        setUpdate={props.setUpdate}
                     />
                 );
             })
