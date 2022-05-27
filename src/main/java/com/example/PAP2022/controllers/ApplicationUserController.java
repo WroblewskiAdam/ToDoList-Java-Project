@@ -69,11 +69,11 @@ public class ApplicationUserController {
     public ResponseEntity<?> getImage(@RequestParam Long id) {
         try {
             Image image = applicationUserService.getImage(id);
+            System.out.println(image.getImage());
             return ResponseEntity
                     .ok()
-//                    .contentType(MediaType.valueOf(image.getType()))
-                    .body(image.getImage());
-//                    .body(ImageService.decompressImage(image.getImage()));
+                    .contentType(MediaType.valueOf(image.getType()))
+                    .body(ImageService.decompressImage(image.getImage()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
