@@ -2,6 +2,7 @@ package com.example.PAP2022.controllers;
 
 import com.example.PAP2022.exceptions.UserNotFoundException;
 import com.example.PAP2022.models.Image;
+import com.example.PAP2022.payload.AppUserEditRequest;
 import com.example.PAP2022.services.ApplicationUserDetailsService;
 import com.example.PAP2022.services.ImageService;
 
@@ -80,20 +81,22 @@ public class ApplicationUserController {
 
     // TODO już we Front-endzie trzeba szyfrować hasło
     @PutMapping("/edit")
-    public ResponseEntity<?> editUser(@RequestParam("id") Long id,
-                                      @RequestParam("firstName") String firstName,
-                                      @RequestParam("lastName") String lastName,
-                                      @RequestParam("password") String password,
-                                      @RequestParam("image") MultipartFile file) {
+    public ResponseEntity<?> editUser(@RequestParam("id") Long id, @RequestBody AppUserEditRequest request) {
 
         try{
             return ResponseEntity.ok(applicationUserService.editApplicationUser(
                     id,
-                    firstName,
-                    lastName,
-                    password,
-                    file
+                    request
                     ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/change_role")
+    public ResponseEntity<?> changeUserRole(@RequestParam("id") Long id, @RequestParam("role") String role){
+        try{
+            return ResponseEntity.ok(applicationUserService.changeRole(id, role));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

@@ -1,9 +1,11 @@
 package com.example.PAP2022.services;
 
+import com.example.PAP2022.enums.ApplicationUserRole;
 import com.example.PAP2022.exceptions.EmailTakenException;
 import com.example.PAP2022.exceptions.ImageNotFoundException;
 import com.example.PAP2022.exceptions.UserNotFoundException;
 import com.example.PAP2022.models.*;
+import com.example.PAP2022.payload.AppUserEditRequest;
 import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.security.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
@@ -84,19 +86,14 @@ public class ApplicationUserDetailsService implements UserDetailsService {
         return imageService.getImage(getApplicationUser(id).getImage().getId());
     }
 
-    public ApplicationUser editApplicationUser(Long id,
-                                               String firstName,
-                                               String lastName,
-                                               String password,
-                                               MultipartFile file) throws IOException, UserNotFoundException {
+    public ApplicationUser editApplicationUser(Long id, AppUserEditRequest userEditRequest) throws IOException, UserNotFoundException {
 
-        Image image = imageService.convertToImage(file);
+//        Image image = imageService.convertToImage(userEditRequest.getImage());
         ApplicationUser applicationUser = getApplicationUser(id);
 
-        applicationUser.setFirstName(firstName);
-        applicationUser.setLastName(lastName);
-        applicationUser.setImage(image);
-        applicationUser.setPassword(encoder.bCryptPasswordEncoder().encode(password));
+        applicationUser.setFirstName(userEditRequest.getFirstName());
+        applicationUser.setLastName(userEditRequest.getLastName());
+//        applicationUser.setImage(image);
 
         return applicationUserRepository.save(applicationUser);
     }
@@ -161,6 +158,24 @@ public class ApplicationUserDetailsService implements UserDetailsService {
         ApplicationUser applicationUser = getApplicationUser(id);
         applicationUser.setPassword(encoder.bCryptPasswordEncoder().encode(password));
         applicationUserRepository.save(applicationUser);
+    }
+
+    public ApplicationUser changeRole(Long id, String role) throws IOException, UserNotFoundException {
+        ApplicationUser applicationUser = getApplicationUser(id);
+
+        ApplicationUserRole roleEnum = ApplicationUserRole.USER;
+
+        //ApplicationUserRole.parse(role); #TODO create not found AplicationUserRole
+
+        if(role.equals("TEAM_LEADER")){
+            roleEnum = ApplicationUserRole.TEAM_LEADER;
+        } else if(role.equals("ADMIN")){
+            roleEnum = ApplicationUserRole.ADMIN;
+        }
+
+        applicationUser.setApplicationUserRole(roleEnum);
+
+        return applicationUserRepository.save(applicationUser);
     }
 }
 

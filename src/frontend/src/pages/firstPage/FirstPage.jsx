@@ -8,7 +8,7 @@ function FirstPage(props) {
     const [loading, setLoading] = useState(false);
 
     const handleImageLoading = () => {
-        setLoading(true);
+        setLoading(false);
     }
 
     const spinner = loading ? <Spinner/> : null;

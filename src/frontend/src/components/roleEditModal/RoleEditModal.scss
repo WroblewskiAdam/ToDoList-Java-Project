@@ -1,0 +1,92 @@
+@import '../../style/variable';
+
+.roleEditModal{
+    font-family: 'Lexend', sans-serif;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    overflow: hidden;
+    background-color: rgba(0,0,0,.5);
+    &__container{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 25%;
+        background-color: white;
+        padding-top: 20px;
+        border-radius: 30px;
+        background-color: $aliceBlue;
+    }
+    &__title{
+        color: $nickel;
+        font-weight: 500;
+        font-size: 25px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    &__picker{
+        display: flex;
+        margin-bottom: 20px;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 20px;
+    }
+    &__block{
+        padding: 20px 30px;
+        border-radius: 15px;
+        height: 100%;
+        background-color: $white-color;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+    &__input{
+        display: flex;
+        flex-direction: column;
+        align-items:center;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 15px;
+        .TextField{
+           label{
+               font-size: 20px;
+           }
+           input{
+               font-size: 30px;
+           }
+        }
+    }
+    &__users{
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    &__buttons{
+        display: flex;
+        align-items:center;
+        justify-content: space-between;
+    }
+    &__btn{
+        padding: 10px 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        &:hover{
+            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+            cursor: pointer;
+        }
+    }
+}
+
+.hide{
+    display: none;
+}
+
+.add_btn{
+    background-color: $aliceBlue;
+    margin-right: 10px;
+}

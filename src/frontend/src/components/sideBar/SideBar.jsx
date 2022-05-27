@@ -1,11 +1,14 @@
 import React from 'react';
 import './SideBar.scss'
 import AuthService from '../../services/authService';
+import { useHistory } from "react-router-dom";
 import { NavLink } from 'react-router-dom';
 
 function SideBar(props) {
-    
+    let history = useHistory();
+
     const handleLogOutButton = () => {
+        history.push("/");
         AuthService.logout();
     }
 

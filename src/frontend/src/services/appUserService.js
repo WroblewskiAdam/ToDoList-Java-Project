@@ -28,12 +28,43 @@ const getImage = async (userId) => {
     return await axios.get(API_URL + "/image", {headers: authHeader(), params: {id: userId}}).then(res => res).catch(error => console.log(error));
 }
 
+const editUser = async (firstName, lastName, image) => {
+    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+    return axios({
+        method: 'put',
+        url: API_URL + "/edit",
+        params: {
+            id: userId,
+        },
+        data : {
+            "firstName": firstName,
+            "lastName": lastName,
+            "image": image,
+        },
+        headers: authHeader()
+    }).then(res => res.data).catch((error) => console.log(error));
+}
+
+const changeUserRole = async (userId, role) => {
+    axios({
+        method: 'put',
+        url: API_URL + "/change_role",
+        params: {
+            id: userId,
+            role: role,
+        },
+        headers: authHeader()
+    }).then(res => res.data).catch((error) => console.log(error));
+}
+
 const AppUserService = {
     getAllUsers, 
     getUser,
     getTeams,
     getTasks,
-    getImage
+    getImage,
+    editUser,
+    changeUserRole
 };
 
 export default AppUserService;

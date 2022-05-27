@@ -1,0 +1,79 @@
+@import "../../style/variable";
+
+.userInfo{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    &__title{
+        width: 30%;
+        font-size: 50px;
+        font-family: 'Lexend', sans-serif;
+        margin-top: 30px;
+        border-bottom: 5px solid $aliceBlue;
+        padding-bottom: 5px;
+    }
+    &__wrapper{
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+        height: 100%;
+    }
+    &__block{
+        font-family: 'Lexend', sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items:center;
+        &-text{
+            font-size: 25px;
+            border: 1px solid $aliceBlue;
+            width: 100%;
+            padding: 10px 30px;
+            text-align: left;
+            margin-top: 10px;
+            border-radius: 10px;
+            span{
+                color: $aliceBlueDark;
+                margin-right: 5px;
+            }
+        }
+        &-image{
+            width: 800px;
+        }
+    }
+    &__edit{
+        font-size: 25px;
+        background-color: $aliceBlue;
+        color: $nickel;
+        width: 40%;
+        padding: 8px 10px;
+        margin-top: 20px;
+        border-radius: 10px;
+        transition: 0.3s all;
+        &:hover{
+            background-color: $mediumSlateBlue;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+            color: $white-color;
+            cursor: pointer;
+            transition: 0.3s all;
+        }
+    }
+    &__role{
+        font-size: 25px;
+        background-color: $aliceBlue;
+        color: $nickel;
+        width: 80%;
+        padding: 8px 10px;
+        margin-bottom: 40px;
+        border-radius: 10px;
+        transition: 0.3s all;
+        &:hover{
+            background-color: $mediumSlateBlue;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+            color: $white-color;
+            cursor: pointer;
+            transition: 0.3s all;
+        }
+    }
+}

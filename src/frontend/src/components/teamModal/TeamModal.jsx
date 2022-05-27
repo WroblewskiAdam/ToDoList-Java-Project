@@ -161,13 +161,13 @@ function TeamModal(props) {
                                         
                                         members ? members.map((member) => {
                                         const name = member.firstName + " " + member.lastName;
-                                        return(
-                                            <MenuItem key={name} value={name}>
-                                            <Checkbox checked={selectedMembers.indexOf(name) > -1} />
-                                            <ListItemText primary={name} />
-                                            </MenuItem>
-                                        );
-                                    }) : null
+                                            return(
+                                                <MenuItem key={member.id} value={name}>
+                                                    <Checkbox checked={selectedMembers.indexOf(name) > -1} />
+                                                    <ListItemText primary={name} />
+                                                </MenuItem>
+                                            );
+                                        }) : null
                                     }
                                 </Select>
                             </FormControl>
