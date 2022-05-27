@@ -12,9 +12,6 @@ import java.io.PrintWriter;
 @NoArgsConstructor
 public class YamlConfig {
 
-    private int SQL_INIT = 1;
-
-
     public Map<String, Object> getYamlProperties() {
         InputStream inputStream = this.getClass()
                 .getClassLoader()
@@ -67,42 +64,4 @@ public class YamlConfig {
 
         setYamlProperties(data);
     }
-
-//    public void changeSqlInit(Boolean sqlInitConfiguration) throws FileNotFoundException {
-//        Map<String, Object> data =  getYamlProperties();
-//        Map<String, Map<String, Map<String, String>>> spring = (Map<String, Map<String, Map<String, String>>>) data.get("spring");
-//        Map<String, Map<String, String>> sql = spring.get("sql");
-//        Map<String, String> init = sql.get("init");
-//
-//        if (sqlInitConfiguration) {
-//            init.replace("mode", "never");
-//        } else {
-//            init.replace("mode", "always");
-//        }
-//
-//        sql.replace("init", init);
-//        spring.replace("sql", sql);
-//        data.replace("spring", spring);
-//
-//        setYamlProperties(data);
-//    }
-
-//    public void changeJpaDdlAuto(Boolean ddlAutoConfiguration) throws FileNotFoundException {
-//        Map<String, Object> data =  getYamlProperties();
-//        Map<String, Map<String, Map<String, String>>> spring = (Map<String, Map<String, Map<String, String>>>) data.get("spring");
-//        Map<String, Map<String, String>> jpa = spring.get("jpa");
-//        Map<String, String> hibernate = jpa.get("hibernate");
-//
-//        if (ddlAutoConfiguration) {
-//            hibernate.replace("ddl-auto", "update");
-//        } else {
-//            hibernate.replace("ddl-auto", "create-drop");
-//        }
-//
-//        jpa.replace("hibernate", hibernate);
-//        spring.replace("jpa", jpa);
-//        data.replace("spring", spring);
-//
-//        setYamlProperties(data);
-//    }
 }

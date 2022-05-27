@@ -79,7 +79,6 @@ public class ApplicationUserController {
         }
     }
 
-    // TODO już we Front-endzie trzeba szyfrować hasło
     @PutMapping("/edit")
     public ResponseEntity<?> editUser(@RequestParam("id") Long id, @RequestBody AppUserEditRequest request) {
 
