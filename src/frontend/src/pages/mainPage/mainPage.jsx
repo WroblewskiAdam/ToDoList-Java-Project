@@ -25,7 +25,7 @@ const MainPage = () => {
         else{
             history.push("/");
         }
-    }, [])
+    }, []);
 
     return (
         <div className="mainPage">

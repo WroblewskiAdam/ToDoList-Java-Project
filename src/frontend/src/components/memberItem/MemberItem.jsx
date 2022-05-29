@@ -5,6 +5,7 @@ import AppUserService from '../../services/appUserService';
 import TeamService from '../../services/teamService';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import TaskService from '../../services/tasksService';
 
 function MemberItem(props) {
     const [, setAllTasks] = useState([]);
@@ -14,27 +15,37 @@ function MemberItem(props) {
     const [image, setImage] = useState(undefined);
 
     useEffect(() => {
-        AppUserService.getTasks(props.id).then((res1) => {
-            setAllTasks(res1);
+        // AppUserService.getTasks(props.id).then((res1) => {
+        //     setAllTasks(res1);
 
-            TeamService.getTeamTasks(props.teamId).then((res2) => {
-                setAllTeamTasks(res2);
+        //     TeamService.getTeamTasks(props.teamId).then((res2) => {
+        //         setAllTeamTasks(res2);
 
-                let teamTasksIds = res2.map((item) => item.id);
+        //         let teamTasksIds = res2.map((item) => item.id);
                 
-                setDoneTasks([]);
-                setTasks([]);
+        //         setDoneTasks([]);
+        //         setTasks([]);
 
-                res1.forEach((task) => {
-                    if(teamTasksIds.indexOf(task.id) > -1){
-                        if(task.isDone){
-                            setDoneTasks((doneTasks) => [...doneTasks, task]);
-                        }
-                        setTasks((tasks) => [...tasks, task]);
-                    }
-                });
-            });
+        //         res1.forEach((task) => {
+        //             if(teamTasksIds.indexOf(task.id) > -1){
+        //                 if(task.isDone){
+        //                     setDoneTasks((doneTasks) => [...doneTasks, task]);
+        //                 }
+        //                 setTasks((tasks) => [...tasks, task]);
+        //             }
+        //         });
+        //     });
+        // });
+        TaskService.getTeamReceivedTasks(props.teamId, props.id).then((res) => {
+            setTasks(res);
+            console.log(res);
         });
+
+        TaskService.getTeamDoneTasks(props.teamId, props.id).then((res) => {
+            setDoneTasks(res);
+            console.log("Done: ", res);
+        });
+
     }, [props.teamId, props.updateProgres]);
 
 

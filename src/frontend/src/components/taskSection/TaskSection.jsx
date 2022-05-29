@@ -270,7 +270,7 @@ function TaskSection(props) {
                     </div>
                 </div>
             </div>
-            <TaskModal setUpdate={props.setUpdate} open={open} handleOpen={handleOpen} handleClose={handleClose} teamId={props.teamId} setTasks={props.setTasks} />
+            <TaskModal setUpdateProgres={setUpdateProgres} setUpdate={props.setUpdate} open={open} handleOpen={handleOpen} handleClose={handleClose} teamId={props.teamId} setTasks={props.setTasks} />
         </div>
     );
 }

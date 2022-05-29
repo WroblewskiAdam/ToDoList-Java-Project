@@ -14,8 +14,8 @@ public class MyBackendApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		YamlConfig yamlConfig = new YamlConfig();
+//		YamlConfig yamlConfig = new YamlConfig();
 //		yamlConfig.changeYamlProperties("create", "always"); - Initial properties
-		yamlConfig.changeYamlProperties("update", "never");
+//		yamlConfig.changeYamlProperties("update", "never");
 	}
 }

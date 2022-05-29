@@ -186,6 +186,14 @@ const deleteTask = async (taskId) => {
     }).then(res => res.data).catch((error) => console.log(error));
 }
 
+const getTeamReceivedTasks = async (teamId, userId) => {
+    return axios.get(API_URL + "/team_received", {headers: authHeader(), params: {userId: userId, teamId:teamId}}).then(res => res.data).catch((error) => console.log(error));
+}
+
+const getTeamDoneTasks = async (teamId, userId) => {
+    return axios.get(API_URL + "/team_done", {headers: authHeader(), params: {userId: userId, teamId:teamId}}).then(res => res.data).catch((error) => console.log(error));
+}
+
 const TaskService = {
     createTask,
     getReceivers,
@@ -214,7 +222,9 @@ const TaskService = {
     getSevenDaysGivenTasks,
     getExpiredGivenTasks,
     getDoneGivenTasks,
-    deleteTask
+    deleteTask,
+    getTeamReceivedTasks,
+    getTeamDoneTasks
 };
 
 export default TaskService;

@@ -97,6 +97,7 @@ function TaskModal(props) {
             props.teamId
         ).then(res => {
             props.setUpdate((update) => !update);
+            props.setUpdateProgres((update) => !update);
         }).catch(e => console.log(e));
 
         // console.log(
