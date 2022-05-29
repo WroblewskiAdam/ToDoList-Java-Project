@@ -18,6 +18,10 @@ function TeamSideBar(props) {
     useEffect(() => {
         AppUserService.getTeams().then(res => {
             setTeam(res);
+            if(res && res.length > 0){
+                props.setTeamId(res[0].id);
+                props.setTitle(res[0].name)
+            }
         });
         TaskService.getPrivateTasks().then(res => {
             setPrivateTasks(res);

@@ -6,6 +6,9 @@ import TeamService from '../../services/teamService';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import TaskService from '../../services/tasksService';
+import mal from "../../images/picture/mal4.png";
+import ad from "../../images/picture/add2.png";
+import jar from "../../images/picture/jar2.png";
 
 function MemberItem(props) {
     const [, setAllTasks] = useState([]);
@@ -51,8 +54,20 @@ function MemberItem(props) {
         percentage = 100;
     }
 
-    const memberImage = imageData && imageData.length > 6?  `data:image/png;base64,`+imageData: icon;
-    const memberImageClass = imageData && imageData.length > 6? "memberItem__image-color":"memberItem__image";
+    let memberImage = imageData && imageData.length > 6?  `data:image/png;base64,`+imageData: icon;
+    let memberImageClass = imageData && imageData.length > 6? "memberItem__image-color":"memberItem__image";
+
+    if(props.id === 1){
+        memberImageClass = "memberItem__image-color";
+        memberImage = mal;
+    } else if(props.id === 2){
+        memberImageClass = "memberItem__image-color";
+        memberImage = ad;
+    } else if(props.id === 3){
+        memberImageClass = "memberItem__image-color";
+        memberImage = jar;
+    }
+
     return (
         <div className="memberItem">
             <div className={memberImageClass}>
