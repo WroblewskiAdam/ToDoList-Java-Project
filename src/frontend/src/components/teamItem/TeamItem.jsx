@@ -50,7 +50,6 @@ function TeamItem(props) {
 
     const handleTeamItemClick = (e) => {
         if(btn){
-            console.log("btn")
             if((!optionRef.current.contains(e.target) && !moreButtonRef.current.contains(e.target)) || props.reload){
                 if(props.id){
                     props.setTitle(props.title);

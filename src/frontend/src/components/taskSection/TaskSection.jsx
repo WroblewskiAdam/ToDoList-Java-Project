@@ -59,7 +59,7 @@ function TaskSection(props) {
                     });
                 }
                 else{
-                    TaskService.getTodayGivenTasks(props.teamID).then(res => {
+                    TaskService.getTodayGivenTasks(props.teamId).then(res => {
                         setTasks(res);
                     });
                 }

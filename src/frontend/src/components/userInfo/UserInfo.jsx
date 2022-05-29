@@ -20,9 +20,9 @@ const UserInfo = (props) => {
             setFirstName(res.data.firstName);
             setLastName(res.data.lastName);
             setEmail(res.data.email);
-            setImage(res.data.image);
+            setImage(res.data.image.image);
             setPassword(res.data.password);
-            console.log(res.data.image);
+            console.log(res.data.image.image);
         });
     }, [updateUserInfo]);
 
@@ -34,10 +34,14 @@ const UserInfo = (props) => {
         setRoleModalState(true);
     }
 
+
     const roleEditor = localStorage.getItem("accessToken") && JSON.parse(localStorage.getItem("accessToken")).role  === "[ADMIN]"?
         <div className="userInfo__role" onClick={handleRoleEdit}>
             Change Users Roles
         </div> : null;
+    
+    const userImage = image && image.length > 6?  `data:image/png;base64,`+image: basicBg;
+
     return (
         <div className="userInfo">
             <div className="userInfo__title">
@@ -49,6 +53,14 @@ const UserInfo = (props) => {
                 </div>
                 <div className="userInfo__block">
                     {roleEditor}
+                    {/* <div className="userInfo__block-info">
+                        <img src={userImage} alt="userImg" />
+                        <div className="userInfo__block-info-text">
+                            <div className="userInfo__block-text"><span>First name:</span> {firstName}</div>
+                            <div className="userInfo__block-text"><span>Last name:</span> {lastName}</div>
+                            <div className="userInfo__block-text"><span>Email:</span> {email}</div>
+                        </div>
+                    </div> */}
                     <div className="userInfo__block-text"><span>First name:</span> {firstName}</div>
                     <div className="userInfo__block-text"><span>Last name:</span> {lastName}</div>
                     <div className="userInfo__block-text"><span>Email:</span> {email}</div>

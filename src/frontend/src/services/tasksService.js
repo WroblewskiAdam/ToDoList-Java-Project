@@ -187,7 +187,7 @@ const deleteTask = async (taskId) => {
 }
 
 const getTeamReceivedTasks = async (teamId, userId) => {
-    return axios.get(API_URL + "/team_received", {headers: authHeader(), params: {userId: userId, teamId:teamId}}).then(res => res.data).catch((error) => console.log(error));
+    return axios.get(API_URL + "/team_all_received", {headers: authHeader(), params: {userId: userId, teamId:teamId}}).then(res => res.data).catch((error) => console.log(error));
 }
 
 const getTeamDoneTasks = async (teamId, userId) => {

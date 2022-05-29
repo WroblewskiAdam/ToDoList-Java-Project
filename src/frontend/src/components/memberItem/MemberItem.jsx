@@ -12,63 +12,30 @@ function MemberItem(props) {
     const [, setAllTeamTasks] = useState([]);
     const [tasks, setTasks] = useState([]);
     const [doneTasks, setDoneTasks] = useState([]);
-    const [image, setImage] = useState(undefined);
+    const [imageData, setImageData] = useState(undefined);
 
     useEffect(() => {
-        // AppUserService.getTasks(props.id).then((res1) => {
-        //     setAllTasks(res1);
-
-        //     TeamService.getTeamTasks(props.teamId).then((res2) => {
-        //         setAllTeamTasks(res2);
-
-        //         let teamTasksIds = res2.map((item) => item.id);
-                
-        //         setDoneTasks([]);
-        //         setTasks([]);
-
-        //         res1.forEach((task) => {
-        //             if(teamTasksIds.indexOf(task.id) > -1){
-        //                 if(task.isDone){
-        //                     setDoneTasks((doneTasks) => [...doneTasks, task]);
-        //                 }
-        //                 setTasks((tasks) => [...tasks, task]);
-        //             }
-        //         });
-        //     });
-        // });
         TaskService.getTeamReceivedTasks(props.teamId, props.id).then((res) => {
             setTasks(res);
-            console.log(res);
+            // console.log("T", res);
         });
 
         TaskService.getTeamDoneTasks(props.teamId, props.id).then((res) => {
             setDoneTasks(res);
-            console.log("Done: ", res);
+            // console.log("Done: ", res);
         });
 
+        
+        
     }, [props.teamId, props.updateProgres]);
 
 
     useEffect(() => {
+        console.log(1);
         AppUserService.getImage(props.id).then((res) => {
-            console.log(res);
-            console.log("Blob: ", window.image);
-
-            console.log(window.URL.createObjectURL(res));
-            setImage(res);
-
-
-            // let blob = new Blob([res], {type: props.image.type});
-
-            // var reader = new FileReader();
-            // reader.readAsDataURL(blob);
-            // reader.onloadend = function () {
-            //     var base64String = reader.result;
-            //     // console.log('Base64 String - ', base64String);
-            //     setImage(base64String);
-            //     // console.log('Base64 String without Tags- ', base64String.substr(base64String.indexOf(', ') + 1));
-            // }
-        })
+            
+            setImageData(res.data)
+        });
     }, []);
 
     let percentage = 0;
@@ -77,17 +44,19 @@ function MemberItem(props) {
             let lenDoneTasks= doneTasks.length;
             let lenTasks = tasks.length;
 
-            percentage = Math.round(lenDoneTasks/lenTasks*100);
+            percentage = Math.round(lenDoneTasks/(lenTasks+lenDoneTasks)*100);
         }
     }
     else{
         percentage = 100;
     }
 
+    const memberImage = imageData && imageData.length > 6?  `data:image/png;base64,`+imageData: icon;
+    const memberImageClass = imageData && imageData.length > 6? "memberItem__image-color":"memberItem__image";
     return (
         <div className="memberItem">
-            <div className="memberItem__image">
-                <img src={image} alt="icon" />
+            <div className={memberImageClass}>
+                <img src={memberImage} alt="icon" />
             </div>
             <div className="memberItem__info">
                 <div className="memberItem__info-item">
