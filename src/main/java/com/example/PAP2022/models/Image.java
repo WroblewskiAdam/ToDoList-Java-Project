@@ -25,11 +25,11 @@ public class Image {
 
     @Column(
             nullable = false,
-            length = 100000
+            length = 200000
     )
-    private byte[] image;
+    private String image;
 
-    public Image(String name, String type, byte[] image) {
+    public Image(String name, String type, String image) {
         this.name = name;
         this.type = type;
         this.image = image;
