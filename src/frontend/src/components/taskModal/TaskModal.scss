@@ -20,10 +20,10 @@
         background-color: white;
         border-radius: 30px;
         padding-top: 20px;
-        background-color: $aliceBlue;
+        background-color: $mediumSlateBlue;
     }
     &__title{
-        color: $nickel;
+        color: $white-color;
         font-weight: 500;
         font-size: 25px;
         margin-bottom: 15px;
@@ -85,6 +85,12 @@
 }
 
 .add_btn{
-    background-color: $aliceBlue;
+    color: $white-color;
+    background-color: $mediumSlateBlue;
     margin-right: 10px;
+    &:hover{
+        background-color: $SlateBlue;
+        box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+        cursor: pointer;
+    }
 }

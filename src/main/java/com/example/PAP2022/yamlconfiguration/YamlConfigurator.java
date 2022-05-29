@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 
 @NoArgsConstructor
-public class YamlConfig {
+public class YamlConfigurator {
 
     public Map<String, Object> getYamlProperties() {
         InputStream inputStream = this.getClass()
@@ -32,7 +32,7 @@ public class YamlConfig {
         yaml.dump(data, writer);
     }
 
-    public void changeYamlProperties(String ddlAutoConfig, String sqlInitConfig) throws FileNotFoundException {
+    public void changeYamlProperties(String ddlAutoConfig, String sqlInitConfig, String operatingModeConfig) throws FileNotFoundException {
         Map<String, Object> data =  getYamlProperties();
         Map<String, Map<String, Map<String, String>>> spring = (Map<String, Map<String, Map<String, String>>>) data.get("spring");
 
@@ -42,17 +42,8 @@ public class YamlConfig {
         Map<String, Map<String, String>> sql = spring.get("sql");
         Map<String, String> init = sql.get("init");
 
-        if (ddlAutoConfig.equals("update")) {
-            hibernate.replace("ddl-auto", "update");
-        } else if (ddlAutoConfig.equals("create")) {
-            hibernate.replace("ddl-auto", "create");
-        }
-
-        if (sqlInitConfig.equals("never")) {
-            init.replace("mode", "never");
-        } else if (sqlInitConfig.equals("always")) {
-            init.replace("mode", "always");
-        }
+        hibernate.replace("ddl-auto", ddlAutoConfig);
+        init.replace("mode", sqlInitConfig);
 
         jpa.replace("hibernate", hibernate);
         spring.replace("jpa", jpa);
@@ -61,7 +52,13 @@ public class YamlConfig {
         spring.replace("sql", sql);
 
         data.replace("spring", spring);
+        data.replace("operating-mode", operatingModeConfig);
 
         setYamlProperties(data);
+    }
+
+    public String checkOperationMode() throws FileNotFoundException {
+        Map<String, Object> data =  getYamlProperties();
+        return (String) data.get("operating-mode");
     }
 }

@@ -269,6 +269,15 @@ public class TaskController {
         }
     }
 
+    @GetMapping("/team_all_received")
+    public ResponseEntity<?> getAllReceivedTasksTeam(@RequestParam Long teamId, @RequestParam Long userId) {
+        try {
+            return ResponseEntity.ok().body(taskService.getAllReceivedTasksTeam(teamId, userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/team_received")
     public ResponseEntity<?> getReceivedTasksTeam(@RequestParam Long teamId, @RequestParam Long userId) {
         try {

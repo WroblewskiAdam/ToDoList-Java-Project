@@ -219,6 +219,15 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+    public List<Task> getAllReceivedTasksTeam(Long teamId, Long userId) throws TeamNotFoundException, UserNotFoundException {
+        Team team = teamService.getTeam(teamId);
+        ApplicationUser user = applicationUserService.getApplicationUser(userId);
+        return getReceivedTasks(userId).stream()
+                .filter(task -> task.getReceivers().contains(user))
+                .filter(task -> Objects.equals(task.getTeam(), team))
+                .collect(Collectors.toList());
+    }
+
     public List<Task> getReceivedTasksTeam(Long teamId, Long userId) throws TeamNotFoundException, UserNotFoundException {
         Team team = teamService.getTeam(teamId);
         return getReceivedTasks(userId).stream()

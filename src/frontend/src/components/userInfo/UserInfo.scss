@@ -9,7 +9,7 @@
     &__title{
         width: 30%;
         font-size: 50px;
-        font-family: 'Lexend', sans-serif;
+        font-family: 'Cabin', sans-serif;
         margin-top: 30px;
         border-bottom: 5px solid $aliceBlue;
         padding-bottom: 5px;
@@ -21,7 +21,7 @@
         height: 100%;
     }
     &__block{
-        font-family: 'Lexend', sans-serif;
+        font-family: 'Cabin', sans-serif;
         display: flex;
         flex-direction: column;
         align-items:center;
@@ -44,15 +44,15 @@
     }
     &__edit{
         font-size: 25px;
-        background-color: $aliceBlue;
-        color: $nickel;
+        background-color: $mediumSlateBlue;
+        color: $white-color;
         width: 40%;
         padding: 8px 10px;
         margin-top: 20px;
         border-radius: 10px;
         transition: 0.3s all;
         &:hover{
-            background-color: $mediumSlateBlue;
+            background-color: $SlateBlue;
             box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
             color: $white-color;
             cursor: pointer;
@@ -61,15 +61,15 @@
     }
     &__role{
         font-size: 25px;
-        background-color: $aliceBlue;
-        color: $nickel;
+        background-color: $mediumSlateBlue;
+        color: $white-color;
         width: 80%;
         padding: 8px 10px;
         margin-bottom: 40px;
         border-radius: 10px;
         transition: 0.3s all;
         &:hover{
-            background-color: $mediumSlateBlue;
+            background-color: $SlateBlue;
             box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
             color: $white-color;
             cursor: pointer;

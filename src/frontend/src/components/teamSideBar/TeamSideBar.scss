@@ -25,7 +25,7 @@
         width: 100%;
         height: 100%;
         border-radius: 20px;
-        background-color: $aliceBlue;
+        background-color: $mediumSlateBlue;
         margin-top: 10px;
         padding: 20px 20px;
         position: relative;
@@ -45,7 +45,7 @@
                 transition: 0.3s all;
                 box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
                 cursor: pointer;
-                background-color: $mediumSlateBlue;
+                background-color: $SlateBlue;
                 color: $white-color;
             }
         }
@@ -79,7 +79,7 @@
     width: 200px;
     height: 50px;
     padding: 0 20px;
-    background-color: $aliceBlue;
+    background-color: $mediumSlateBlue;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -87,7 +87,7 @@
     margin-bottom: 8px;
     transition: 0.3s all;
     &:hover{
-        background-color: $mediumSlateBlue;
+        background-color: $SlateBlue;
         box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
         cursor: pointer;
         transition: 0.3s all;
@@ -114,7 +114,7 @@
             position: relative;
             width: 20px;
             height: 20px;
-            fill: $nickel
+            fill: $white-color
         }
         span{
             position: absolute;
@@ -127,13 +127,13 @@
     }
     &__title{
         margin-left: 15px;
-        color: $nickel;
+        color: $white-color;
         font-weight: 500;
         font-size: 18px;
         font-family: 'Noto Sans Display', sans-serif;
     }
     &__count{
-        color: $nickel;
+        color: $white-color;
         font-size: 15px;
         margin-left: 29px;
     }
