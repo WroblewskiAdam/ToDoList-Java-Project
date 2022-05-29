@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Optional;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -27,41 +28,41 @@ public class ImageService {
         return imageRepository.findById(id);
     }
 
-    public static byte[] compressImage(byte[] data) {
-
-        Deflater deflater = new Deflater();
-        deflater.setLevel(Deflater.BEST_COMPRESSION);
-        deflater.setInput(data);
-        deflater.finish();
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
-        byte[] tmp = new byte[4*1024];
-        while (!deflater.finished()) {
-            int size = deflater.deflate(tmp);
-            outputStream.write(tmp, 0, size);
-        }
-        try {
-            outputStream.close();
-        } catch (Exception e) {
-        }
-        return outputStream.toByteArray();
-    }
-
-    public static byte[] decompressImage(byte[] data) {
-        Inflater inflater = new Inflater();
-        inflater.setInput(data);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
-        byte[] tmp = new byte[4*1024];
-        try {
-            while (!inflater.finished()) {
-                int count = inflater.inflate(tmp);
-                outputStream.write(tmp, 0, count);
-            }
-            outputStream.close();
-        } catch (Exception exception) {
-        }
-        return outputStream.toByteArray();
-    }
+//    public static byte[] compressImage(byte[] data) {
+//
+//        Deflater deflater = new Deflater();
+//        deflater.setLevel(Deflater.BEST_COMPRESSION);
+//        deflater.setInput(data);
+//        deflater.finish();
+//
+//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+//        byte[] tmp = new byte[4*1024];
+//        while (!deflater.finished()) {
+//            int size = deflater.deflate(tmp);
+//            outputStream.write(tmp, 0, size);
+//        }
+//        try {
+//            outputStream.close();
+//        } catch (Exception e) {
+//        }
+//        return outputStream.toByteArray();
+//    }
+//
+//    public static byte[] decompressImage(byte[] data) {
+//        Inflater inflater = new Inflater();
+//        inflater.setInput(data);
+//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+//        byte[] tmp = new byte[4*1024];
+//        try {
+//            while (!inflater.finished()) {
+//                int count = inflater.inflate(tmp);
+//                outputStream.write(tmp, 0, count);
+//            }
+//            outputStream.close();
+//        } catch (Exception exception) {
+//        }
+//        return outputStream.toByteArray();
+//    }
 
     public Image getImage(Long id) throws ImageNotFoundException {
         if (loadImageById(id).isPresent()) {
@@ -72,10 +73,11 @@ public class ImageService {
     }
 
     public Image saveImage(MultipartFile file) throws IOException {
+        String img = Base64.getEncoder().encodeToString(file.getBytes());
         return imageRepository.save(Image.builder()
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
-                .image(compressImage(file.getBytes())).build());
+                .image(img).build());
     }
 
     public Image convertToImage(MultipartFile file) throws IOException {

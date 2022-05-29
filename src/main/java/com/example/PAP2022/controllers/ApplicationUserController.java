@@ -68,12 +68,12 @@ public class ApplicationUserController {
     @GetMapping("/image")
     public ResponseEntity<?> getImage(@RequestParam Long id) {
         try {
-            Image image = applicationUserService.getImage(id);
+            Image image = applicationUserService.getImage(id); // PO CO TO ?
             System.out.println(image.getImage());
             return ResponseEntity
                     .ok()
                     .contentType(MediaType.valueOf(image.getType()))
-                    .body(ImageService.decompressImage(image.getImage()));
+                    .body(image.getImage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
