@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.PrintWriter;
 
+//"./myBackend/src/main/resources/application.yaml"
+
 @NoArgsConstructor
 public class YamlConfigurator {
 
