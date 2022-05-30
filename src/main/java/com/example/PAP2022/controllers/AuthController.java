@@ -51,7 +51,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getEmail(),
+                        loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
@@ -60,7 +63,7 @@ public class AuthController {
         if (userDetails.isEnabled()) {
             String role = userDetails.getAuthorities().toString();
 
-            log.info("user logged :)");
+            log.info("User logged");
 
             return ResponseEntity.ok(
                     new AuthResponse(
@@ -102,7 +105,6 @@ public class AuthController {
         }
     }
 
-    // TODO trzeba zaszyfrować hasło już w części webowej !!!!!
     @PostMapping("/reset_password")
     public ResponseEntity<?> resetPassword(@RequestParam("password") String password, @RequestParam("id") Long id) {
         try {

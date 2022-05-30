@@ -3,6 +3,7 @@ package com.example.PAP2022.services;
 import com.example.PAP2022.enums.ApplicationUserRole;
 import com.example.PAP2022.exceptions.EmailTakenException;
 import com.example.PAP2022.exceptions.ImageNotFoundException;
+import com.example.PAP2022.exceptions.InvalidApplicationUserRoleException;
 import com.example.PAP2022.exceptions.UserNotFoundException;
 import com.example.PAP2022.models.*;
 import com.example.PAP2022.payload.AppUserEditRequest;
@@ -14,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -86,6 +86,7 @@ public class ApplicationUserDetailsService implements UserDetailsService {
         return imageService.getImage(getApplicationUser(id).getImage().getId());
     }
 
+    //    TODO zrobić edycję także zdjęcia
     public ApplicationUser editApplicationUser(Long id, AppUserEditRequest userEditRequest) throws IOException, UserNotFoundException {
         ApplicationUser applicationUser = getApplicationUser(id);
 
@@ -97,7 +98,6 @@ public class ApplicationUserDetailsService implements UserDetailsService {
 
     public ApplicationUser editWithImageApplicationUser(Long id, AppUserEditRequest userEditRequest) throws IOException, UserNotFoundException {
         ApplicationUser applicationUser = getApplicationUser(id);
-
         applicationUser.setFirstName(userEditRequest.getFirstName());
         applicationUser.setLastName(userEditRequest.getLastName());
         applicationUser.setImage(imageService.convertToImage(userEditRequest.getImage()));
@@ -167,19 +167,13 @@ public class ApplicationUserDetailsService implements UserDetailsService {
         applicationUserRepository.save(applicationUser);
     }
 
-    public ApplicationUser changeRole(Long id, String role) throws IOException, UserNotFoundException {
+    public ApplicationUser changeRole(Long id, String role) throws
+            IOException,
+            UserNotFoundException,
+            InvalidApplicationUserRoleException {
+
         ApplicationUser applicationUser = getApplicationUser(id);
-
-        ApplicationUserRole roleEnum = ApplicationUserRole.USER;
-
-        //ApplicationUserRole.parse(role); #TODO create not found AplicationUserRole
-
-        if(role.equals("TEAM_LEADER")){
-            roleEnum = ApplicationUserRole.TEAM_LEADER;
-        } else if(role.equals("ADMIN")){
-            roleEnum = ApplicationUserRole.ADMIN;
-        }
-
+        ApplicationUserRole roleEnum = ApplicationUserRole.parse(role);
         applicationUser.setApplicationUserRole(roleEnum);
 
         return applicationUserRepository.save(applicationUser);

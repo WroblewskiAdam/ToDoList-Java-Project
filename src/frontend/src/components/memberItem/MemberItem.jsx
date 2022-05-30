@@ -57,16 +57,6 @@ function MemberItem(props) {
     let memberImage = imageData && imageData.length > 6?  `data:image/png;base64,`+imageData: icon;
     let memberImageClass = imageData && imageData.length > 6? "memberItem__image-color":"memberItem__image";
 
-    if(props.id === 1){
-        memberImageClass = "memberItem__image-color";
-        memberImage = mal;
-    } else if(props.id === 2){
-        memberImageClass = "memberItem__image-color";
-        memberImage = ad;
-    } else if(props.id === 3){
-        memberImageClass = "memberItem__image-color";
-        memberImage = jar;
-    }
 
     return (
         <div className="memberItem">

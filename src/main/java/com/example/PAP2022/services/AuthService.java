@@ -35,7 +35,7 @@ public class AuthService {
                         request.getLastName(),
                         request.getEmail(),
                         request.getPassword(),
-                        imageService.convertToImage(request.getImage()),
+                        imageService.saveImage(request.getImage()),
                         ApplicationUserRole.USER
                 )
         );

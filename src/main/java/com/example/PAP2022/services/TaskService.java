@@ -357,7 +357,6 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-//    TODO zastanowić się czy pokazujemy userów którzy nie są enabled
     public Task saveTask(TaskRequest request) throws
             UserNotFoundException,
             TeamNotFoundException,
