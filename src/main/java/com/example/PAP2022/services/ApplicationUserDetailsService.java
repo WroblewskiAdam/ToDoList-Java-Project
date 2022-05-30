@@ -86,7 +86,6 @@ public class ApplicationUserDetailsService implements UserDetailsService {
         return imageService.getImage(getApplicationUser(id).getImage().getId());
     }
 
-    //    TODO zrobić edycję także zdjęcia
     public ApplicationUser editApplicationUser(Long id, AppUserEditRequest userEditRequest) throws IOException, UserNotFoundException {
         ApplicationUser applicationUser = getApplicationUser(id);
         applicationUser.setFirstName(userEditRequest.getFirstName());

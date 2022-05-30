@@ -14,7 +14,6 @@ function UserModal(props) {
     const [email, setEmail] = useState("");
     const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [password, setPassword] = useState("");
     
     useEffect(() => {
         setFirstName(props.firstName);
