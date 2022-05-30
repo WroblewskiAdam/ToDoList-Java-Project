@@ -29,7 +29,7 @@ public class YamlConfigurator {
         options.setPrettyFlow(true);
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 
-        PrintWriter writer = new PrintWriter(new File("./myBackend/src/main/resources/application.yaml"));
+        PrintWriter writer = new PrintWriter(new File("./src/main/resources/application.yaml"));
         Yaml yaml = new Yaml(options);
         yaml.dump(data, writer);
     }
