@@ -35,7 +35,7 @@ Projekt jest realizowny w ramach przedmiotu PAP.
 
 - **Admin**: 
   - ma wszystkie funkcjonalności **Usera** i **Team Leadera**.
-  - zarządza użytkownikami - nadaje role, usuwa użytkowników z bazy danych.
+  - zarządza użytkownikami - nadaje role.
   
 <br>
 
@@ -149,3 +149,7 @@ Rezultaty pracy możemy obejrzeć w dowolnej przeglądarce przechodząc pod adre
 
 # Aktualny stan realizacji projektu
 Powyższe informacje dotyczą wersji programu omożliwiającej wygodne wykonywanie operacji nad zaimplementowanymi encjami. Jednocześnie w branchu *test* przeprowadzana jest refaktoryzacja kodu z wykorzystaniem Reacta. Istotną zmianą jest także zmiana sposobu zabezpieczania strony, która polega na zastosowaniu *JWT (JsonWebToken)*.
+
+<div align="center">
+    <img src="readme_img/image1.png" alt="Widok strony głównej" width="600">
+</div>
