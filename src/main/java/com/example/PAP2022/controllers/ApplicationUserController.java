@@ -21,7 +21,7 @@ public class ApplicationUserController {
     private final ApplicationUserDetailsService applicationUserService;
 
     @GetMapping("/get")
-    public ResponseEntity<?> getApplicationUser(@RequestParam Long id) {
+    public ResponseEntity<?> getApplicationUser(@RequestParam("id") Long id) {
         try{
             return ResponseEntity.ok().body(applicationUserService.getApplicationUser(id));
         } catch (UserNotFoundException e) {
@@ -44,7 +44,7 @@ public class ApplicationUserController {
     }
 
     @GetMapping("/teams")
-    public ResponseEntity<?> getAllTeams(@RequestParam Long id) {
+    public ResponseEntity<?> getAllTeams(@RequestParam("id") Long id) {
         try{
             return ResponseEntity.ok().body(applicationUserService.getAllTeams(id));
         } catch (UserNotFoundException e) {
@@ -53,7 +53,7 @@ public class ApplicationUserController {
     }
 
     @GetMapping("/tasks")
-    public ResponseEntity<?> getAllTasks(@RequestParam Long id) {
+    public ResponseEntity<?> getAllTasks(@RequestParam("id") Long id) {
         try{
             return ResponseEntity.ok().body(applicationUserService.getAllTasks(id));
         } catch (UserNotFoundException e) {
@@ -62,7 +62,7 @@ public class ApplicationUserController {
     }
 
     @GetMapping("/image")
-    public ResponseEntity<?> getImage(@RequestParam Long id) {
+    public ResponseEntity<?> getImage(@RequestParam("id") Long id) {
         try {
             Image image = applicationUserService.getImage(id);
             return ResponseEntity
@@ -75,12 +75,8 @@ public class ApplicationUserController {
 
     @PutMapping("/edit")
     public ResponseEntity<?> editUser(@RequestParam("id") Long id, @RequestBody AppUserEditRequest request) {
-
         try{
-            return ResponseEntity.ok(applicationUserService.editApplicationUser(
-                    id,
-                    request
-                    ));
+            return ResponseEntity.ok(applicationUserService.editApplicationUser(id, request));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -96,7 +92,7 @@ public class ApplicationUserController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteUser(@RequestParam Long id){
+    public ResponseEntity<?> deleteUser(@RequestParam("id") Long id){
         try{
             return ResponseEntity.ok(applicationUserService.deleteUser(id));
         } catch (Exception e) {

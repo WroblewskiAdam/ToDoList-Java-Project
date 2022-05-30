@@ -1,13 +1,7 @@
 package com.example.PAP2022.controllers;
 
-import com.example.PAP2022.exceptions.TeamLeaderDeletionException;
-import com.example.PAP2022.exceptions.UserExistsException;
-import com.example.PAP2022.exceptions.UserNotFoundException;
-import com.example.PAP2022.models.ApplicationUser;
-import com.example.PAP2022.models.Team;
 import com.example.PAP2022.payload.TeamMemberRequest;
 import com.example.PAP2022.payload.TeamRequest;
-import com.example.PAP2022.services.ApplicationUserDetailsService;
 import com.example.PAP2022.services.TeamService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @Slf4j

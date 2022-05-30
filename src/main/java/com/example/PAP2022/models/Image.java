@@ -21,17 +21,14 @@ public class Image {
 
     private String name;
 
-    private String type;
-
     @Column(
             nullable = false,
             length = 200000
     )
     private String image;
 
-    public Image(String name, String type, String image) {
+    public Image(String name, String image) {
         this.name = name;
-        this.type = type;
         this.image = image;
     }
 }

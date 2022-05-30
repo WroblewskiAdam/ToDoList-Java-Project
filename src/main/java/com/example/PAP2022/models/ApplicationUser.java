@@ -56,6 +56,4 @@ public class ApplicationUser {
         this.image = img;
         this.applicationUserRole = applicationUserRole;
     }
-
-
 }
