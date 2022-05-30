@@ -24,7 +24,7 @@ class EmailTokenRepositoryTest {
     @Test
     void shouldFindByToken() {
         String token = "token1";
-        assertSame(token, emailTokenRepository.findByToken(token).get().getToken());
+        assertTrue(token.equals(emailTokenRepository.findByToken(token).get().getToken()));
     }
 
     @Test

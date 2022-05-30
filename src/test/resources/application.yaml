@@ -1,14 +1,10 @@
+operating-mode: normal
 server:
   error:
     include-message: always
     include-binding-errors: always
 
 spring:
-
-#  datasource:
-#    password: papcrm123
-#    url: jdbc:mysql://34.118.36.189/PAPCRM_SYF
-#    username: root
 
   datasource:
     password: password
@@ -21,10 +17,13 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-#        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         dialect: org.hibernate.dialect.H2Dialect
         format_sql: true
     show-sql: true
+
+  sql:
+    init:
+      mode: never
 
   mail:
     host: smtp.gmail.com

@@ -17,7 +17,7 @@ class ApplicationUserRepositoryTest {
     @Test
     void shouldFindByEmail() {
         String email = "ogorek@gmail.com";
-        assertSame(email, userRepository.findByEmail(email).get().getEmail());
+        assertTrue(email.equals(userRepository.findByEmail(email).get().getEmail()));
     }
 
     @Test
