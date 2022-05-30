@@ -329,5 +329,5 @@ http://localhost:3000/
 <br>
 
 ## Walidacja aplikacji:
-W celu walidacji kodu back-endu aplikacji wykorzystaliśmy plugin Checkstyle, jego wyniki znajdują się w pliku [Checkstyle.html](checkstyle.html).
+W celu walidacji kodu back-endu aplikacji wykorzystaliśmy plugin Checkstyle, jego wyniki znajdują się w pliku [checkstyle.pdf](checkstyle.pdf).
 
