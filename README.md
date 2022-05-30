@@ -134,7 +134,7 @@ Dodatkowo tworzona jest tabela o nazwie *hibernate_sequence*
 <br/>
 
 <div align="center">
-    <img src="readme_img/mainpage.png" alt="Widok strony głównej" width="800">
+    <img src="readme_img/mainPage.png" alt="Widok strony głównej" width="800">
 </div>
 
 <div align="center">
@@ -233,7 +233,7 @@ Dodatkowo tworzona jest tabela o nazwie *hibernate_sequence*
 <br/>
 
 <div align="center">
-    <img src="readme_img/LogIn.png" alt="Strona logowania" width="800">
+    <img src="readme_img/login.png" alt="Strona logowania" width="800">
 </div>
 
 <div align="center">
@@ -255,7 +255,7 @@ Dodatkowo tworzona jest tabela o nazwie *hibernate_sequence*
 <br/>
 
 <div align="center">
-    <img src="readme_img/resetPassword.png" alt="Pole edycji hasła" width="800">
+    <img src="readme_img/resetpassword.png" alt="Pole edycji hasła" width="800">
 </div>
 
 <div align="center">
