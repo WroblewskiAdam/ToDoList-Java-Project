@@ -25,7 +25,7 @@ const getTasks = async (userId=JSON.parse(localStorage.getItem("accessToken")).i
 
 
 const getImage = async (userId) => {
-    return await axios.get(API_URL + "/image", {headers: authHeader(), params: {id: userId}}).then(res => res).catch(error => console.log(error));
+    return await axios.get(API_URL + "/image", {headers: authHeader(), params: {id: userId}, responseType: "multipart"}).then(res => res).catch(error => console.log(error));
 }
 
 const editUser = async (firstName, lastName) => {
@@ -76,7 +76,7 @@ const changeUserRole = async (userId, role) => {
 }
 
 const AppUserService = {
-    getAllUsers, 
+    getAllUsers,
     getUser,
     getTeams,
     getTasks,
