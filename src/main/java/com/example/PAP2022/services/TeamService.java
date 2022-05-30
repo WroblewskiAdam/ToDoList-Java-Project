@@ -1,17 +1,13 @@
 package com.example.PAP2022.services;
 
 import com.example.PAP2022.exceptions.*;
+import com.example.PAP2022.models.ApplicationUser;
 import com.example.PAP2022.models.Task;
-import com.example.PAP2022.payload.TeamMemberRequest;
+import com.example.PAP2022.models.Team;
 import com.example.PAP2022.payload.TeamRequest;
-import com.example.PAP2022.repository.ApplicationUserRepository;
 import com.example.PAP2022.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import com.example.PAP2022.models.Team;
-import com.example.PAP2022.models.ApplicationUser;
 
 import java.util.Comparator;
 import java.util.List;
@@ -81,8 +77,6 @@ public class TeamService {
     public Team saveTeam(TeamRequest request) throws UserNotFoundException {
         ApplicationUser leader = applicationUserService.getApplicationUser(request.getTeamLeaderId());
         List<ApplicationUser> teamMembers = applicationUserService.getUsersByIds(request.getMembersIds());
-//      TODO Jak ty widzisz zapisywanie zespołów, czy będziesz pokazywał userów bez teamleadera czy z teamleaderem?
-//          bo to co jest poniżej to tylko tak na chwilę jest zrobione
         if (!teamMembers.contains(leader)) {
             teamMembers.add(leader);
         }

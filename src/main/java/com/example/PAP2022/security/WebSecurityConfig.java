@@ -1,5 +1,6 @@
 package com.example.PAP2022.security;
 
+import com.example.PAP2022.enums.ApplicationUserRole;
 import com.example.PAP2022.security.jwt.AuthorizationFilter;
 import com.example.PAP2022.services.ApplicationUserDetailsService;
 import lombok.RequiredArgsConstructor;

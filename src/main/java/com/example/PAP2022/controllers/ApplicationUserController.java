@@ -4,15 +4,11 @@ import com.example.PAP2022.exceptions.UserNotFoundException;
 import com.example.PAP2022.models.Image;
 import com.example.PAP2022.payload.AppUserEditRequest;
 import com.example.PAP2022.services.ApplicationUserDetailsService;
-import com.example.PAP2022.services.ImageService;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -68,11 +64,9 @@ public class ApplicationUserController {
     @GetMapping("/image")
     public ResponseEntity<?> getImage(@RequestParam Long id) {
         try {
-            Image image = applicationUserService.getImage(id); // PO CO TO ?
-            System.out.println(image.getImage());
+            Image image = applicationUserService.getImage(id);
             return ResponseEntity
                     .ok()
-                    .contentType(MediaType.valueOf(image.getType()))
                     .body(image.getImage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

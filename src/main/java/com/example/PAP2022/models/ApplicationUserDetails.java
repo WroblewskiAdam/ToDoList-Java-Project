@@ -1,5 +1,6 @@
 package com.example.PAP2022.models;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Collections;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,11 +11,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ApplicationUserDetails implements UserDetails {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-    private Long id;
+    private final Long id;
     private String firstName;
     private String lastName;
-    private String email;
+    private final String email;
     @JsonIgnore
     private String password;
     private Image image;

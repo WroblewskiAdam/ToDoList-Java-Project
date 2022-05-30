@@ -1,6 +1,5 @@
 package com.example.PAP2022.payload;
 
-import com.example.PAP2022.models.ApplicationUser;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

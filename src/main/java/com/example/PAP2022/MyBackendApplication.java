@@ -11,14 +11,9 @@ public class MyBackendApplication implements CommandLineRunner{
 	public static void main(String[] args) {
 		SpringApplication.run(MyBackendApplication.class, args);
 	}
-
 	@Override
 	public void run(String... args) throws Exception {
-<<<<<<< HEAD
-//		YamlConfig yamlConfig = new YamlConfig();
-//		yamlConfig.changeYamlProperties("create", "always"); - Initial properties
-//		yamlConfig.changeYamlProperties("update", "never");
-=======
+
 		YamlConfigurator yamlConfigurator = new YamlConfigurator();
 
 		if (yamlConfigurator.checkOperationMode().equals("normal")){
@@ -26,6 +21,5 @@ public class MyBackendApplication implements CommandLineRunner{
 		} else if (yamlConfigurator.checkOperationMode().equals("init")) {
 			yamlConfigurator.changeYamlProperties("create", "always", "normal");
 		}
->>>>>>> bf6995f50a573fd8eed18d823312176d05f3ab7f
 	}
 }

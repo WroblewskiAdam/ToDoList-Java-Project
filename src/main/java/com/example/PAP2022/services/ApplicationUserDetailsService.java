@@ -87,10 +87,7 @@ public class ApplicationUserDetailsService implements UserDetailsService {
     }
 
     public ApplicationUser editApplicationUser(Long id, AppUserEditRequest userEditRequest) throws IOException, UserNotFoundException {
-
-//        Image image = imageService.convertToImage(userEditRequest.getImage());
         ApplicationUser applicationUser = getApplicationUser(id);
-
         applicationUser.setFirstName(userEditRequest.getFirstName());
         applicationUser.setLastName(userEditRequest.getLastName());
 //        applicationUser.setImage(image);
