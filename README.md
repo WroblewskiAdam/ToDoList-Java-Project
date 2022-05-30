@@ -331,3 +331,9 @@ http://localhost:3000/
 ## Walidacja aplikacji:
 W celu walidacji kodu back-endu aplikacji wykorzystaliśmy plugin Checkstyle, jego wyniki znajdują się w pliku [checkstyle.pdf](checkstyle.pdf).
 
+<br>
+
+## Walidacja działania kontrolerów:
+W celu wygodnego sprawdzania działania zaimplentowanych kontrolerów poniżej zamieszczony został link do narzędzia *Postman*:
+
+https://app.getpostman.com/join-team?invite_code=480df84f7deba64098b5f13b44addd0c&target_code=5bfe43daee630ad42d6da8732ca9eb7a
