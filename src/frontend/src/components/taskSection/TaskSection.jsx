@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TaskItem from '../taskItem/TaskItem';
 import "./TaskSection.scss";
-import noTasksImage from "../../images/picture/no-task.png";
 import TaskModal from '../taskModal/TaskModal';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,7 +16,7 @@ function TaskSection(props) {
     const [tasks, setTasks] = useState(null);
     const [open, setOpen] = React.useState(false);
     const [fillter, setFillter] = useState("All");
-    const [givenTasks, setGivenTasks] = useState([]);
+    const [givenTasks, ] = useState([]);
     const [updateProgres, setUpdateProgres] = useState(false);
     const [showGivenTasks, setShowGivenTasks] = useState(false);
 
@@ -273,37 +272,6 @@ function TaskSection(props) {
             <TaskModal setUpdateProgres={setUpdateProgres} setUpdate={props.setUpdate} open={open} handleOpen={handleOpen} handleClose={handleClose} teamId={props.teamId} setTasks={props.setTasks} />
         </div>
     );
-}
-
-// const NoTasksView = () => {
-//     return (
-//         <div className="taskSection__noTasks">
-//             <div className="taskSection__noTasks-title">No tasks :) </div>
-//             <img src={noTasksImage} alt='https://www.flaticon.com/free-icons/no-task' />
-//         </div>
-//     )
-// }
-
-const getAllPrivateTasks = (teamId, tasks, setGivenTasks) => {
-    if(teamId === 0){
-        setGivenTasks([]);
-        TaskService.getGivenTasks().then((res) => {
-            let array = [];
-            res.forEach((givenTask) => {
-                let good = true;
-                tasks.forEach((task) => {
-                    if(task.id === givenTask.id){
-                        good = false;
-                    }
-                });
-
-                if(good){
-                    array = [...array, givenTask];
-                }
-            });
-            setGivenTasks(array);
-        });
-    }
 }
 
 export default TaskSection;

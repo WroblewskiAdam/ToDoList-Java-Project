@@ -12,7 +12,6 @@ function TaskItem(props) {
     const [receiversWhoDone, setReceiversWhoDone] = useState(undefined);
     const [checked, setChecked] = useState(false);
     const [tasksId, setTasksId] = useState(undefined);
-    const [doneTask, setDoneTask] = useState(false);
     const [givenTasks, setGivenTasks] = useState(undefined);
 
     useEffect(() => {

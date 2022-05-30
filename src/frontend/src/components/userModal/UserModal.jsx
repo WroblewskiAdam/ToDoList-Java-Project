@@ -1,8 +1,7 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useState, useEffect} from 'react';
 import "./UserModal.scss"
 import AppUserService from '../../services/appUserService';
-import TeamService from '../../services/teamService';
 import TextField from '@mui/material/TextField';
 import Modal from '@mui/material/Modal';
 import Box from "@mui/material/Box";
@@ -11,7 +10,7 @@ import Spinner from '../spinner/Spinner';
 function UserModal(props) {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
+    const [, setEmail] = useState("");
     const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(false);
     
@@ -90,7 +89,7 @@ const View = ({modalState, closeModal, firstName, handleFirstNameChange, lastNam
             >
                 <div className="userModal__container">
                     <div className="userModal__title">
-                        Team
+                        Edit User
                     </div>
                     <div className="userModal__block">
                         <div className="userModal__input">

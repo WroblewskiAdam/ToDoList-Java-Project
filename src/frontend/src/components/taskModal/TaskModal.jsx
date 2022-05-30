@@ -84,8 +84,6 @@ function TaskModal(props) {
                 receiversIds.push(member.id);
             }
         });
-
-        console.log(transformDateTime(dateTime));
         
         TaskService.createTask(
             name,
@@ -99,18 +97,6 @@ function TaskModal(props) {
             props.setUpdate((update) => !update);
             props.setUpdateProgres((update) => !update);
         }).catch(e => console.log(e));
-
-        // console.log(
-        //     {
-        //         "title": name,
-        //         "description": description,
-        //         "deadline": transformDateTime(dateTime),
-        //         "priority": priority,
-        //         "giverId": id,
-        //         "receiversIds": receiversIds,
-        //         "teamId": props.teamId
-        //     }
-        // )
 
         setName("");
         setDescription("");

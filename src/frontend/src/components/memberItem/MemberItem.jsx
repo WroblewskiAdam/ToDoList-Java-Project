@@ -2,17 +2,12 @@ import React, { useState, useEffect } from 'react';
 import icon from "../../images/icons/user-solid.svg"
 import "./MemberItem.scss";
 import AppUserService from '../../services/appUserService';
-import TeamService from '../../services/teamService';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import TaskService from '../../services/tasksService';
-import mal from "../../images/picture/mal4.png";
-import ad from "../../images/picture/add2.png";
-import jar from "../../images/picture/jar2.png";
+
 
 function MemberItem(props) {
-    const [, setAllTasks] = useState([]);
-    const [, setAllTeamTasks] = useState([]);
     const [tasks, setTasks] = useState([]);
     const [doneTasks, setDoneTasks] = useState([]);
     const [imageData, setImageData] = useState(undefined);
@@ -34,7 +29,6 @@ function MemberItem(props) {
 
 
     useEffect(() => {
-        console.log(1);
         AppUserService.getImage(props.id).then((res) => {
             
             setImageData(res.data)

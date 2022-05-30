@@ -45,7 +45,6 @@ function TeamModal(props) {
     }, []);
 
     useEffect(() => {
-        console.log(props.function, " ", props.teamId)
         if(props.function === "Edit" && props.teamId){
             TeamService.getTeamName(props.teamId).then(res => {
                 setTitle(res);
