@@ -89,18 +89,18 @@ public class ApplicationUserDetailsService implements UserDetailsService {
     //    TODO zrobić edycję także zdjęcia
     public ApplicationUser editApplicationUser(Long id, AppUserEditRequest userEditRequest) throws IOException, UserNotFoundException {
         ApplicationUser applicationUser = getApplicationUser(id);
-
         applicationUser.setFirstName(userEditRequest.getFirstName());
         applicationUser.setLastName(userEditRequest.getLastName());
 
         return applicationUserRepository.save(applicationUser);
     }
 
-    public ApplicationUser editWithImageApplicationUser(Long id, AppUserEditRequest userEditRequest) throws IOException, UserNotFoundException {
+    public ApplicationUser editWithImageApplicationUser(Long id, AppUserEditRequest userEditRequest) throws IOException, UserNotFoundException, ImageNotFoundException {
         ApplicationUser applicationUser = getApplicationUser(id);
         applicationUser.setFirstName(userEditRequest.getFirstName());
         applicationUser.setLastName(userEditRequest.getLastName());
-        applicationUser.setImage(imageService.convertToImage(userEditRequest.getImage()));
+        Long imgId = applicationUser.getImage().getId();
+        applicationUser.setImage(imageService.editImage(imgId, userEditRequest.getImage()));
 
         return applicationUserRepository.save(applicationUser);
     }
@@ -178,6 +178,7 @@ public class ApplicationUserDetailsService implements UserDetailsService {
 
         return applicationUserRepository.save(applicationUser);
     }
+
 }
 
 

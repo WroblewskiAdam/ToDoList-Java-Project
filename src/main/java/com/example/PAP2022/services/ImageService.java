@@ -35,4 +35,11 @@ public class ImageService {
                 .name(file.getOriginalFilename())
                 .image(img).build());
     }
+
+    public Image editImage(Long id, MultipartFile file) throws IOException, ImageNotFoundException {
+        Image img = getImage(id);
+        img.setImage(Base64.getEncoder().encodeToString(file.getBytes()));
+        return imageRepository.save(img);
+    }
+
 }
