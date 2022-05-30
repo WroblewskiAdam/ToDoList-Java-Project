@@ -59,14 +59,14 @@ function TaskItem(props) {
                 setReceiversWhoDone(res);
             });
             props.setUpdateProgres((update) => !update);
-            props.setUpdateTeam((update) => !update);
+            // props.setUpdateTeam((update) => !update);
         });
     }
 
     const handleDeleteClick = () => {
         TaskService.deleteTask(props.id).then(() => {
             props.setUpdateProgres((update) => !update);
-            props.setUpdateTeam((update) => !update);
+            // props.setUpdateTeam((update) => !update);
             props.setUpdate((update) => !update);
         });
     }

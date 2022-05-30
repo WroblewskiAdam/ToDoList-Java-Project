@@ -80,13 +80,33 @@ public class ApplicationUserController {
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<?> editUser(@RequestParam("id") Long id, @RequestBody AppUserEditRequest request) {
+    public ResponseEntity<?> editUser(@RequestParam("id") Long id,
+                                      @RequestParam("firstName") String firstName,
+                                      @RequestParam("lastName") String lastName) {
 
+        AppUserEditRequest request = new AppUserEditRequest(firstName, lastName);
         try{
             return ResponseEntity.ok(applicationUserService.editApplicationUser(
                     id,
                     request
                     ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/edit_with_image")
+    public ResponseEntity<?> editUser(@RequestParam("id") Long id,
+                                      @RequestParam("firstName") String firstName,
+                                      @RequestParam("lastName") String lastName,
+                                      @RequestParam("image") MultipartFile file) {
+
+        AppUserEditRequest request = new AppUserEditRequest(firstName, lastName, file);
+        try{
+            return ResponseEntity.ok(applicationUserService.editWithImageApplicationUser(
+                    id,
+                    request
+            ));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

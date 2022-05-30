@@ -69,6 +69,52 @@
             cursor: pointer;
         }
     }
+    &__file-input{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: $white-color;
+        padding: 2px;
+        padding-left: 30px;
+        transition: all 200ms linear;
+        width: 100%;
+        border-bottom: 1px solid $onyx;
+        margin-bottom: 10px;
+        &-icon{
+            width: 24px;
+            height: 24px;
+            fill: $onyx;
+            margin-right: 30px;
+            transition: all 200ms linear;
+        }
+        input{
+            padding: 13px 20px;
+            font-weight: 500;
+            height: 50px;
+            border-radius: 8px;
+            font-size: 18px;
+            outline: none;
+            color: $onyx;
+            background-color: $white-color;
+            border: none;
+            transition: all 200ms linear;
+            transition: all 200ms linear;
+            &::-webkit-file-upload-button{
+                visibility: hidden;
+                display: none;
+            }
+            &[type='file']{
+                width: 220px;
+
+            }
+            &:hover{
+                cursor: pointer;
+            }
+        }
+        &:hover{
+            border-bottom: 1px solid black;
+        }
+    }
 }
 
 .hide{

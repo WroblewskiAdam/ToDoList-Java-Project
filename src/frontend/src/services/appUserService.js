@@ -28,7 +28,11 @@ const getImage = async (userId) => {
     return await axios.get(API_URL + "/image", {headers: authHeader(), params: {id: userId}}).then(res => res).catch(error => console.log(error));
 }
 
-const editUser = async (firstName, lastName, image) => {
+const editUser = async (firstName, lastName) => {
+    let formData = new FormData();
+    formData.append("firstName", firstName);
+    formData.append("lastName", lastName);
+
     const userId = JSON.parse(localStorage.getItem("accessToken")).id;
     return axios({
         method: 'put',
@@ -36,11 +40,25 @@ const editUser = async (firstName, lastName, image) => {
         params: {
             id: userId,
         },
-        data : {
-            "firstName": firstName,
-            "lastName": lastName,
-            "image": image,
+        data : formData,
+        headers: authHeader()
+    }).then(res => res.data).catch((error) => console.log(error));
+}
+
+const editWithImageUser = async (firstName, lastName, image) => {
+    let formData = new FormData();
+    formData.append("firstName", firstName);
+    formData.append("lastName", lastName);
+    formData.append("image", image);
+
+    const userId = JSON.parse(localStorage.getItem("accessToken")).id;
+    return axios({
+        method: 'put',
+        url: API_URL + "/edit_with_image",
+        params: {
+            id: userId,
         },
+        data : formData,
         headers: authHeader()
     }).then(res => res.data).catch((error) => console.log(error));
 }
@@ -64,6 +82,7 @@ const AppUserService = {
     getTasks,
     getImage,
     editUser,
+    editWithImageUser,
     changeUserRole
 };
 

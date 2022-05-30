@@ -20,6 +20,10 @@ public class AppUserEditRequest {
     @NotBlank
     private String lastName;
 
-//    @NotBlank
-//    private MultipartFile image;
+    private MultipartFile image;
+
+    public AppUserEditRequest(String firstName, String lastName){
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }

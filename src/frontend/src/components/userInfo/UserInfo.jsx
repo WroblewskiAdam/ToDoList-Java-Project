@@ -10,6 +10,7 @@ const UserInfo = (props) => {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [image, setImage] = useState(undefined);
+    const [imageFile, setImageFile] = useState(undefined);
     const [password, setPassword] = useState("");
     const [modalState, setModalState] = useState(false);
     const [updateUserInfo, setUpdateUserInfo] = useState(false);
@@ -22,7 +23,7 @@ const UserInfo = (props) => {
             setEmail(res.data.email);
             setImage(res.data.image.image);
             setPassword(res.data.password);
-            console.log(res.data.image.image);
+            setImageFile(res.data.image);
         });
     }, [updateUserInfo]);
 
@@ -47,26 +48,24 @@ const UserInfo = (props) => {
             <div className="userInfo__title">
                 User Info
             </div>
-           <div className="userInfo__wrapper">
-                <div className="userInfo__block">
+                {/* <div className="userInfo__block">
                     <img src={basicBg} alt="userBG" className="userInfo__block-image" />
-                </div>
-                <div className="userInfo__block">
-                    {roleEditor}
-                    {/* <div className="userInfo__block-info">
-                        <img src={userImage} alt="userImg" />
-                        <div className="userInfo__block-info-text">
-                            <div className="userInfo__block-text"><span>First name:</span> {firstName}</div>
-                            <div className="userInfo__block-text"><span>Last name:</span> {lastName}</div>
-                            <div className="userInfo__block-text"><span>Email:</span> {email}</div>
-                        </div>
-                    </div> */}
-                    <div className="userInfo__block-text"><span>First name:</span> {firstName}</div>
-                    <div className="userInfo__block-text"><span>Last name:</span> {lastName}</div>
-                    <div className="userInfo__block-text"><span>Email:</span> {email}</div>
-                    <div className="userInfo__edit" onClick={handleEditClick}>
-                        Edit
+                </div> */}
+            <div className="userInfo__block">
+                {roleEditor}
+                <div className="userInfo__block-info">
+                    <img src={userImage} alt="userImg" />
+                    <div className="userInfo__block-info-text">
+                        <div className="userInfo__block-text"><span>First name:</span> {firstName}</div>
+                        <div className="userInfo__block-text"><span>Last name:</span> {lastName}</div>
+                        <div className="userInfo__block-text"><span>Email:</span> {email}</div>
                     </div>
+                </div>
+                {/* <div className="userInfo__block-text"><span>First name:</span> {firstName}</div>
+                <div className="userInfo__block-text"><span>Last name:</span> {lastName}</div>
+                <div className="userInfo__block-text"><span>Email:</span> {email}</div> */}
+                <div className="userInfo__edit" onClick={handleEditClick}>
+                    Edit
                 </div>
            </div>
            <UserModal
@@ -75,7 +74,7 @@ const UserInfo = (props) => {
                 firstName={firstName}
                 lastName={lastName}
                 email={email}
-                image={image}
+                imageFile={imageFile}
                 password={password}
                 setUpdateUserInfo={setUpdateUserInfo}
            />
