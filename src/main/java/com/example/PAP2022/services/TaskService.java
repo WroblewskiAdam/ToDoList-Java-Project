@@ -123,7 +123,7 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    // z punktu widzenia użytkownika któremu zostało zlecone zadanie
+    // from the point of view of the user to whom the task has been assigned
     public List<Task> getDoneReceivedTasks(Long userId) throws UserNotFoundException {
         ApplicationUser user = applicationUserService.getApplicationUser(userId);
         return applicationUserService.getApplicationUser(userId).getTasks().stream()
@@ -136,9 +136,12 @@ public class TaskService {
     // ############### Private filters ##################
 
     public List<Task> getPrivateTasks(Long userId) throws UserNotFoundException {
-        return getReceivedTasks(userId).stream()
+        List<Task> tasks = getReceivedTasks(userId);
+
+        List<Task> sortedTasks = tasks.stream()
                 .filter(task -> task.getTeam() == null)
                 .collect(Collectors.toList());
+        return sortedTasks;
     }
 
     public List<Task> getPrivateTasksGiven(Long userId) throws UserNotFoundException {
@@ -189,7 +192,7 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    // z punktu widzenia użytkownika któremu zostało zlecone zadanie
+    // from the point of view of the user to whom the task has been assigned
     public List<Task> getPrivateDoneReceivedTasks(Long userId) throws UserNotFoundException {
         return getDoneReceivedTasks(userId).stream()
                 .filter(task -> task.getTeam() == null)
@@ -326,10 +329,9 @@ public class TaskService {
         return taskId;
     }
 
-    public LocalDateTime convertDeadline(String deadlineString) throws InvalidDeadlineFormatException, InvalidDeadlineDateException {
+    public LocalDateTime convertDeadline(String deadlineString) throws InvalidDeadlineDateException {
         LocalDateTime deadline;
 
-        // TODO sprawdzanie formatu !!!
         deadlineString = deadlineString + ":00.0";
         deadline = LocalDateTime.parse(deadlineString, DateTimeFormatter.ISO_DATE_TIME);
 
@@ -343,7 +345,6 @@ public class TaskService {
     public Task editTask(Long taskId, TaskRequest taskRequest) throws
             UserNotFoundException,
             TaskNotFoundException,
-            InvalidDeadlineFormatException,
             InvalidDeadlineDateException,
             InvalidTaskPriorityException {
 
@@ -360,7 +361,6 @@ public class TaskService {
     public Task saveTask(TaskRequest request) throws
             UserNotFoundException,
             TeamNotFoundException,
-            InvalidDeadlineFormatException,
             InvalidDeadlineDateException, InvalidTaskPriorityException {
 
         ApplicationUser giver = applicationUserService.getApplicationUser(request.getGiverId());

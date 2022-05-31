@@ -134,7 +134,7 @@ public class TaskController {
         }
     }
 
-    // z punktu widzenia użytkownika któremu zostało zlecone zadanie
+    // from the point of view of the user to whom the task has been assigned
     @GetMapping("/done_received")
     public ResponseEntity<?> getDoneReceivedTasks(@RequestParam Long id) {
         try {
@@ -228,7 +228,7 @@ public class TaskController {
         }
     }
 
-    // z punktu widzenia użytkownika któremu zostało zlecone zadanie
+    // from the point of view of the user to whom the task has been assigned
     @GetMapping("/private_done_received")
     public ResponseEntity<?> getPrivateDoneReceivedTasks(@RequestParam Long id) {
         try {
