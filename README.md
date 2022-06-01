@@ -286,10 +286,10 @@ Dodatkowo tworzona jest tabela o nazwie *hibernate_sequence*
 <br>
 
 # Uruchomienie aplikacji:
-Chcąc uruchomić aplikację, na początku należy sklonować branch *test_2* komendą:
+Chcąc uruchomić aplikację, na początku należy sklonować branch *test* komendą:
 
 ```
-git clone --single-branch --branch etap_2 https://gitlab-stud.elka.pw.edu.pl/adabkows/pap22l-z04.git
+git clone --single-branch --branch test https://gitlab-stud.elka.pw.edu.pl/adabkows/pap22l-z04.git
 ```
 ## Back-end
 
