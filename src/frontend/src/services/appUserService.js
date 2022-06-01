@@ -60,7 +60,7 @@ const editWithImageUser = async (firstName, lastName, image) => {
         },
         data : formData,
         headers: authHeader()
-    }).then(res => res.data).catch((error) => console.log(error));
+    }).then(res => res.data);
 }
 
 const changeUserRole = async (userId, role) => {

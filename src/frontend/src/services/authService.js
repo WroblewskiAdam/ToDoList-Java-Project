@@ -44,7 +44,7 @@ const register = (firstName, lastName, email, password, img) => {
         method: 'post',
         url: API_URL + "/registration",
         data: formData,
-    }).catch(e => console.log(e));
+    });
 };
 
 const confirmUser = async (token) => {

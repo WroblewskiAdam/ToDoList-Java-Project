@@ -20,7 +20,10 @@ function TeamSideBar(props) {
             setTeam(res);
             if(res && res.length > 0){
                 props.setTeamId(res[0].id);
-                props.setTitle(res[0].name)
+                props.setTitle(res[0].name);
+            } else{
+                props.setTitle("Private");
+                props.setTeamId(0);
             }
         });
         TaskService.getPrivateTasks().then(res => {

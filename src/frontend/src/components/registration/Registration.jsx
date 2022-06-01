@@ -77,6 +77,9 @@ function Registration(props) {
             console.log(error.response);
             if(error.response.status === 400){
                 setErrorMsg(error.response.data);
+            } else if(error.response.status === 500){
+                setImage(null);
+                setErrorMsg("Image is too large");
             }
             else{
                 setErrorMsg("Enknown error :(((((");
