@@ -43,9 +43,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/auth/**").permitAll()
-                .antMatchers("/teams/**").permitAll()
-                .antMatchers("/tasks/**").permitAll()
-                .antMatchers("/user/**").permitAll()
+                .antMatchers("/teams/save").hasAnyAuthority("ADMIN", "TEAM_LEADER")
+                .antMatchers("/teams/edit").hasAnyAuthority("ADMIN", "TEAM_LEADER")
+                .antMatchers("/teams/addMember").hasAnyAuthority("ADMIN", "TEAM_LEADER")
+                .antMatchers("/teams/deleteMember").hasAnyAuthority("ADMIN", "TEAM_LEADER")
+                .antMatchers("/teams/delete").hasAnyAuthority("ADMIN", "TEAM_LEADER")
+                .antMatchers("/teams/**").hasAnyAuthority("ADMIN", "TEAM_LEADER", "USER")
+                .antMatchers("/user/change_role").hasAnyAuthority("ADMIN")
+                .antMatchers("/user/delete").hasAnyAuthority("ADMIN")
+                .antMatchers("/user/**").hasAnyAuthority("ADMIN", "TEAM_LEADER", "USER")
+                .antMatchers("/tasks/**").hasAnyAuthority("ADMIN", "TEAM_LEADER", "USER")
+//                .antMatchers("/team/**").permitAll()
+//                .antMatchers("/task/**").permitAll()
+//                .antMatchers("/user/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
