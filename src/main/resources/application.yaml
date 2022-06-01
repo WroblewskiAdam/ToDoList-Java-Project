@@ -20,6 +20,10 @@ spring:
      sql:
           init:
                mode: never
+     servlet:
+          multipart:
+               max-file-size: 50MB
+               max-request-size: 50MB
      mail:
           host: smtp.gmail.com
           port: 587
