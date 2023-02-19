@@ -4,8 +4,8 @@ Projekt ma na celu zbudowanie webowej aplikacji ToDoList o nazwie ***TDL Tasks**
 Projekt jest realizowny w ramach przedmiotu PAP.
 
 # Zespół Z04:
-- *Yaroslav Harbar*
-- *Adam Dąbkowski*
+- [*Yaroslav Harbar*](https://github.com/1Jaroslav1)
+- [*Adam Dąbkowski*](https://github.com/AdamixD)
 - *Adam Wróblewski*
 
 <br>
